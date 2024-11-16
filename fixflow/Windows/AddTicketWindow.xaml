@@ -1,0 +1,20 @@
+﻿<Window x:Class="fixflow.Windows.AddTicketWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:fixflow.Windows"
+        mc:Ignorable="d"
+        Title="Добавить тикет" Height="540" Width="960">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Марка устройства"/>
+            <ComboBox x:Name="brands_ComboBox"/>
+            <TextBlock Text="Модель устройства"/>
+            <ComboBox x:Name="models_ComboBox"/>
+            <TextBlock Text="Имя клиента"/>
+            <TextBox x:Name="clientName_TextBox"/>
+            
+        </StackPanel>
+    </Grid>
+</Window>
