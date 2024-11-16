@@ -10,27 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace fixflow.Windows
+namespace fixflow.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoadingUserControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoadingUserControl : UserControl
     {
-        public MainWindow()
+        public LoadingUserControl()
         {
             InitializeComponent();
-        }
-
-        private void addTicket_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var atw = new AddTicketWindow()
-            {
-                Owner = this,
-            };
-            atw.ShowDialog();
         }
     }
 }

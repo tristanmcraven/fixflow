@@ -12,7 +12,8 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         <Button x:Name="addTicket_Button"
-                Click="addTicket_Button_Click"/>
+                Click="addTicket_Button_Click"
+                Content="{StaticResource add_ticket}"/>
         <DataGrid Grid.Row="1"/>
     </Grid>
 </Window>

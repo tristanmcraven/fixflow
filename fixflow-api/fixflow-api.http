@@ -1,0 +1,6 @@
+@fixflow_api_HostAddress = http://localhost:5108
+
+GET {{fixflow_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

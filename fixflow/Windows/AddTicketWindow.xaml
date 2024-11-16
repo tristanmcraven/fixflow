@@ -5,16 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
-        Title="Добавить тикет" Height="540" Width="960">
+        Title="Добавить тикет" Height="540" Width="960"
+        WindowStartupLocation="CenterOwner"
+        Loaded="Window_Loaded">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <TextBlock Text="Марка устройства"/>
-            <ComboBox x:Name="brands_ComboBox"/>
-            <TextBlock Text="Модель устройства"/>
-            <ComboBox x:Name="models_ComboBox"/>
-            <TextBlock Text="Имя клиента"/>
-            <TextBox x:Name="clientName_TextBox"/>
-            
-        </StackPanel>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
+        <ScrollViewer VerticalScrollBarVisibility="auto"
+                      HorizontalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Vertical">
+
+                <TextBlock Text="{StaticResource device_brand}"/>
+                <ComboBox x:Name="brands_ComboBox"/>
+                <Button x:Name="addBrand_Button"
+                        Content="{StaticResource add_brand}"
+                        Click="addBrand_Button_Click"/>
+
+                <TextBlock Text="{StaticResource device_model}"/>
+                <ComboBox x:Name="models_ComboBox"/>
+
+                <TextBlock Text="{StaticResource client_name}"/>
+                <TextBox x:Name="clientName_TextBox"/>
+
+                <TextBlock Text="{StaticResource phone_number}"/>
+                <TextBox x:Name="clientPhoneNumber_TextBox"/>
+
+                <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                <StackPanel Orientation="Vertical"
+                        x:Name="malfunctions_StackPanel"/>
+                <Button x:Name="addMalfunction_Button"
+                    Content="{StaticResource add_malfunction}"
+                    Click="addMalfunction_Button_Click"/>
+
+                <TextBlock Text="{StaticResource kit}"/>
+                <StackPanel Orientation="Vertical"
+                        x:Name="kit_StackPanel"/>
+                <Button x:Name="addKit_Button"
+                    Content="{StaticResource add_kit}"
+                    Click="addKit_Button_Click"/>
+
+                <TextBlock Text="{StaticResource ticket_note}"/>
+                <TextBox x:Name="ticketNote_TextBox"/>
+
+                <TextBlock Text="{StaticResource status}"/>
+                <ComboBox x:Name="status_ComboBox"/>
+
+            </StackPanel>
+        </ScrollViewer>
+        
+        <Button x:Name="addTicket_Button"
+                Content="{StaticResource add_ticket}"
+                Click="addTicket_Button_Click"
+                Grid.Row="1"/>
+        
     </Grid>
 </Window>

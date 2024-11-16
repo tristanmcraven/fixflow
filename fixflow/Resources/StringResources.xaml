@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+    <s:String x:Key="device_brand">Марка устройства</s:String>
+    <s:String x:Key="device_model">Модель устройства</s:String>
+    <s:String x:Key="add_brand">Добавить марку...</s:String>
+    <s:String x:Key="enter_brand">Введите название марки:</s:String>
+    <s:String x:Key="add">Добавить</s:String>
+    <s:String x:Key="client_name">Имя клиента</s:String>
+    <s:String x:Key="declared_malfucntions">Заявленные неисправности</s:String>
+    <s:String x:Key="add_malfunction">Добавить неисправность...</s:String>
+    <s:String x:Key="kit">Комплектность</s:String>
+    <s:String x:Key="add_kit">Добавить...</s:String>
+    <s:String x:Key="add_ticket">Добавить тикет</s:String>
+    <s:String x:Key="ticket_note">Примечания для квитка</s:String>
+    <s:String x:Key="status">Статус</s:String>
+    <s:String x:Key="phone_number">Номер телефона</s:String>
+    
+    <s:String x:Key="error">Ошибка</s:String>
+    <s:String x:Key="enter_brand_name">ВВедите название бренда</s:String>
+    <s:String x:Key="brand_exists">Бренд уже существует, проверьте правильность написания</s:String>
+    <s:String x:Key="smth_went_wrong">Что-то пошло не так</s:String>
+    
+    
+
+</ResourceDictionary>
