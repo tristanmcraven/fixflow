@@ -32,4 +32,19 @@ public partial class Ticket
     public virtual ICollection<TicketRepair> TicketRepairs { get; set; } = new List<TicketRepair>();
 
     public virtual ICollection<TicketStatus> TicketStatuses { get; set; } = new List<TicketStatus>();
+
+    public Ticket()
+    {
+    }
+
+    public Ticket(uint deviceBrandId, uint deviceModelId, string? clientFullname, string? clientPhoneNumber, DateTime timestamp, string? note, string? description)
+    {
+        DeviceBrandId = deviceBrandId;
+        DeviceModelId = deviceModelId;
+        ClientFullname = clientFullname;
+        ClientPhoneNumber = clientPhoneNumber;
+        Timestamp = timestamp;
+        Note = note;
+        Description = description;
+    }
 }

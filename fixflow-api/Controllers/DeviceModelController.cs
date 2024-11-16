@@ -1,4 +1,5 @@
-﻿using fixflow_api.Services;
+﻿using fixflow_api.Model.DTO;
+using fixflow_api.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,5 +20,29 @@ namespace fixflow_api.Controllers
         {
             return Ok(await _deviceModelService.Get());
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(uint id)
+        {
+            var model = await _deviceModelService.GetById(id);
+            return model != null ? Ok(model) : NotFound();
+        }
+
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var model = await _deviceModelService.GetByName(name);
+            return model != null ? Ok(model) : NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]DeviceModelDTO dmdto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var deviceModel = await _deviceModelService.Post(dmdto.DeviceBrandId, dmdto.Name);
+            return deviceModel != null ? Created() : BadRequest(ModelState);
+        }
+
+
     }
 }

@@ -5,6 +5,8 @@
     <s:String x:Key="device_model">Модель устройства</s:String>
     <s:String x:Key="add_brand">Добавить марку...</s:String>
     <s:String x:Key="enter_brand">Введите название марки:</s:String>
+    <s:String x:Key="add_model">Добавить модель...</s:String>
+    <s:String x:Key="enter_model">Введите название модели:</s:String>
     <s:String x:Key="add">Добавить</s:String>
     <s:String x:Key="client_name">Имя клиента</s:String>
     <s:String x:Key="declared_malfucntions">Заявленные неисправности</s:String>
@@ -17,9 +19,14 @@
     <s:String x:Key="phone_number">Номер телефона</s:String>
     
     <s:String x:Key="error">Ошибка</s:String>
-    <s:String x:Key="enter_brand_name">ВВедите название бренда</s:String>
+    <s:String x:Key="enter_brand_name">Введите название бренда</s:String>
+    <s:String x:Key="enter_model_name">Введите название модели</s:String>
     <s:String x:Key="brand_exists">Бренд уже существует, проверьте правильность написания</s:String>
+    <s:String x:Key="model_exists">Модель уже существует, проверьте правильность написания</s:String>
     <s:String x:Key="smth_went_wrong">Что-то пошло не так</s:String>
+    <s:String x:Key="loading">Загрузка...</s:String>
+    <s:String x:Key="brand">Бренд</s:String>
+    
     
     
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace fixflow_api.Model
+namespace fixflow_api.Model.DTO
 {
     public class DeviceBrandDto
     {

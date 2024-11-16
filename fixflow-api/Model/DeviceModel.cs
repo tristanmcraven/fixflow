@@ -17,4 +17,14 @@ public partial class DeviceModel
 
     [JsonIgnore]
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
+    public DeviceModel()
+    {
+    }
+
+    public DeviceModel(uint deviceBrandId, string name)
+    {
+        DeviceBrandId = deviceBrandId;
+        Name = name;
+    }
 }

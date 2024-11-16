@@ -39,7 +39,9 @@ namespace fixflow.Windows
                 MessageBox.Show(Rm.Get("brand_exists"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if ((await ApiClient.DeviceBrand.Post(brand_TextBox.Text)) == true)
+            LoadingOverlay.Show(this);
+            var result = await ApiClient.DeviceBrand.Post(brand_TextBox.Text);
+            if (result == true)
             {
                 DialogResult = true;
                 this.Close();
@@ -49,6 +51,7 @@ namespace fixflow.Windows
                 MessageBox.Show(Rm.Get("smth_went_wrong"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            LoadingOverlay.Remove(this);
         }
     }
 }

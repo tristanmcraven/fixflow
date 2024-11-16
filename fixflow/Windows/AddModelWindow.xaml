@@ -1,35 +1,34 @@
-﻿<Window x:Class="fixflow.Windows.AddBrandWindow"
+﻿<Window x:Class="fixflow.Windows.AddModelWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
-        xmlns:uc="clr-namespace:fixflow.UserControls"
         mc:Ignorable="d"
-        Title="Добавить марку" Height="360" Width="520"
+        Title="Добавить модель" Height="360" Width="520"
         WindowStartupLocation="CenterOwner">
     <Grid x:Name="body">
         <Grid Margin="40">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-
-
-
             <StackPanel Orientation="Vertical"
-                    VerticalAlignment="Center">
+                        VerticalAlignment="Center">
+                
+                <TextBlock Text="{StaticResource brand}"/>
+                <ComboBox x:Name="brands_ComboBox"
+                          IsEnabled="False"/>
 
-                <TextBlock Text="{StaticResource enter_brand}"/>
-                <TextBox x:Name="brand_TextBox"/>
+                <TextBlock Text="{StaticResource enter_model}"/>
+                <TextBox x:Name="model_TextBox"/>
 
             </StackPanel>
 
-            <Button x:Name="addBrand_Button"
-                Content="{StaticResource add}"
-                Click="addBrand_Button_Click"
-                Grid.Row="1"/>
+            <Button x:Name="addModel_Button"
+                    Content="{StaticResource add}"
+                    Click="addModel_Button_Click"
+                    Grid.Row="1"/>
 
         </Grid>
     </Grid>

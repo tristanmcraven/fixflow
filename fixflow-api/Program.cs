@@ -21,6 +21,7 @@ namespace fixflow_api
 
             builder.Services.AddScoped<DeviceBrandService>();
             builder.Services.AddScoped<DeviceModelService>();
+            builder.Services.AddScoped<StatusService>();
 
             builder.Services.AddDbContext<FixflowContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("MyDbConnection"),
     new MySqlServerVersion(new Version(8, 0, 21))));

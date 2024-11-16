@@ -49,7 +49,7 @@ namespace fixflow.Utility
         public static class DeviceBrand
         {
             public static async Task<List<Model.DeviceBrand>> Get() => await SendRequest<List<Model.DeviceBrand>>("devicebrand", HttpMethod.Get);
-            public static async Task<List<Model.DeviceBrand>> GetByName(string name) => await SendRequest<List<Model.DeviceBrand>>($"devicebrand/{name}", HttpMethod.Get);
+            public static async Task<Model.DeviceBrand> GetByName(string name) => await SendRequest<Model.DeviceBrand>($"devicebrand/{name}", HttpMethod.Get);
 
             public static async Task<List<Model.DeviceModel>> GetModelsByName(string name) => await SendRequest<List<Model.DeviceModel>>($"devicebrand/{name}/models", HttpMethod.Get);
 
@@ -66,6 +66,25 @@ namespace fixflow.Utility
         public static class DeviceModel
         {
             public static async Task<List<Model.DeviceModel>> Get() => await SendRequest<List<Model.DeviceModel>>("devicemodel", HttpMethod.Get);
+
+            public static async Task<Model.DeviceModel> GetByName(string name) => await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
+
+            public static async Task<bool> Post(uint deviceBrandId, string name)
+            {
+                var dto = new
+                {
+                    DeviceBrandId = deviceBrandId,
+                    Name = name
+                };
+                return await SendRequest($"devicemodel", HttpMethod.Post, dto);
+            }
+        }
+
+        public static class Status
+        {
+            public static async Task<List<Model.Status>> Get() => await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
+
+            public static async Task<Model.Status> GetByName(string name) => await SendRequest<Model.Status>($"status/{name}", HttpMethod.Get);
         }
     }
 }

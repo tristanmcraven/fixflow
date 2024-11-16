@@ -8,7 +8,7 @@
         Title="Добавить тикет" Height="540" Width="960"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
-    <Grid>
+    <Grid x:Name="body">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -20,13 +20,17 @@
             <StackPanel Orientation="Vertical">
 
                 <TextBlock Text="{StaticResource device_brand}"/>
-                <ComboBox x:Name="brands_ComboBox"/>
+                <ComboBox x:Name="brands_ComboBox"
+                          SelectionChanged="brands_ComboBox_SelectionChanged"/>
                 <Button x:Name="addBrand_Button"
                         Content="{StaticResource add_brand}"
                         Click="addBrand_Button_Click"/>
 
                 <TextBlock Text="{StaticResource device_model}"/>
                 <ComboBox x:Name="models_ComboBox"/>
+                <Button x:Name="addModel_Button"
+                        Content="{StaticResource add_model}"
+                        Click="addModel_Button_Click"/>
 
                 <TextBlock Text="{StaticResource client_name}"/>
                 <TextBox x:Name="clientName_TextBox"/>

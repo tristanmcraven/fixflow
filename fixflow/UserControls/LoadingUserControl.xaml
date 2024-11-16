@@ -4,19 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:fixflow.UserControls"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Opacity="0.67">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded"
+             Name="LoadingOverlay">
+    <Grid Opacity="0.73 ">
         <Grid.Background>
             <RadialGradientBrush Center="0.5,0.5"
                                  GradientOrigin="0.5,0.5"
                                  RadiusX="0.5"
                                  RadiusY="0.5">
-                <GradientStop 
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="Black" Offset="1"/>
             </RadialGradientBrush>
         </Grid.Background>
-        <StackPanel Orientation="Vertical">
-            
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Image x:Name="gif_Image"
+                    gif:ImageBehavior.AnimatedSource="/Assets/loading-white.gif"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    Width="100"
+                    Height="100"
+                    Margin="0 0 0 35"
+                          />
+
+            <TextBlock Text="{StaticResource loading}"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       FontSize="28"/>
         </StackPanel>
     </Grid>
 </UserControl>

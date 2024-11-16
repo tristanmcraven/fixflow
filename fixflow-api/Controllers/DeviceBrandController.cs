@@ -1,4 +1,4 @@
-﻿using fixflow_api.Model;
+﻿using fixflow_api.Model.DTO;
 using fixflow_api.Services;
 using Microsoft.AspNetCore.Mvc;
 
