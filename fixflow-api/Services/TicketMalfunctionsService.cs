@@ -7,5 +7,13 @@ namespace fixflow_api.Services
         private readonly FixflowContext _context;
 
         public TicketMalfunctionsService(FixflowContext context) => _context = context;
+
+        public async Task<TicketMalfunction> Post(uint ticketId, string Name)
+        {
+            var ticketMalf = new TicketMalfunction(ticketId, Name);
+            _context.TicketMalfunctions.Add(ticketMalf);
+            await _context.SaveChangesAsync();
+            return ticketMalf;
+        }
     }
 }

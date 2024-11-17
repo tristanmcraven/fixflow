@@ -14,6 +14,35 @@ namespace fixflow_api.Services
             return await _context.Tickets.ToListAsync();
         }
 
+        public async Task<Ticket?> GetById(uint id)
+        {
+            return await _context.Tickets.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<TicketKit>> GetKits(uint id)
+        {
+            var kits = await _context.TicketKits.Where(t => t.TicketId.Equals(id)).ToListAsync();
+            return kits;
+        }
+
+        public async Task<List<TicketStatus>> GetStatuses(uint id)
+        {
+            var statuses = await _context.TicketStatuses.Where(t => t.TicketId.Equals(id)).ToListAsync();
+            return statuses;
+        }
+
+        public async Task<List<TicketMalfunction>> GetMalfunctions(uint id)
+        {
+            var malfs = await _context.TicketMalfunctions.Where(t => t.TicketId.Equals(id)).ToListAsync();
+            return malfs;
+        }
+
+        public async Task<List<TicketRepair>> GetRepairs(uint id)
+        {
+            var repairs = await _context.TicketRepairs.Where(t => t.TicketId.Equals(id)).ToListAsync();
+            return repairs;
+        }
+
         public async Task<Ticket> Post(uint deviceBrandId,
                                        uint deviceModelId,
                                        string? clientName,
@@ -26,6 +55,18 @@ namespace fixflow_api.Services
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
             return ticket;
+        }
+
+        public async Task<Ticket?> ChangeNote(uint id, string note)
+        {
+            var ticket = await _context.Tickets.Where(t=> t.Id.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.Note = note;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
         }
     }
 }

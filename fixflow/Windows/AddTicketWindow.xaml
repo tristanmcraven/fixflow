@@ -53,7 +53,9 @@
                     Click="addKit_Button_Click"/>
 
                 <TextBlock Text="{StaticResource ticket_note}"/>
-                <TextBox x:Name="ticketNote_TextBox"/>
+                <TextBox x:Name="ticketNote_TextBox"
+                         Height="100"
+                         AcceptsReturn="True"/>
 
                 <TextBlock Text="{StaticResource status}"/>
                 <ComboBox x:Name="status_ComboBox"/>

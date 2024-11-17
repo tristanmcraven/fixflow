@@ -1,6 +1,7 @@
 ﻿using fixflow.Utility;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace fixflow.Windows
 {
@@ -24,9 +25,20 @@ namespace fixflow.Windows
             AddKit();
         }
 
-        private void addTicket_Button_Click(object sender, RoutedEventArgs e)
+        private async void addTicket_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            LoadingOverlay.Show(this);
+            var result = await PostTicketAsync();
+            if (!result)
+            {
+                MessageBox.Show(Rm.Get("smth_went_wrong"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                LoadingOverlay.Remove(this);
+                return;
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -131,6 +143,61 @@ namespace fixflow.Windows
         private void AddKit()
         {
             kit_StackPanel.Children.Add(new TextBox());
+        }
+
+        private async Task<bool> PostTicketAsync()
+        {
+            var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString());
+            var model = await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString());
+
+            var ticket = await ApiClient.Ticket.Post(brand.Id, model.Id, clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
+            if (ticket == null) return false;
+
+            var kits = GetKit();
+            foreach (var kit in kits)
+            {
+                var ticketKit = await ApiClient.TicketKit.Post(ticket.Id, kit);
+                if (!ticketKit) return false;
+            }
+
+            var malfs = GetMalfunctions();
+            foreach (var malf in malfs)
+            {
+                var malfres = await ApiClient.TicketMalfunction.Post(ticket.Id, malf);
+                if (!malfres) return false;
+            }
+
+            var status = await ApiClient.Status.GetByName(status_ComboBox.SelectedItem.ToString());
+            var statusres = await ApiClient.TicketStatus.Post(ticket.Id, status.Id);
+            if (!statusres) return false;
+
+            return true;
+        }
+
+        private List<string> GetKit()
+        {
+            List<string> kits = new List<string>();
+            foreach (var obj in kit_StackPanel.Children)
+            {
+                if (obj is TextBox)
+                {
+                    kits.Add(((TextBox)obj).Text);
+                }
+            }
+            return kits;
+        }
+
+        private List<string> GetMalfunctions()
+        {
+            List<string> malfs = new();
+            foreach (var obj in  malfunctions_StackPanel.Children)
+            {
+                if (obj is TextBox)
+                {
+                    malfs.Add(((TextBox)obj).Text);
+                }
+            }
+            return malfs;
         }
     }
 }

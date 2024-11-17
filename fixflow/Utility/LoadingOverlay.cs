@@ -26,8 +26,11 @@ namespace fixflow.Utility
             {
                 Name = "LoadingOverlay",
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch
+                VerticalAlignment = VerticalAlignment.Stretch,
             };
+
+            Grid.SetRowSpan(loadingOverlay, 10);
+            Grid.SetColumnSpan(loadingOverlay, 10);
 
             Panel.SetZIndex(loadingOverlay, 2);
 

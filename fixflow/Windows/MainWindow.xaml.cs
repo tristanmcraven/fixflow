@@ -1,5 +1,8 @@
-﻿using System;
+﻿using fixflow.Model;
+using fixflow.Utility;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +34,66 @@ namespace fixflow.Windows
                 Owner = this,
             };
             atw.ShowDialog();
+        }
+
+        private async void Window_Activated(object sender, EventArgs e)
+        {
+            LoadingOverlay.Show(this);
+            UpdateTickets(await GetFormattedTickets());
+            LoadingOverlay.Remove(this);
+        }
+
+        private void UpdateTickets(List<Ticket> tickets)
+        {
+            tickets_DataGrid.ItemsSource = null;
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("Номер", typeof(uint));
+            dataTable.Columns.Add("Дата принятия", typeof(DateTime));
+            dataTable.Columns.Add("Марка", typeof(string));
+            dataTable.Columns.Add("Модель", typeof(string));
+            dataTable.Columns.Add("Имя клиента", typeof(string));
+            dataTable.Columns.Add("Номер клиента", typeof(string));
+
+            foreach (var ticket in tickets)
+            {
+                dataTable.Rows.Add(ticket.Id,
+                                   ticket.Timestamp,
+                                   ticket.DeviceBrand.Name,
+                                   ticket.DeviceModel.Name,
+                                   ticket.ClientFullname,
+                                   ticket.ClientPhoneNumber);
+            }
+
+            tickets_DataGrid.ItemsSource = dataTable.DefaultView;
+        }
+
+        private async Task<List<Ticket>> GetFormattedTickets()
+        {
+            var tickets = await ApiClient.Ticket.Get();
+            var formattedTickets = new List<Ticket>();
+
+            foreach (var ticket in tickets)
+            {
+                ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandId);
+                ticket.DeviceModel = await ApiClient.DeviceModel.GetById(ticket.DeviceModelId);
+                formattedTickets.Add(ticket);
+            }
+
+            return formattedTickets;
+        }
+
+        private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (tickets_DataGrid.SelectedItem is DataRowView rowView)
+            {
+                uint ticketId = (uint)rowView["Номер"];
+                var tw = new TicketWindow(ticketId)
+                {
+                    Owner = this
+                };
+                tw.ShowDialog();
+            }
         }
     }
 }

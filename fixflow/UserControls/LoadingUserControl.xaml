@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Loaded="UserControl_Loaded"
              Name="LoadingOverlay">
-    <Grid Opacity="0.73 ">
+    <Grid Opacity="0.79 ">
         <Grid.Background>
             <RadialGradientBrush Center="0.5,0.5"
                                  GradientOrigin="0.5,0.5"

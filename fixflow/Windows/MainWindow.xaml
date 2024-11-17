@@ -6,15 +6,24 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
         Title="FixFlow" Height="720" Width="1280"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <Button x:Name="addTicket_Button"
+        WindowStartupLocation="CenterScreen"
+        Activated="Window_Activated">
+    <Grid x:Name="body">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Button x:Name="addTicket_Button"
                 Click="addTicket_Button_Click"
                 Content="{StaticResource add_ticket}"/>
-        <DataGrid Grid.Row="1"/>
+            <DataGrid Grid.Row="1"
+                      x:Name="tickets_DataGrid"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      MouseDoubleClick="tickets_DataGrid_MouseDoubleClick"/>
+        </Grid>
     </Grid>
+
 </Window>

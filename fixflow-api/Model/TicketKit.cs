@@ -12,4 +12,14 @@ public partial class TicketKit
     public string Name { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketKit()
+    {
+    }
+
+    public TicketKit(uint ticketId, string name)
+    {
+        TicketId = ticketId;
+        Name = name;
+    }
 }

@@ -13,5 +13,13 @@ namespace fixflow_api.Services
         {
             return await _context.TicketStatuses.Where(ts => ts.TicketId.Equals(id)).ToListAsync();
         }
+
+        public async Task<TicketStatus?> Post(uint ticketId, uint statusId)
+        {
+            var ticketStatus = new TicketStatus(ticketId, statusId, DateTime.Now);
+            _context.TicketStatuses.Add(ticketStatus);
+            await _context.SaveChangesAsync();
+            return ticketStatus;
+        }
     }
 }

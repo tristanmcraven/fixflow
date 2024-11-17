@@ -16,4 +16,15 @@ public partial class TicketStatus
     public virtual Status Status { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketStatus()
+    {
+    }
+
+    public TicketStatus(uint ticketId, uint statusId, DateTime? timestamp)
+    {
+        TicketId = ticketId;
+        StatusId = statusId;
+        Timestamp = timestamp;
+    }
 }

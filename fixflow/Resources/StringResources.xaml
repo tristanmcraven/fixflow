@@ -26,6 +26,20 @@
     <s:String x:Key="smth_went_wrong">Что-то пошло не так</s:String>
     <s:String x:Key="loading">Загрузка...</s:String>
     <s:String x:Key="brand">Бренд</s:String>
+
+    <s:String x:Key="client">Клиент</s:String>
+
+    <s:String x:Key="status_history">История статусов</s:String>
+
+    <s:String x:Key="add_status">Добавить статус</s:String>
+
+    <s:String x:Key="repairs_done">Выполненные работы</s:String>
+    <s:String x:Key="add_repair">Добавить выполненную работу</s:String>
+
+    <s:String x:Key="enter_repair">Введите название работы</s:String>
+    <s:String x:Key="price">Цена</s:String>
+
+    <s:String x:Key="wrong_price">Неправильная цена</s:String>
     
     
     

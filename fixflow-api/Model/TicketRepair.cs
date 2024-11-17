@@ -14,4 +14,15 @@ public partial class TicketRepair
     public int? Price { get; set; }
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketRepair()
+    {
+    }
+
+    public TicketRepair(uint ticketId, string repair, int? price)
+    {
+        TicketId = ticketId;
+        Repair = repair;
+        Price = price;
+    }
 }

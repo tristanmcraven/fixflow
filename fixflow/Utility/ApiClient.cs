@@ -49,6 +49,8 @@ namespace fixflow.Utility
         public static class DeviceBrand
         {
             public static async Task<List<Model.DeviceBrand>> Get() => await SendRequest<List<Model.DeviceBrand>>("devicebrand", HttpMethod.Get);
+
+            public static async Task<Model.DeviceBrand> GetById(uint id) => await SendRequest<Model.DeviceBrand>($"devicebrand/{id}", HttpMethod.Get);
             public static async Task<Model.DeviceBrand> GetByName(string name) => await SendRequest<Model.DeviceBrand>($"devicebrand/{name}", HttpMethod.Get);
 
             public static async Task<List<Model.DeviceModel>> GetModelsByName(string name) => await SendRequest<List<Model.DeviceModel>>($"devicebrand/{name}/models", HttpMethod.Get);
@@ -67,6 +69,7 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.DeviceModel>> Get() => await SendRequest<List<Model.DeviceModel>>("devicemodel", HttpMethod.Get);
 
+            public static async Task<Model.DeviceModel> GetById(uint id) => await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
             public static async Task<Model.DeviceModel> GetByName(string name) => await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
 
             public static async Task<bool> Post(uint deviceBrandId, string name)
@@ -84,7 +87,92 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.Status>> Get() => await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
 
+            public static async Task<Model.Status> GetById(uint id) => await SendRequest<Model.Status>($"status/{id}", HttpMethod.Get);
             public static async Task<Model.Status> GetByName(string name) => await SendRequest<Model.Status>($"status/{name}", HttpMethod.Get);
+        }
+
+        public static class Ticket
+        {
+            public static async Task<List<Model.Ticket>> Get() => await SendRequest<List<Model.Ticket>>("ticket", HttpMethod.Get);
+
+            public static async Task<Model.Ticket> GetById(uint id) => await SendRequest<Model.Ticket>($"ticket/{id}", HttpMethod.Get);
+            public static async Task<List<Model.TicketKit>> GetKits(uint id) => await SendRequest<List<Model.TicketKit>>($"ticket/{id}/kits", HttpMethod.Get);
+            public static async Task<List<Model.TicketStatus>> GetStatuses(uint id) => await SendRequest<List<Model.TicketStatus>>($"ticket/{id}/statuses", HttpMethod.Get);
+            public static async Task<List<Model.TicketMalfunction>> GetMalfunctions(uint id) => await SendRequest<List<Model.TicketMalfunction>>($"ticket/{id}/malfunctions", HttpMethod.Get);
+            public static async Task<List<Model.TicketRepair>> GetRepairs(uint id) => await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
+
+            public static async Task<Model.Ticket> Post(uint deviceBrandId, uint deviceModelId, string? clientName, string? clientPhone, string? note, string? description)
+            {
+                var dto = new
+                {
+                    DeviceBrandId = deviceBrandId,
+                    DeviceModelId = deviceModelId,
+                    ClientFullname = clientName,
+                    ClientPhoneNumber = clientPhone,
+                    Timestamp = DateTime.Now,
+                    Note = note,
+                    Description = description
+                };
+                return await SendRequest<Model.Ticket>($"ticket", HttpMethod.Post, dto);
+            }
+
+            public static async Task<Model.Ticket> Put(uint ticketId, string note)
+            {
+                return await SendRequest<Model.Ticket>($"ticket?id={ticketId}&note={note}", HttpMethod.Put);
+            }
+        }
+
+        public static class TicketKit
+        {
+            public static async Task<bool> Post(uint ticketId, string name)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    Name = name
+                };
+                return await SendRequest($"ticketkit", HttpMethod.Post, dto);
+            }
+        }
+
+        public static class TicketMalfunction
+        {
+            public static async Task<bool> Post(uint ticketId, string name)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    Name = name
+                };
+                return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
+            }
+        }
+
+        public static class TicketStatus
+        {
+            public static async Task<bool> Post(uint ticketId, uint statusId)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    StatusId = statusId
+                };
+                return await SendRequest($"ticketstatus", HttpMethod.Post, dto);
+            }
+        }
+
+        public static class TicketRepair
+        {
+            public static async Task<bool> Post(uint ticketId, string repair, int price)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    Name = repair,
+                    Price = price
+                };
+                return await SendRequest($"ticketrepair", HttpMethod.Post, dto);
+            }
         }
     }
 }
