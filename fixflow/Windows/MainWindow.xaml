@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="FixFlow" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
-        Activated="Window_Activated">
+        Activated="Window_Activated"
+        >
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
