@@ -9,7 +9,8 @@
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
         Activated="Window_Activated"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        Style="{StaticResource MaterialDesignWindow}">
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>

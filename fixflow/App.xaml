@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="/Resources/StringResources.EN.xaml"/>
                 <ResourceDictionary Source="/Resources/StringResources.xaml"/>
                 
-                <md:BundledTheme BaseTheme="Inherit" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <md:BundledTheme BaseTheme="Light"    PrimaryColor="DeepPurple" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
                 </ResourceDictionary.MergedDictionaries>
 

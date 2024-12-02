@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
         Title="Добавить модель" Height="360" Width="520"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource MaterialDesignWindow}">
     <Grid x:Name="body">
         <Grid Margin="40">
             <Grid.RowDefinitions>
