@@ -4,10 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Добавить тикет" Height="540" Width="960"
         WindowStartupLocation="CenterOwner"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Style="{StaticResource MaterialDesignWindow}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="md:TextFieldAssist.HasOutlinedTextField" Value="True"/>
+            <Setter Property="md:HintAssist.FloatingScale" Value="1"/>
+            <Setter Property="Margin" Value="0 0 0 15"/>
+            <Setter Property="Padding" Value="10 10 10 10"/>
+            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+        </Style>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+        </Style>
+        
+    </Window.Resources>
     <Grid x:Name="body">
         
         <Grid.RowDefinitions>
@@ -17,26 +36,44 @@
         
         <ScrollViewer VerticalScrollBarVisibility="auto"
                       HorizontalScrollBarVisibility="Hidden">
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical"
+                        Margin="30">
 
-                <TextBlock Text="{StaticResource device_brand}"/>
-                <ComboBox x:Name="brands_ComboBox"
-                          SelectionChanged="brands_ComboBox_SelectionChanged"/>
-                <Button x:Name="addBrand_Button"
+                <GroupBox Header="{StaticResource device_brand}"
+                          Padding="10"
+                          Style="{StaticResource GroupBox_Custom}"
+                          >
+                    <StackPanel>
+                        <ComboBox x:Name="brands_ComboBox"
+                                  SelectionChanged="brands_ComboBox_SelectionChanged"
+                                  />
+                        <Button x:Name="addBrand_Button"
                         Content="{StaticResource add_brand}"
                         Click="addBrand_Button_Click"/>
+                    </StackPanel>
+                </GroupBox>
 
-                <TextBlock Text="{StaticResource device_model}"/>
-                <ComboBox x:Name="models_ComboBox"/>
-                <Button x:Name="addModel_Button"
+                <GroupBox Header="{StaticResource device_model}"
+                          Padding="10"
+                          Style="{StaticResource GroupBox_Custom}">
+                    <StackPanel>
+                        <ComboBox x:Name="models_ComboBox"/>
+                        <Button x:Name="addModel_Button"
                         Content="{StaticResource add_model}"
                         Click="addModel_Button_Click"/>
+                    </StackPanel>
 
-                <TextBlock Text="{StaticResource client_name}"/>
-                <TextBox x:Name="clientName_TextBox"/>
+                </GroupBox>
+                
 
-                <TextBlock Text="{StaticResource phone_number}"/>
-                <TextBox x:Name="clientPhoneNumber_TextBox"/>
+
+
+                <TextBox x:Name="clientName_TextBox"
+                         md:HintAssist.Hint="{StaticResource client_name}"
+                         />
+                
+                <TextBox x:Name="clientPhoneNumber_TextBox"
+                         md:HintAssist.Hint="{StaticResource phone_number}"/>
 
                 <TextBlock Text="{StaticResource declared_malfucntions}"/>
                 <StackPanel Orientation="Vertical"
@@ -52,10 +89,10 @@
                     Content="{StaticResource add_kit}"
                     Click="addKit_Button_Click"/>
 
-                <TextBlock Text="{StaticResource ticket_note}"/>
                 <TextBox x:Name="ticketNote_TextBox"
                          Height="100"
-                         AcceptsReturn="True"/>
+                         AcceptsReturn="True"
+                         md:HintAssist.Hint="{StaticResource ticket_note}"/>
 
                 <TextBlock Text="{StaticResource status}"/>
                 <ComboBox x:Name="status_ComboBox"/>

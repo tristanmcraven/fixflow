@@ -3,20 +3,77 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:fixflow"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="Windows/MainWindow.xaml">
+             StartupUri="Windows/MainWindow.xaml"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
     <Application.Resources>
         <ResourceDictionary>
-            
+
             <ResourceDictionary.MergedDictionaries>
+
                 <ResourceDictionary Source="/Resources/StringResources.EN.xaml"/>
                 <ResourceDictionary Source="/Resources/StringResources.xaml"/>
-                
-                <md:BundledTheme BaseTheme="Light"    PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+
+                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Cyan" SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-                </ResourceDictionary.MergedDictionaries>
+
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!--Fonts definition-->
+            <FontFamily x:Key="thin">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Thin</FontFamily>
+            <FontFamily x:Key="light">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Light</FontFamily>
+            <FontFamily x:Key="regular">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Regular</FontFamily>
+            <FontFamily x:Key="medium">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Medium</FontFamily>
+            <FontFamily x:Key="bold">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Bold</FontFamily>
 
             <Color x:Key="background_Purple">#150F27</Color>
             
+            <!--Custom style for GroupBox-->
+            <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
+            <Style x:Key="GroupBox_Custom" TargetType="{x:Type GroupBox}">
+                <Setter Property="BorderBrush" Value="Red"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="0 0 0 15"/>
+                <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="UseLayoutRounding" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupBox}">
+                            <Grid SnapsToDevicePixels="true">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="6"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="6"/>
+                                </Grid.RowDefinitions>
+                                <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True"/>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1 1" CornerRadius="15" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True">
+                                    <Border.OpacityMask>
+                                        <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
+                                            <Binding ElementName="Header" Path="ActualWidth"/>
+                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=Self}"/>
+                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}"/>
+                                        </MultiBinding>
+                                    </Border.OpacityMask>
+                                </Border>
+                                <Border x:Name="Header" Grid.Column="1" Padding="5,1,3,0" Grid.RowSpan="2" Grid.Row="0" SnapsToDevicePixels="True">
+                                    <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
+                                </Border>
+                                <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="True"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
         </ResourceDictionary>
         
     </Application.Resources>

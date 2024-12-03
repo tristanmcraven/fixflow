@@ -11,6 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\YandexSansText-Bold.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Light.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Medium.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Regular.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Thin.ttf" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -32,6 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Fonts\YandexSansText-Bold.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Light.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Medium.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Regular.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Thin.ttf" />
     <Resource Include="Assets\loading-white.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

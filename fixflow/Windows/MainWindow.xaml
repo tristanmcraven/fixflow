@@ -8,22 +8,33 @@
         Title="FixFlow" Height="720" Width="1280"
         WindowStartupLocation="CenterScreen"
         Activated="Window_Activated"
+        Style="{StaticResource MaterialDesignWindow}"
         >
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <!--<RowDefinition Height="auto" />-->
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Button x:Name="addTicket_Button"
-                Click="addTicket_Button_Click"
-                Content="{StaticResource add_ticket}"/>
+                    Click="addTicket_Button_Click"
+                    Content="+"
+                    Panel.ZIndex="1"
+                    Style="{StaticResource MaterialDesignFloatingActionButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 30 30"
+                    FontSize="32"/>
             <DataGrid Grid.Row="1"
                       x:Name="tickets_DataGrid"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       IsReadOnly="True"
-                      MouseDoubleClick="tickets_DataGrid_MouseDoubleClick"/>
+                      MouseDoubleClick="tickets_DataGrid_MouseDoubleClick"
+                      CanUserResizeColumns="False"
+                      FontFamily="{StaticResource light}"
+                      FontSize="16"
+                      HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 

@@ -12,7 +12,7 @@
         Closing="Window_Closing"
         Style="{StaticResource MaterialDesignWindow}">
     <Grid x:Name="body">
-        <Grid>
+        <Grid Margin="30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
