@@ -111,18 +111,20 @@ namespace fixflow.Windows
 
         private async void addModel_Button_Click(object sender, RoutedEventArgs e)
         {
-            var amw = new AddModelWindow(brands_ComboBox.SelectedItem.ToString()!)
-            {
-                Owner = this
-            };
-            amw.ShowDialog();
-            LoadingOverlay.Show(this);
-            if (amw.DialogResult == true)
-            {
-                await UpdateModels();
-                models_ComboBox.SelectedItem = amw.NewModel;
-            }
-            LoadingOverlay.Remove(this);
+            addModel_Grid.Visibility = Visibility.Visible;
+            addModel_Button.Visibility = Visibility.Collapsed;
+            //var amw = new AddModelWindow(brands_ComboBox.SelectedItem.ToString()!)
+            //{
+            //    Owner = this
+            //};
+            //amw.ShowDialog();
+            //LoadingOverlay.Show(this);
+            //if (amw.DialogResult == true)
+            //{
+            //    await UpdateModels();
+            //    models_ComboBox.SelectedItem = amw.NewModel;
+            //}
+            //LoadingOverlay.Remove(this);
         }
 
         private async void brands_ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -263,6 +265,68 @@ namespace fixflow.Windows
             {
                 acceptNewBrand_Button_Click(null, null);
             }
+        }
+
+        private void rejectNewModel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            addModel_Grid.Visibility = Visibility.Collapsed;
+            addModel_Button.Visibility = Visibility.Visible;
+        }
+
+        private async void acceptNewModel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(newModel_TextBox.Text))
+            {
+                addModel_Grid.Visibility = Visibility.Collapsed;
+                addModel_Button.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                await AddNewModel();
+                await UpdateModels();
+                models_ComboBox.SelectedItem = newModel_TextBox.Text;
+                newModel_TextBox.Text = String.Empty;
+                addModel_Grid.Visibility = Visibility.Collapsed;
+                addModel_Button.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void newModel_TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                acceptNewModel_Button_Click(null, null);
+            }
+        }
+
+        private async Task AddNewModel()
+        {
+            if (String.IsNullOrEmpty(newModel_TextBox.Text))
+            {
+                MessageBox.Show(Rm.Get("enter_model_name"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            LoadingOverlay.Show(this);
+            var model = await ApiClient.DeviceModel.GetByName(newModel_TextBox.Text);
+            if (model != null)
+            {
+                MessageBox.Show(Rm.Get("model_exists"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            else
+            {
+                var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString()!);
+                var result = await ApiClient.DeviceModel.Post(brand.Id, newModel_TextBox.Text);
+                if (result)
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show(Rm.Get("smth_went_wrong"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            LoadingOverlay.Remove(this);
         }
     }
 }

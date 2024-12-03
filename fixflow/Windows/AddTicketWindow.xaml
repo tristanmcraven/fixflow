@@ -98,9 +98,34 @@
                 <GroupBox Header="{StaticResource device_model}">
                     <StackPanel>
                         <ComboBox x:Name="models_ComboBox"/>
+                        <Grid x:Name="addModel_Grid"
+                              Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="newModel_TextBox"
+                                     Margin="0"
+                                     Height="32"
+                                     Padding="10 5"
+                                     VerticalContentAlignment="Center"
+                                     md:HintAssist.Hint="Название модели"
+                                     KeyUp="newModel_TextBox_KeyUp"/>
+                            <Button x:Name="acceptNewModel_Button"
+                                    Grid.Column="1"
+                                    Style="{StaticResource accept_button}"
+                                    Margin="5 0 0 0"
+                                    Click="acceptNewModel_Button_Click"/>
+                            <Button x:Name="rejectNewModel_Button"
+                                    Grid.Column="2"
+                                    Style="{StaticResource reject_button}"
+                                    Margin="2 0 0 0"
+                                    Click="rejectNewModel_Button_Click"/>
+                        </Grid>
                         <Button x:Name="addModel_Button"
-                        Content="{StaticResource add_model}"
-                        Click="addModel_Button_Click"/>
+                                Content="{StaticResource add_model}"
+                                Click="addModel_Button_Click"/>
                     </StackPanel>
 
                 </GroupBox>
