@@ -26,16 +26,29 @@
             <FontFamily x:Key="medium">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Medium</FontFamily>
             <FontFamily x:Key="bold">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Bold</FontFamily>
 
+            <!--Color definitions-->
             <Color x:Key="background_Purple">#150F27</Color>
+            <SolidColorBrush x:Key="MaterialDesign_DarkOutline">#c1c1c1</SolidColorBrush>
+            <SolidColorBrush x:Key="MaterialDesign_GrayBackground">#4b4b4b</SolidColorBrush>
+
+            <SolidColorBrush x:Key="accept_background">#CC90EE90</SolidColorBrush>
+            <SolidColorBrush x:Key="accept_hover">#32CD32</SolidColorBrush>
+            <SolidColorBrush x:Key="accept">#228B22</SolidColorBrush>
+
+            <SolidColorBrush x:Key="reject_background">#FFB6C1CC</SolidColorBrush>
+            <SolidColorBrush x:Key="reject_hover">#FF6347</SolidColorBrush>
+            <SolidColorBrush x:Key="reject">#B22222</SolidColorBrush>
+
+            <Style TargetType="Image">
+                <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+            </Style>
             
             <!--Custom style for GroupBox-->
             <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
             <Style x:Key="GroupBox_Custom" TargetType="{x:Type GroupBox}">
                 <Setter Property="BorderBrush" Value="Red"/>
                 <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Margin" Value="0 0 0 15"/>
                 <Setter Property="FontFamily" Value="{StaticResource regular}"/>
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
                 <Setter Property="UseLayoutRounding" Value="True"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -54,7 +67,7 @@
                                     <RowDefinition Height="6"/>
                                 </Grid.RowDefinitions>
                                 <Border Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True"/>
-                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1 1" CornerRadius="15" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="15" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True">
                                     <Border.OpacityMask>
                                         <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
                                             <Binding ElementName="Header" Path="ActualWidth"/>
@@ -71,6 +84,22 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+            
+            <!--Accept Button style-->
+            <Style x:Key="accept_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource accept_background}"/>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Image Source="/Assets/Images/check.png"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource accept_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
 

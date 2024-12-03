@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Добавить тикет" Height="540" Width="960"
+        Title="Добавить тикет" Height="620" Width="720"
+        MinHeight="490" MinWidth="360"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
         Style="{StaticResource MaterialDesignWindow}">
@@ -25,37 +26,64 @@
             <Setter Property="Padding" Value="10"/>
             <Setter Property="FontFamily" Value="{StaticResource regular}"/>
         </Style>
-        
+
+        <Style TargetType="GroupBox" BasedOn="{StaticResource GroupBox_Custom}">
+            <Setter Property="Margin" Value="0 0 0 15"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MaterialDesign_DarkOutline}"/>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignOutlinedButton}"/>
+
     </Window.Resources>
+    
     <Grid x:Name="body">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        
+
+
+
         <ScrollViewer VerticalScrollBarVisibility="auto"
                       HorizontalScrollBarVisibility="Hidden">
+            
             <StackPanel Orientation="Vertical"
-                        Margin="30">
+                        Margin="30 15 30 15">
 
-                <GroupBox Header="{StaticResource device_brand}"
-                          Padding="10"
-                          Style="{StaticResource GroupBox_Custom}"
-                          >
+                <TextBox x:Name="clientName_TextBox"
+                         md:HintAssist.Hint="{StaticResource client_name}"
+                         />
+
+                <TextBox x:Name="clientPhoneNumber_TextBox"
+                         md:HintAssist.Hint="{StaticResource phone_number}"/>
+
+                <GroupBox Header="{StaticResource device_brand}">
                     <StackPanel>
                         <ComboBox x:Name="brands_ComboBox"
                                   SelectionChanged="brands_ComboBox_SelectionChanged"
                                   />
+                        <Grid x:Name="addBrand_Grid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="newBrand_TextBox"/>
+                            <Button x:Name="acceptNewBrand_Button"
+                                    Grid.Column="1"
+                                    Style="{StaticResource accept_button}"/>
+                            <Button x:Name="rejectNewBrand_Button"
+                                    Grid.Column="2"/>
+                        </Grid>
                         <Button x:Name="addBrand_Button"
-                        Content="{StaticResource add_brand}"
-                        Click="addBrand_Button_Click"/>
+                                Content="{StaticResource add_brand}"
+                                Click="addBrand_Button_Click"/>
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox Header="{StaticResource device_model}"
-                          Padding="10"
-                          Style="{StaticResource GroupBox_Custom}">
+                <GroupBox Header="{StaticResource device_model}">
                     <StackPanel>
                         <ComboBox x:Name="models_ComboBox"/>
                         <Button x:Name="addModel_Button"
@@ -64,46 +92,60 @@
                     </StackPanel>
 
                 </GroupBox>
-                
 
-
-
-                <TextBox x:Name="clientName_TextBox"
-                         md:HintAssist.Hint="{StaticResource client_name}"
-                         />
-                
-                <TextBox x:Name="clientPhoneNumber_TextBox"
-                         md:HintAssist.Hint="{StaticResource phone_number}"/>
-
-                <TextBlock Text="{StaticResource declared_malfucntions}"/>
-                <StackPanel Orientation="Vertical"
+                <GroupBox Header="{StaticResource declared_malfucntions}">
+                    <StackPanel>
+                        <StackPanel Orientation="Vertical"
                         x:Name="malfunctions_StackPanel"/>
-                <Button x:Name="addMalfunction_Button"
+                        <Button x:Name="addMalfunction_Button"
                     Content="{StaticResource add_malfunction}"
                     Click="addMalfunction_Button_Click"/>
+                    </StackPanel>
+                </GroupBox>
 
-                <TextBlock Text="{StaticResource kit}"/>
-                <StackPanel Orientation="Vertical"
+                <GroupBox Header="{StaticResource kit}">
+                    <StackPanel>
+                        <StackPanel Orientation="Vertical"
                         x:Name="kit_StackPanel"/>
-                <Button x:Name="addKit_Button"
+                        <Button x:Name="addKit_Button"
                     Content="{StaticResource add_kit}"
                     Click="addKit_Button_Click"/>
+                    </StackPanel>
+                </GroupBox>
 
                 <TextBox x:Name="ticketNote_TextBox"
                          Height="100"
                          AcceptsReturn="True"
                          md:HintAssist.Hint="{StaticResource ticket_note}"/>
 
-                <TextBlock Text="{StaticResource status}"/>
+                <TextBlock Text="{StaticResource status}"
+                           Margin="2 0 0 5"
+                           FontFamily="{StaticResource regular}"/>
                 <ComboBox x:Name="status_ComboBox"/>
 
             </StackPanel>
         </ScrollViewer>
-        
-        <Button x:Name="addTicket_Button"
-                Content="{StaticResource add_ticket}"
-                Click="addTicket_Button_Click"
-                Grid.Row="1"/>
+
+        <Border Grid.Row="1"
+                BorderThickness="0.75 1 0.75 0.75"
+                CornerRadius="0 0 8 8"
+                BorderBrush="Black"
+                Background="{StaticResource MaterialDesign_GrayBackground}">
+            <Button x:Name="addTicket_Button"
+                    Content="{StaticResource add_ticket}"
+                    Click="addTicket_Button_Click"
+                    Grid.Row="1"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    FontFamily="{StaticResource medium}"
+                    FontSize="16"
+                    Foreground="White"
+                    Height="36"
+                    Margin="30 10"
+                    md:ButtonAssist.CornerRadius="8"
+                />
+        </Border>
+
+
         
     </Grid>
 </Window>

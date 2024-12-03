@@ -16,6 +16,8 @@
     <None Remove="Assets\Fonts\YandexSansText-Medium.ttf" />
     <None Remove="Assets\Fonts\YandexSansText-Regular.ttf" />
     <None Remove="Assets\Fonts\YandexSansText-Thin.ttf" />
+    <None Remove="Assets\Images\check.png" />
+    <None Remove="Assets\Images\cross.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -42,6 +44,12 @@
     <Resource Include="Assets\Fonts\YandexSansText-Medium.ttf" />
     <Resource Include="Assets\Fonts\YandexSansText-Regular.ttf" />
     <Resource Include="Assets\Fonts\YandexSansText-Thin.ttf" />
+    <Resource Include="Assets\Images\check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\cross.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\loading-white.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
