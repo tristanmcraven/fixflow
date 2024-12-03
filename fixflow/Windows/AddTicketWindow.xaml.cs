@@ -70,37 +70,43 @@ namespace fixflow.Windows
 
         private async Task UpdateModels()
         {
-            var models = await ApiClient.DeviceBrand.GetModelsByName(brands_ComboBox.SelectedItem.ToString());
-            models_ComboBox.Items.Clear();
-            if (models != null)
+            var selectedItem = brands_ComboBox.SelectedItem;
+            if (selectedItem != null)
             {
-                if (models.Any())
+                var models = await ApiClient.DeviceBrand.GetModelsByName(selectedItem.ToString()!);
+                models_ComboBox.Items.Clear();
+                if (models != null)
                 {
-                    foreach (var model in models)
+                    if (models.Any())
                     {
-                        models_ComboBox.Items.Add(model.Name);
+                        foreach (var model in models)
+                        {
+                            models_ComboBox.Items.Add(model.Name);
+                        }
+                        models_ComboBox.IsEnabled = true;
+                        models_ComboBox.SelectedIndex = 0;
                     }
-                    models_ComboBox.IsEnabled = true;
-                    models_ComboBox.SelectedIndex = 0;
+                    else models_ComboBox.IsEnabled = false;
                 }
                 else models_ComboBox.IsEnabled = false;
             }
-            else models_ComboBox.IsEnabled = false;
         }
 
         private async void addBrand_Button_Click(object sender, RoutedEventArgs e)
         {
-            var abw = new AddBrandWindow()
-            {
-                Owner = this
-            };
-            abw.ShowDialog();
-            LoadingOverlay.Show(this);
-            if (abw.DialogResult == true)
-            {
-                await UpdateBrands();
-            }
-            LoadingOverlay.Remove(this);
+            addBrand_Grid.Visibility = Visibility.Visible;
+            addBrand_Button.Visibility = Visibility.Collapsed;
+            //var abw = new AddBrandWindow()
+            //{
+            //    Owner = this
+            //};
+            //abw.ShowDialog();
+            //LoadingOverlay.Show(this);
+            //if (abw.DialogResult == true)
+            //{
+            //    await UpdateBrands();
+            //}
+            //LoadingOverlay.Remove(this);
         }
 
         private async void addModel_Button_Click(object sender, RoutedEventArgs e)
@@ -198,6 +204,65 @@ namespace fixflow.Windows
                 }
             }
             return malfs;
+        }
+
+        private void rejectNewBrand_Button_Click(object sender, RoutedEventArgs e)
+        {
+            addBrand_Grid.Visibility = Visibility.Collapsed;
+            addBrand_Button.Visibility = Visibility.Visible;
+        }
+
+        private async void acceptNewBrand_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(newBrand_TextBox.Text))
+            {
+                addBrand_Grid.Visibility = Visibility.Collapsed;
+                addBrand_Button.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                await AddNewBrand();
+                await UpdateBrands();
+                brands_ComboBox.SelectedItem = newBrand_TextBox.Text;
+                newBrand_TextBox.Text = String.Empty;
+                addBrand_Grid.Visibility = Visibility.Collapsed;
+                addBrand_Button.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async Task AddNewBrand()
+        {
+            if (String.IsNullOrEmpty(newBrand_TextBox.Text))
+            {
+                MessageBox.Show(Rm.Get("enter_brand_name"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var brand = await ApiClient.DeviceBrand.GetByName(newBrand_TextBox.Text);
+            if (brand != null)
+            {
+                MessageBox.Show(Rm.Get("brand_exists"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            LoadingOverlay.Show(this);
+            var result = await ApiClient.DeviceBrand.Post(newBrand_TextBox.Text);
+            if (result == true)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show(Rm.Get("smth_went_wrong"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            LoadingOverlay.Remove(this);
+        }
+
+        private void newBrand_TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                acceptNewBrand_Button_Click(null, null);
+            }
         }
     }
 }

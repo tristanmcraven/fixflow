@@ -35,7 +35,7 @@
             <SolidColorBrush x:Key="accept_hover">#32CD32</SolidColorBrush>
             <SolidColorBrush x:Key="accept">#228B22</SolidColorBrush>
 
-            <SolidColorBrush x:Key="reject_background">#FFB6C1CC</SolidColorBrush>
+            <SolidColorBrush x:Key="reject_background">#ccFFB6C1</SolidColorBrush>
             <SolidColorBrush x:Key="reject_hover">#FF6347</SolidColorBrush>
             <SolidColorBrush x:Key="reject">#B22222</SolidColorBrush>
 
@@ -89,6 +89,8 @@
             <!--Accept Button style-->
             <Style x:Key="accept_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                 <Setter Property="Background" Value="{StaticResource accept_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
                 <Setter Property="Content">
                     <Setter.Value>
                         <Image Source="/Assets/Images/check.png"/>
@@ -98,6 +100,24 @@
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Cursor" Value="Hand"/>
                         <Setter Property="Background" Value="{StaticResource accept_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <!--Reject Button style-->
+            <Style x:Key="reject_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource reject_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Image Source="/Assets/Images/cross.png"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource reject_hover}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>

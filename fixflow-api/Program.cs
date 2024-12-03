@@ -33,11 +33,16 @@ namespace fixflow_api
 
             var app = builder.Build();
 
+            app.UseStaticFiles();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.InjectStylesheet("/swagger-ui/SwaggerDark.css");
+                });
             }
 
             app.UseAuthorization();

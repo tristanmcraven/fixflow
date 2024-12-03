@@ -64,18 +64,30 @@
                         <ComboBox x:Name="brands_ComboBox"
                                   SelectionChanged="brands_ComboBox_SelectionChanged"
                                   />
-                        <Grid x:Name="addBrand_Grid">
+                        <Grid x:Name="addBrand_Grid"
+                              Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBox x:Name="newBrand_TextBox"/>
+                            <TextBox x:Name="newBrand_TextBox"
+                                     Margin="0"
+                                     Height="32"
+                                     Padding="10 5"
+                                     VerticalContentAlignment="Center"
+                                     md:HintAssist.Hint="Название марки"
+                                     KeyUp="newBrand_TextBox_KeyUp"/>
                             <Button x:Name="acceptNewBrand_Button"
                                     Grid.Column="1"
-                                    Style="{StaticResource accept_button}"/>
+                                    Style="{StaticResource accept_button}"
+                                    Margin="5 0 0 0"
+                                    Click="acceptNewBrand_Button_Click"/>
                             <Button x:Name="rejectNewBrand_Button"
-                                    Grid.Column="2"/>
+                                    Grid.Column="2"
+                                    Style="{StaticResource reject_button}"
+                                    Margin="2 0 0 0"
+                                    Click="rejectNewBrand_Button_Click"/>
                         </Grid>
                         <Button x:Name="addBrand_Button"
                                 Content="{StaticResource add_brand}"
