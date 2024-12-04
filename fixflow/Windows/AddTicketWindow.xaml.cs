@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Input;
 
 namespace fixflow.Windows
 {
@@ -13,6 +14,17 @@ namespace fixflow.Windows
         public AddTicketWindow()
         {
             InitializeComponent();
+        }
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadingOverlay.Show(this);
+            await UpdateBrands();
+            await UpdateModels();
+            await UpdateStatuses();
+            AddMalfunction();
+            AddKit();
+            LoadingOverlay.Remove(this);
+            clientName_TextBox.Focus();
         }
 
         private void addMalfunction_Button_Click(object sender, RoutedEventArgs e)
@@ -27,6 +39,11 @@ namespace fixflow.Windows
 
         private async void addTicket_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (IsSomethingEmpty())
+            {
+                MessageBox.Show(Rm.Get("smth_empty"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             LoadingOverlay.Show(this);
             var result = await PostTicketAsync();
             if (!result)
@@ -39,17 +56,6 @@ namespace fixflow.Windows
             {
                 this.Close();
             }
-        }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadingOverlay.Show(this);
-            await UpdateBrands();
-            await UpdateModels();
-            await UpdateStatuses();
-            AddMalfunction();
-            AddKit();
-            LoadingOverlay.Remove(this);
         }
 
         private async Task UpdateBrands()
@@ -145,12 +151,34 @@ namespace fixflow.Windows
 
         private void AddMalfunction()
         {
-            malfunctions_StackPanel.Children.Add(new TextBox());
+            var textBox = new TextBox();
+            textBox.KeyUp += Malfunction_TextBox_KeyUp;
+            malfunctions_StackPanel.Children.Add(textBox);
+            textBox.Focus();
+        }
+
+        private void Malfunction_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AddMalfunction();
+            }
         }
 
         private void AddKit()
         {
-            kit_StackPanel.Children.Add(new TextBox());
+            var textBox = new TextBox();
+            textBox.KeyUp += Kit_TextBox_KeyUp;
+            kit_StackPanel.Children.Add(textBox);
+            textBox.Focus();
+        }
+
+        private void Kit_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AddKit();
+            }
         }
 
         private async Task<bool> PostTicketAsync()
@@ -189,7 +217,8 @@ namespace fixflow.Windows
             {
                 if (obj is TextBox)
                 {
-                    kits.Add(((TextBox)obj).Text);
+                    if (!String.IsNullOrWhiteSpace(((TextBox)obj).Text))
+                    { kits.Add(((TextBox)obj).Text); }
                 }
             }
             return kits;
@@ -198,11 +227,12 @@ namespace fixflow.Windows
         private List<string> GetMalfunctions()
         {
             List<string> malfs = new();
-            foreach (var obj in  malfunctions_StackPanel.Children)
+            foreach (var obj in malfunctions_StackPanel.Children)
             {
                 if (obj is TextBox)
                 {
-                    malfs.Add(((TextBox)obj).Text);
+                    if (!String.IsNullOrWhiteSpace(((TextBox)obj).Text))
+                        { malfs.Add(((TextBox)obj).Text); }
                 }
             }
             return malfs;
@@ -327,6 +357,21 @@ namespace fixflow.Windows
                 }
             }
             LoadingOverlay.Remove(this);
+        }
+
+        private bool IsSomethingEmpty()
+        {
+            bool isComboBoxEmpty = brands_ComboBox.SelectedItem == null || models_ComboBox.SelectedItem == null;
+
+            bool hasMalfunctions = malfunctions_StackPanel.Children
+                .OfType<TextBox>()
+                .Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
+
+            bool hasKits = kit_StackPanel.Children
+                .OfType<TextBox>()
+                .Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
+
+            return isComboBoxEmpty || !hasMalfunctions || !hasKits;
         }
     }
 }

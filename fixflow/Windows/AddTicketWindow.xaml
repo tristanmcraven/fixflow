@@ -57,7 +57,8 @@
                          />
 
                 <TextBox x:Name="clientPhoneNumber_TextBox"
-                         md:HintAssist.Hint="{StaticResource phone_number}"/>
+                         md:HintAssist.Hint="{StaticResource phone_number}"
+                         MaxLength="15"/>
 
                 <GroupBox Header="{StaticResource device_brand}">
                     <StackPanel>
@@ -135,8 +136,8 @@
                         <StackPanel Orientation="Vertical"
                         x:Name="malfunctions_StackPanel"/>
                         <Button x:Name="addMalfunction_Button"
-                    Content="{StaticResource add_malfunction}"
-                    Click="addMalfunction_Button_Click"/>
+                                Content="{StaticResource add_malfunction}"
+                                Click="addMalfunction_Button_Click"/>
                     </StackPanel>
                 </GroupBox>
 

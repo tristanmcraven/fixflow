@@ -40,6 +40,8 @@
     <s:String x:Key="price">Цена</s:String>
 
     <s:String x:Key="wrong_price">Неправильная цена</s:String>
+
+    <s:String x:Key="smth_empty">Не заполнены все поля</s:String>
     
     
     
