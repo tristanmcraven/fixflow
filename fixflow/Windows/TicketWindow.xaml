@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Тикет" Height="640" Width="1138"
         WindowStartupLocation="CenterOwner"
@@ -11,29 +12,68 @@
         Activated="Window_Activated"
         Closing="Window_Closing"
         Style="{StaticResource MaterialDesignWindow}">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource light}"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid x:Name="body">
-        <Grid Margin="30">
+        <Grid Margin="30 15 30 30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="{StaticResource client}"/>
-                <TextBlock x:Name="clientName_TextBlock"/>
-                <TextBlock x:Name="clientPhone_TextBlock"/>
-            </StackPanel>
+            <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+                    CornerRadius="10"
+                    Padding="15 10"
+                    Margin="0 0 0 15">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="Тикет #" FontSize="22" FontFamily="{StaticResource medium}"/>
+                    <TextBlock x:Name="ticketNumber_TextBlock" Text="666" FontSize="22" FontFamily="{StaticResource bold}"/>
+                    <TextBlock x:Name="ticketCreationDate_TextBlock"/>
+                </StackPanel>
+            </Border>
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical">
+                <GroupBox Header="{StaticResource client}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="clientName_TextBlock"
+                                   Text="{Binding ClientFullname, StringFormat='Имя: {0}'}"/>
+                        <TextBlock x:Name="clientPhone_TextBlock"
+                                   Text="{Binding ClientPhoneNumber, StringFormat='Телефон: {0}'}"/>
+                        <Separator/>
+                        <TextBlock Text="{StaticResource device}"/>
+                        <Separator/>
+                        <TextBlock x:Name="deviceBrand_TextBlock"
+                                   Text="{Binding DeviceBrand.Name, StringFormat='Марка: {0}'}"/>
+                        <TextBlock x:Name="deviceModel_TextBlock"
+                                   Text="{Binding DeviceModel.Name, StringFormat='Модель: {0}'}"/>
+                    </StackPanel>
+                </GroupBox>
+                <StackPanel Orientation="Vertical"
+                            Grid.Column="1">
                     <TextBlock Text="{StaticResource declared_malfucntions}"/>
                     <ListBox x:Name="malfunctions_ListBox"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
-                            Grid.Column="1">
+                            Grid.Column="2">
                     <TextBlock Text="{StaticResource kit}"/>
                     <ListBox x:Name="parts_ListBox"/>
                 </StackPanel>

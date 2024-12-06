@@ -4,6 +4,7 @@ using fixflow.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,6 +70,8 @@ namespace fixflow.Windows
         private async Task GetTicketData()
         {
             _ticket = await ApiClient.Ticket.GetById(_ticketId);
+            _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandId);
+            _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId);
             _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Id);
             _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Id);
             _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Id);
@@ -77,8 +80,13 @@ namespace fixflow.Windows
 
         private async Task UpdateTicketData()
         {
-            clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
-            clientPhone_TextBlock.Text = "Телефон: " + _ticket.ClientPhoneNumber;
+            DataContext = _ticket;
+
+            ticketNumber_TextBlock.Text = _ticket.Id.ToString();
+            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
+
+            //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
+            //clientPhone_TextBlock.Text = "Телефон: " + _ticket.ClientPhoneNumber;
 
 
             malfunctions_ListBox.Items.Clear();

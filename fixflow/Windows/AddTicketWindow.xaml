@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Добавить тикет" Height="620" Width="720"
+        Title="Добавить тикет" Height="620" Width="620"
         MinHeight="490" MinWidth="360"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
@@ -50,7 +50,18 @@
                       HorizontalScrollBarVisibility="Hidden">
             
             <StackPanel Orientation="Vertical"
-                        Margin="30 15 30 15">
+                        Margin="40 15 40 15">
+
+                <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+                        CornerRadius="10"
+                        Margin="-15 0 -15 30">
+                    <TextBlock Text="Добавление нового тикета"
+                               HorizontalAlignment="Center"
+                               FontFamily="{StaticResource medium}"
+                               Foreground="Black"
+                               FontSize="22"
+                               Margin="10"/>
+                </Border>
 
                 <TextBox x:Name="clientName_TextBox"
                          md:HintAssist.Hint="{StaticResource client_name}"

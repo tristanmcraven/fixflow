@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:fixflow"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             
              StartupUri="Windows/MainWindow.xaml"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
@@ -14,8 +15,9 @@
                 <ResourceDictionary Source="/Resources/StringResources.EN.xaml"/>
                 <ResourceDictionary Source="/Resources/StringResources.xaml"/>
 
-                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Cyan" SecondaryColor="Lime" />
+                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                
 
             </ResourceDictionary.MergedDictionaries>
             
@@ -91,9 +93,14 @@
                 <Setter Property="Background" Value="{StaticResource accept_background}"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
-                <Setter Property="Content">
+                <Setter Property="Template">
                     <Setter.Value>
-                        <Image Source="/Assets/Images/check.png"/>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/check.png" Margin="16 4"/> 
+                            </Grid>
+                        </ControlTemplate>
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
@@ -102,6 +109,7 @@
                         <Setter Property="Background" Value="{StaticResource accept_hover}"/>
                     </Trigger>
                 </Style.Triggers>
+
             </Style>
             
             <!--Reject Button style-->
@@ -109,9 +117,14 @@
                 <Setter Property="Background" Value="{StaticResource reject_background}"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
-                <Setter Property="Content">
+                <Setter Property="Template">
                     <Setter.Value>
-                        <Image Source="/Assets/Images/cross.png"/>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/cross.png" Margin="16 4"/>
+                            </Grid>
+                        </ControlTemplate>
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
