@@ -19,6 +19,8 @@
             <Setter Property="Margin" Value="0 0 0 15"/>
             <Setter Property="Padding" Value="10 10 10 10"/>
             <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="MaxWidth" Value="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}"/>
         </Style>
 
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
@@ -193,8 +195,6 @@
                     md:ButtonAssist.CornerRadius="8"
                 />
         </Border>
-
-
         
     </Grid>
 </Window>

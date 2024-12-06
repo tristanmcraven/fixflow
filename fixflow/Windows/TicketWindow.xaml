@@ -18,6 +18,13 @@
             <Setter Property="FontFamily" Value="{StaticResource light}"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource GroupBox_Custom}">
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="FontFamily" Value="{StaticResource light}"/>
+            <Setter Property="md:HintAssist.FloatingScale" Value="1"/>
+        </Style>
     </Window.Resources>
     
     <Grid x:Name="body">
@@ -30,7 +37,7 @@
             <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
                     CornerRadius="10"
                     Padding="15 10"
-                    Margin="0 0 0 15">
+                    Margin="-15 0 -15 15">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
@@ -46,13 +53,19 @@
                 </StackPanel>
             </Border>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1"
+                  Margin="0 0 0 15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <GroupBox Header="{StaticResource client}">
+
+                <GroupBox Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource client}"
+                                   HorizontalAlignment="Left"/>
+                    </GroupBox.Header>
                     <StackPanel Orientation="Vertical">
                         <TextBlock x:Name="clientName_TextBlock"
                                    Text="{Binding ClientFullname, StringFormat='Имя: {0}'}"/>
@@ -67,60 +80,73 @@
                                    Text="{Binding DeviceModel.Name, StringFormat='Модель: {0}'}"/>
                     </StackPanel>
                 </GroupBox>
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="1">
-                    <TextBlock Text="{StaticResource declared_malfucntions}"/>
-                    <ListBox x:Name="malfunctions_ListBox"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="2">
-                    <TextBlock Text="{StaticResource kit}"/>
+
+                <GroupBox Grid.Column="1"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource kit}"/>
+                    </GroupBox.Header>
                     <ListBox x:Name="parts_ListBox"/>
-                </StackPanel>
+                </GroupBox>
+
+                <TextBox x:Name="ticketNote_TextBox"
+                        TextChanged="ticketNote_TextBox_TextChanged"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        md:HintAssist.Hint="{StaticResource ticket_note}"
+                         Margin="0 10 0 0"
+                         Grid.Column="2"/>
+
             </Grid>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2"
+                  Margin="0 0 0 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{StaticResource status_history}"/>
-                    <Button x:Name="addStatus_Button"
-                            Content="{StaticResource add_status}"
-                            Click="addStatus_Button_Click"/>
-                    <DataGrid x:Name="statuses_DataGrid"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="1">
-                    <TextBlock Text="{StaticResource repairs_done}"/>
-                    <Button x:Name="addRepair_Button"
+
+                <GroupBox Grid.Column="0"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                    </GroupBox.Header>
+                    <ListBox x:Name="malfunctions_ListBox"/>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource repairs_done}"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="addRepair_Button"
                             Content="{StaticResource add_repair}"
                             Click="addRepair_Button_Click"/>
-                    <DataGrid x:Name="repairs_DataGrid"
+                        <DataGrid x:Name="repairs_DataGrid"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
                               IsReadOnly="True"/>
-                    <TextBlock x:Name="totalRepairsPrice_TextBlock"
+                        <TextBlock x:Name="totalRepairsPrice_TextBlock"
                                Text="Сумма: 0"/>
-                </StackPanel>
-                <Grid
-                            Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{StaticResource ticket_note}"/>
-                    <TextBox x:Name="ticketNote_TextBox"
-                             TextChanged="ticketNote_TextBox_TextChanged"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             Grid.Row="1"
-                             />
-                </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Column="2">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource status_history}"/>
+                    </GroupBox.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="addStatus_Button"
+                            Content="{StaticResource add_status}"
+                            Click="addStatus_Button_Click"/>
+                        <DataGrid x:Name="statuses_DataGrid"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="True"/>
+                    </StackPanel>
+                </GroupBox>
+
             </Grid>
         </Grid>
     </Grid>
