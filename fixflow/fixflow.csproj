@@ -18,6 +18,7 @@
     <None Remove="Assets\Fonts\YandexSansText-Thin.ttf" />
     <None Remove="Assets\Images\check.png" />
     <None Remove="Assets\Images\cross.png" />
+    <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -49,6 +50,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\cross.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\loading-white.gif">

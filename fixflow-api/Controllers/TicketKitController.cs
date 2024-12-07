@@ -21,5 +21,13 @@ namespace fixflow_api.Controllers
             var ticketKit = await _ticketKitService.Post(dto.TicketId, dto.Name);
             return ticketKit != null ? Created() : BadRequest();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(TicketKitPutDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var ticketKit = await _ticketKitService.Put(dto.TicketKitId, dto.Name);
+            return ticketKit != null ? NoContent() : BadRequest();
+        }
     }
 }

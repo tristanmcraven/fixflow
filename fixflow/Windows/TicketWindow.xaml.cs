@@ -1,5 +1,6 @@
 ﻿using ABI.Windows.AI.MachineLearning;
 using fixflow.Model;
+using fixflow.UserControls;
 using fixflow.Utility;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Windows.ApplicationModel.Appointments;
 
 namespace fixflow.Windows
 {
@@ -84,7 +86,8 @@ namespace fixflow.Windows
 
             ticketNumber_TextBlock.Text = _ticket.Id.ToString();
             ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
-
+  
+             
             //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
             //clientPhone_TextBlock.Text = "Телефон: " + _ticket.ClientPhoneNumber;
 
@@ -98,7 +101,7 @@ namespace fixflow.Windows
             parts_ListBox.Items.Clear();
             foreach (var item in _ticket.TicketKits)
             {
-                parts_ListBox.Items.Add(item.Name);
+                parts_ListBox.Items.Add(new KitUserControl(item));
             }
 
             statuses_DataGrid.ItemsSource = null;
@@ -135,7 +138,7 @@ namespace fixflow.Windows
 
         }
 
-        private async void Window_Activated(object sender, EventArgs e)
+        public async void Window_Activated(object sender, EventArgs e)
         {
             LoadingOverlay.Show(this);
             await GetTicketData();

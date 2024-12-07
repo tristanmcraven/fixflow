@@ -31,7 +31,7 @@
         <Grid Margin="30 15 30 30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.70*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
@@ -86,7 +86,20 @@
                     <GroupBox.Header>
                         <TextBlock Text="{StaticResource kit}"/>
                     </GroupBox.Header>
-                    <ListBox x:Name="parts_ListBox"/>
+                    <ListBox x:Name="parts_ListBox"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.CanContentScroll="False">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
                 </GroupBox>
 
                 <TextBox x:Name="ticketNote_TextBox"

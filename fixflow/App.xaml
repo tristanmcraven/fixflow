@@ -133,6 +133,76 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+            <!--Edit Button style-->
+            <Style x:Key="edit_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="14"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/edit.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="Gray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Accept Button style-->
+            <Style x:Key="accept_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource accept_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/check.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource accept_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+
+            <!--Reject Button style-->
+            <Style x:Key="reject_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource reject_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/cross.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource reject_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
 
         </ResourceDictionary>
