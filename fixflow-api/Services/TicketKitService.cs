@@ -21,5 +21,17 @@ namespace fixflow_api.Services
             await _context.SaveChangesAsync();
             return ticketKit;
         }
+
+        public async Task<TicketKit?> Put(uint ticketKitId, string name)
+        {
+            var ticketKit = _context.TicketKits.Where(tk => tk.Id.Equals(ticketKitId)).FirstOrDefault();
+            if (ticketKit != null)
+            {
+                ticketKit.Name = name;
+                await _context.SaveChangesAsync();
+                return ticketKit;
+            }
+            return null;
+        }
     }
 }

@@ -3,9 +3,9 @@
                     xmlns:s="clr-namespace:System;assembly=mscorlib">
     <s:String x:Key="device_brand">Марка устройства</s:String>
     <s:String x:Key="device_model">Модель устройства</s:String>
-    <s:String x:Key="add_brand">Добавить марку...</s:String>
+    <s:String x:Key="add_brand">Добавить новую марку...</s:String>
     <s:String x:Key="enter_brand">Введите название марки:</s:String>
-    <s:String x:Key="add_model">Добавить модель...</s:String>
+    <s:String x:Key="add_model">Добавить новую модель...</s:String>
     <s:String x:Key="enter_model">Введите название модели:</s:String>
     <s:String x:Key="add">Добавить</s:String>
     <s:String x:Key="client_name">Имя клиента</s:String>
@@ -40,6 +40,10 @@
     <s:String x:Key="price">Цена</s:String>
 
     <s:String x:Key="wrong_price">Неправильная цена</s:String>
+
+    <s:String x:Key="smth_empty">Не заполнены все поля</s:String>
+
+    <s:String x:Key="device">Устройство</s:String>
     
     
     

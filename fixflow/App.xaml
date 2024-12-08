@@ -3,20 +3,234 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:fixflow"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="Windows/MainWindow.xaml">
+             
+             StartupUri="Windows/MainWindow.xaml"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
     <Application.Resources>
         <ResourceDictionary>
-            
+
             <ResourceDictionary.MergedDictionaries>
+
                 <ResourceDictionary Source="/Resources/StringResources.EN.xaml"/>
                 <ResourceDictionary Source="/Resources/StringResources.xaml"/>
-                
-                <md:BundledTheme BaseTheme="Light"    PrimaryColor="DeepPurple" SecondaryColor="Lime" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-                </ResourceDictionary.MergedDictionaries>
 
-            <Color x:Key="background_Purple">#150F27</Color>
+                <md:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Yellow"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                
+
+            </ResourceDictionary.MergedDictionaries>
             
+            <!--Fonts definition-->
+            <FontFamily x:Key="thin">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Thin</FontFamily>
+            <FontFamily x:Key="light">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Light</FontFamily>
+            <FontFamily x:Key="regular">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Regular</FontFamily>
+            <FontFamily x:Key="medium">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Medium</FontFamily>
+            <FontFamily x:Key="bold">pack://application:,,,/Assets/Fonts/#Yandex Sans Text Bold</FontFamily>
+
+            <!--Color definitions-->
+            <Color x:Key="background_Purple">#150F27</Color>
+            <SolidColorBrush x:Key="MaterialDesign_DarkOutline">#c1c1c1</SolidColorBrush>
+            <SolidColorBrush x:Key="MaterialDesign_GrayBackground">#4b4b4b</SolidColorBrush>
+
+            <SolidColorBrush x:Key="accept_background">#CC90EE90</SolidColorBrush>
+            <SolidColorBrush x:Key="accept_hover">#32CD32</SolidColorBrush>
+            <SolidColorBrush x:Key="accept">#228B22</SolidColorBrush>
+
+            <SolidColorBrush x:Key="reject_background">#ccFFB6C1</SolidColorBrush>
+            <SolidColorBrush x:Key="reject_hover">#FF6347</SolidColorBrush>
+            <SolidColorBrush x:Key="reject">#B22222</SolidColorBrush>
+
+            <SolidColorBrush x:Key="add_background">#47B5FC</SolidColorBrush>
+            <SolidColorBrush x:Key="add_hover">#006AAD</SolidColorBrush>
+
+            <Style TargetType="Image">
+                <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+            </Style>
+            
+            <!--Custom style for GroupBox-->
+            <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
+            <Style x:Key="GroupBox_Custom" TargetType="{x:Type GroupBox}">
+                <Setter Property="BorderBrush" Value="{StaticResource MaterialDesign_DarkOutline}"/>
+                <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+                <Setter Property="UseLayoutRounding" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupBox}">
+                            <Grid SnapsToDevicePixels="true">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="6"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="6"/>
+                                </Grid.RowDefinitions>
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0 0 0 0.6" CornerRadius="15" Grid.Column="0" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="True"/>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="15" Grid.ColumnSpan="4" Grid.RowSpan="3" Grid.Row="1" SnapsToDevicePixels="False">
+                                    <Border.OpacityMask>
+                                        <MultiBinding ConverterParameter="7" Converter="{StaticResource BorderGapMaskConverter}">
+                                            <Binding ElementName="Header" Path="ActualWidth"/>
+                                            <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=Self}"/>
+                                            <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}"/>
+                                        </MultiBinding>
+                                    </Border.OpacityMask>
+                                </Border>
+                                <Border x:Name="Header" Grid.Column="1" Padding="5,1,3,0" Grid.RowSpan="2" Grid.Row="0" SnapsToDevicePixels="True">
+                                    <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="True"/>
+                                </Border>
+                                <ContentPresenter Grid.Column="1" Grid.ColumnSpan="2" Margin="{TemplateBinding Padding}" Grid.Row="2" SnapsToDevicePixels="False"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <!--Accept Button style-->
+            <Style x:Key="accept_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource accept_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/check.png" Margin="16 4"/> 
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource accept_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+            
+            <!--Reject Button style-->
+            <Style x:Key="reject_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource reject_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/cross.png" Margin="16 4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource reject_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <!--Edit Button style-->
+            <Style x:Key="edit_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="50"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/edit.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="Gray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Accept Button Small style-->
+            <Style x:Key="accept_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource accept_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/check.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource accept_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+
+            </Style>
+
+            <!--Reject Button Small style-->
+            <Style x:Key="reject_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource reject_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/cross.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource reject_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Add Button style-->
+            <Style x:Key="add_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource add_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/plus.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource add_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+
         </ResourceDictionary>
         
     </Application.Resources>

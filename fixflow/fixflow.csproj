@@ -11,6 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\YandexSansText-Bold.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Light.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Medium.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Regular.ttf" />
+    <None Remove="Assets\Fonts\YandexSansText-Thin.ttf" />
+    <None Remove="Assets\Images\check.png" />
+    <None Remove="Assets\Images\cross.png" />
+    <None Remove="Assets\Images\edit.png" />
+    <None Remove="Assets\Images\plus.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -20,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="3.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
@@ -32,6 +42,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Fonts\YandexSansText-Bold.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Light.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Medium.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Regular.ttf" />
+    <Resource Include="Assets\Fonts\YandexSansText-Thin.ttf" />
+    <Resource Include="Assets\Images\check.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\cross.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\plus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\loading-white.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

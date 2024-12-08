@@ -26,6 +26,7 @@ namespace fixflow.Windows
         {
             InitializeComponent();
             _ticket = ticket;
+            repairName_TextBox.Focus();
         }
 
         private async void addRepair_Button_Click(object sender, RoutedEventArgs e)
@@ -40,6 +41,22 @@ namespace fixflow.Windows
             if (result)
             {
                 this.Close();
+            }
+        }
+
+        private void price_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                addRepair_Button_Click(null, null);
+            }
+        }
+
+        private void price_TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!Helper.IsNumeric(e.Text))
+            {
+                e.Handled = true;
             }
         }
     }

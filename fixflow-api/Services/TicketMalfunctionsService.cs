@@ -15,5 +15,18 @@ namespace fixflow_api.Services
             await _context.SaveChangesAsync();
             return ticketMalf;
         }
+
+        public async Task<TicketMalfunction?> Put(uint ticketMalfId, string name)
+        {
+            var ticketMalf = _context.TicketMalfunctions.Where(tm => tm.Id.Equals(ticketMalfId)).FirstOrDefault();
+            if (ticketMalf != null)
+            {
+                ticketMalf.Name = name;
+                await _context.SaveChangesAsync();
+                return ticketMalf;
+            }
+            return null;
+
+        }
     }
 }

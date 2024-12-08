@@ -120,6 +120,43 @@ namespace fixflow.Utility
             {
                 return await SendRequest<Model.Ticket>($"ticket?id={ticketId}&note={note}", HttpMethod.Put);
             }
+
+            public static async Task<bool> ChangeClientName(uint ticketId, string name)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    Name = name
+                };
+                return await SendRequest($"ticket/{ticketId}/changeclientname", HttpMethod.Put, dto);
+            }
+            public static async Task<bool> ChangeClientPhone(uint ticketId, string phone)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    Phone = phone
+                };
+                return await SendRequest($"ticket/{ticketId}/changeclientphone", HttpMethod.Put, dto);
+            }
+            public static async Task<bool> ChangeDeviceBrand(uint ticketId, uint deviceBrandId)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    DeviceBrandId = deviceBrandId
+                };
+                return await SendRequest($"ticket/{ticketId}/changedevicebrand", HttpMethod.Put, dto);
+            }
+            public static async Task<bool> ChangeDeviceModel(uint ticketId, uint deviceModelId)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    DeviceModelId = deviceModelId
+                };
+                return await SendRequest($"ticket/{ticketId}/changedevicemodel", HttpMethod.Put, dto);
+            }
         }
 
         public static class TicketKit
@@ -133,6 +170,16 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticketkit", HttpMethod.Post, dto);
             }
+
+            public static async Task<bool> Put(uint ticketKitid, string name)
+            {
+                var dto = new
+                {
+                    TicketKitId = ticketKitid,
+                    Name = name
+                };
+                return await SendRequest($"ticketkit", HttpMethod.Put, dto);
+            }
         }
 
         public static class TicketMalfunction
@@ -145,6 +192,16 @@ namespace fixflow.Utility
                     Name = name
                 };
                 return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
+            }
+
+            public static async Task<bool> Put(uint ticketMalfId, string name)
+            {
+                var dto = new
+                {
+                    Id = ticketMalfId,
+                    Name = name
+                };
+                return await SendRequest($"ticketmalfunction", HttpMethod.Put, dto);
             }
         }
 

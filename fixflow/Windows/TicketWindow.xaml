@@ -4,83 +4,303 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Тикет" Height="640" Width="1138"
+        Title="Тикет" Height="768" Width="1366"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
         Activated="Window_Activated"
         Closing="Window_Closing"
         Style="{StaticResource MaterialDesignWindow}">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource light}"/>
+            <Setter Property="FontSize" Value="16"/>
+            
+        </Style>
+        <Style TargetType="GroupBox" BasedOn="{StaticResource GroupBox_Custom}">
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="FontFamily" Value="{StaticResource light}"/>
+            <Setter Property="md:HintAssist.FloatingScale" Value="1"/>
+        </Style>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+            
+        </Style>
+    </Window.Resources>
+    
     <Grid x:Name="body">
-        <Grid>
+        <Grid Margin="30 15 30 30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.85*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="{StaticResource client}"/>
-                <TextBlock x:Name="clientName_TextBlock"/>
-                <TextBlock x:Name="clientPhone_TextBlock"/>
-            </StackPanel>
-            <Grid Grid.Row="1">
+            <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+                    CornerRadius="10"
+                    Padding="15 10"
+                    Margin="-15 0 -15 15">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="Тикет #" FontSize="22" FontFamily="{StaticResource medium}"/>
+                    <TextBlock x:Name="ticketNumber_TextBlock" Text="666" FontSize="22" FontFamily="{StaticResource bold}"/>
+                    <TextBlock x:Name="ticketCreationDate_TextBlock"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Margin="0 0 0 15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{StaticResource declared_malfucntions}"/>
-                    <ListBox x:Name="malfunctions_ListBox"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="1">
-                    <TextBlock Text="{StaticResource kit}"/>
-                    <ListBox x:Name="parts_ListBox"/>
-                </StackPanel>
+
+                <GroupBox Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource client}"
+                                   HorizontalAlignment="Left"/>
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock x:Name="clientName_TextBlock"
+                                   Text="{Binding ClientFullname, StringFormat='Имя: {0}'}"
+                                       Margin="0 0 0 10"/>
+                            <TextBox x:Name="clientName_TextBox"
+                                     md:HintAssist.Hint="Имя"
+                                     Visibility="Collapsed"
+                                     Padding="10"
+                                     Margin="0 0 74 0"/>
+
+                            <TextBlock x:Name="clientPhone_TextBlock"
+                                   Text="{Binding ClientPhoneNumber, StringFormat='Телефон: {0}'}"/>
+                            <TextBox x:Name="clientPhone_TextBox"
+                                     md:HintAssist.Hint="Телефон"
+                                     Visibility="Collapsed"
+                                     Padding="10"
+                                     Margin="0 10 0 0"
+                                     MaxLength="15"/>
+                        </StackPanel>
+
+                        <GroupBox Grid.Row="1">
+                            <GroupBox.Header>
+                                <TextBlock Text="{StaticResource device}"/>
+                            </GroupBox.Header>
+                            <StackPanel Orientation="Vertical">
+
+                                <TextBlock x:Name="deviceBrand_TextBlock"
+                                   Text="{Binding DeviceBrand.Name, StringFormat='Марка: {0}'}"
+                                           Margin="0 0 0 10"/>
+                                <ComboBox x:Name="brands_ComboBox"
+                                          Visibility="Collapsed"
+                                          Padding="10"
+                                          SelectionChanged="brands_ComboBox_SelectionChanged"/>
+
+                                <TextBlock x:Name="deviceModel_TextBlock"
+                                   Text="{Binding DeviceModel.Name, StringFormat='Модель: {0}'}"/>
+                                <Grid Margin="0 5 0 0"
+                                      x:Name="models_Grid"
+                                      Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ComboBox x:Name="models_ComboBox"
+                                          Padding="10"/>
+                                    <TextBox x:Name="newModel_TextBox"
+                                             md:HintAssist.Hint="Модель"
+                                             Padding="10"
+                                             Visibility="Collapsed"
+                                             KeyUp="newModel_TextBox_KeyUp"/>
+                                    <Button x:Name="addNewModel_Button"
+                                            Click="addNewModel_Button_Click"
+                                            Grid.Column="1"
+                                            Margin="5 0 0 0"
+                                            Style="{StaticResource add_button}"/>
+                                    <Button x:Name="confirmNewModel_Button"
+                                            Click="confirmNewModel_Button_Click"
+                                            Grid.Column="1"
+                                            Style="{StaticResource accept_button_small}"
+                                            Margin="5 0 0 0"
+                                            Visibility="Collapsed"/>
+                                </Grid>
+
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Margin="0 3 0 0">
+                            
+                            <Button x:Name="editClient_Button"
+                                Style="{StaticResource edit_button}"
+                                Click="editClient_Button_Click"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        x:Name="actionButtons_StackPanel"
+                                        Visibility="Collapsed">
+                                <Button x:Name="accept_Button"
+                                        Style="{StaticResource accept_button_small}"
+                                        Click="accept_Button_Click"/>
+                                <Button x:Name="reject_Button"
+                                        Style="{StaticResource reject_button_small}"
+                                        Margin="3 0 0 0"
+                                        Click="reject_Button_Click"/>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource kit}"/>
+                    </GroupBox.Header>
+                    <ListBox x:Name="parts_ListBox"
+                             HorizontalContentAlignment="Stretch"
+                             ScrollViewer.CanContentScroll="False">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
+                </GroupBox>
+
+                <TextBox x:Name="ticketNote_TextBox"
+                        TextChanged="ticketNote_TextBox_TextChanged"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        md:HintAssist.Hint="{StaticResource ticket_note}"
+                         Margin="0 10 0 0"
+                         Grid.Column="2"/>
+
             </Grid>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2"
+                  Margin="0 0 0 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{StaticResource status_history}"/>
-                    <Button x:Name="addStatus_Button"
-                            Content="{StaticResource add_status}"
-                            Click="addStatus_Button_Click"/>
-                    <DataGrid x:Name="statuses_DataGrid"
+
+                <GroupBox Grid.Column="0"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                    </GroupBox.Header>
+                    <ListBox x:Name="malfunctions_ListBox"
+                            HorizontalContentAlignment="Stretch"
+                            ScrollViewer.CanContentScroll="False">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                                <Setter Property="Padding" Value="0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1"
+                          Margin="0 0 15 0">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource repairs_done}"/>
+                    </GroupBox.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <DataGrid x:Name="repairs_DataGrid"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      IsReadOnly="True"
+                                      AutoGeneratingColumn="repairs_DataGrid_AutoGeneratingColumn"
+                                      ColumnWidth="*"
+                                      VerticalScrollBarVisibility="Auto"
+                                      ScrollViewer.CanContentScroll="False"
+                                      MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=ActualWidth}"
+                                      >
+                            <DataGrid.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                    
+                                </Style>
+                            </DataGrid.Resources>
+                        </DataGrid>
+
+                        <TextBlock x:Name="totalRepairsPrice_TextBlock"
+                                        Text="Сумма: 0"
+                                       Margin="15 15 0 0"
+                                   Grid.Row="1"/>
+                        <Button x:Name="addRepair_Button"
+                                Content="+"
+                                Click="addRepair_Button_Click"
+                                Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                Foreground="White"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                FontSize="24"
+                                Grid.RowSpan="3"/>
+                        
+                    </Grid>
+
+                </GroupBox>
+
+                <GroupBox Grid.Column="2">
+                    <GroupBox.Header>
+                        <TextBlock Text="{StaticResource status_history}"/>
+                    </GroupBox.Header>
+                    <Grid>
+                        <DataGrid x:Name="statuses_DataGrid"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
-                              IsReadOnly="True"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Grid.Column="1">
-                    <TextBlock Text="{StaticResource repairs_done}"/>
-                    <Button x:Name="addRepair_Button"
-                            Content="{StaticResource add_repair}"
-                            Click="addRepair_Button_Click"/>
-                    <DataGrid x:Name="repairs_DataGrid"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"/>
-                    <TextBlock x:Name="totalRepairsPrice_TextBlock"
-                               Text="Сумма: 0"/>
-                </StackPanel>
-                <Grid
-                            Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{StaticResource ticket_note}"/>
-                    <TextBox x:Name="ticketNote_TextBox"
-                             TextChanged="ticketNote_TextBox_TextChanged"
-                             AcceptsReturn="True"
-                             TextWrapping="Wrap"
-                             Grid.Row="1"
-                             />
-                </Grid>
+                              IsReadOnly="True"
+                                  ScrollViewer.CanContentScroll="False">
+                            <DataGrid.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}">
+                                    
+                                </Style>
+                            </DataGrid.Resources>
+                        </DataGrid>
+                        <Button x:Name="addStatus_Button"
+                            Content="+"
+                            Click="addStatus_Button_Click"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Foreground="White"
+                            FontSize="24"/>
+                    </Grid>
+
+                </GroupBox>
+
             </Grid>
         </Grid>
     </Grid>
