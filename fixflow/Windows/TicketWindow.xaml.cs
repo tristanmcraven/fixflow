@@ -95,7 +95,7 @@ namespace fixflow.Windows
             malfunctions_ListBox.Items.Clear();
             foreach (var item in _ticket.TicketMalfunctions)
             {
-                malfunctions_ListBox.Items.Add(item.Name);
+                malfunctions_ListBox.Items.Add(new MalfunctionUserControl(item));
             }
 
             parts_ListBox.Items.Clear();
@@ -136,6 +136,22 @@ namespace fixflow.Windows
 
             ticketNote_TextBox.Text = _ticket.Note;
 
+            var brands = await ApiClient.DeviceBrand.Get();
+            brands_ComboBox.Items.Clear();
+            foreach (var brand in brands)
+            {
+                brands_ComboBox.Items.Add(brand.Name);
+            }
+            brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandId)).Name;
+
+            var models = await ApiClient.DeviceModel.Get();
+            models_ComboBox.Items.Clear();
+            foreach (var model in await ApiClient.DeviceBrand.GetModelsByName(_ticket.DeviceBrand.Name))
+            {
+                models_ComboBox.Items.Add(model.Name);
+            }
+            models_ComboBox.SelectedItem = (await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId)).Name;
+
         }
 
         public async void Window_Activated(object sender, EventArgs e)
@@ -152,6 +168,76 @@ namespace fixflow.Windows
             {
                 await ApiClient.Ticket.Put(_ticket.Id, ticketNote_TextBox.Text);
             }
+        }
+
+        private void editClient_Button_Click(object sender, RoutedEventArgs e)
+        {
+            clientName_TextBlock.Visibility = Visibility.Collapsed;
+            clientPhone_TextBlock.Visibility = Visibility.Collapsed;
+            clientName_TextBox.Text = _ticket.ClientFullname;
+            clientPhone_TextBox.Text = _ticket.ClientPhoneNumber;
+            clientName_TextBox.Visibility = Visibility.Visible;
+            clientPhone_TextBox.Visibility = Visibility.Visible;
+
+            deviceBrand_TextBlock.Visibility = Visibility.Collapsed;
+            deviceModel_TextBlock.Visibility = Visibility.Collapsed;
+            brands_ComboBox.Visibility = Visibility.Visible;
+            models_ComboBox.Visibility = Visibility.Visible;
+
+            editClient_Button.Visibility = Visibility.Collapsed;
+            actionButtons_StackPanel.Visibility = Visibility.Visible;
+
+        }
+
+        private void accept_Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void reject_Button_Click(object sender, RoutedEventArgs e)
+        {
+            clientName_TextBlock.Visibility = Visibility.Visible;
+            clientPhone_TextBlock.Visibility = Visibility.Visible;
+            clientName_TextBox.Text = _ticket.ClientFullname;
+            clientPhone_TextBox.Text = _ticket.ClientPhoneNumber;
+            clientName_TextBox.Visibility = Visibility.Collapsed;
+            clientPhone_TextBox.Visibility = Visibility.Collapsed;
+
+            deviceBrand_TextBlock.Visibility = Visibility.Visible;
+            deviceModel_TextBlock.Visibility = Visibility.Visible;
+            brands_ComboBox.Visibility = Visibility.Collapsed;
+            models_ComboBox.Visibility = Visibility.Collapsed;
+
+            editClient_Button.Visibility = Visibility.Visible;
+            actionButtons_StackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void repairs_DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            // Create a new DataGridTemplateColumn to replace the auto-generated one
+            var templateColumn = new DataGridTemplateColumn
+            {
+                Header = e.Column.Header, // Preserve the original header
+                CellTemplate = CreateCellTemplate(e.PropertyName) // Create a TextBlock template for wrapping
+            };
+
+            // Replace the auto-generated column
+            e.Column = templateColumn;
+        }
+
+        private DataTemplate CreateCellTemplate(string bindingPath)
+        {
+            // Dynamically create a DataTemplate for a TextBlock with text wrapping
+            var textBlockFactory = new FrameworkElementFactory(typeof(TextBlock));
+            textBlockFactory.SetBinding(TextBlock.TextProperty, new Binding(bindingPath));
+            textBlockFactory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+
+            var dataTemplate = new DataTemplate
+            {
+                VisualTree = textBlockFactory
+            };
+
+            return dataTemplate;
         }
     }
 }

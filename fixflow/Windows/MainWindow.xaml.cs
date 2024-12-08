@@ -87,12 +87,16 @@ namespace fixflow.Windows
         {
             if (tickets_DataGrid.SelectedItem is DataRowView rowView)
             {
-                uint ticketId = (uint)rowView["Номер"];
-                var tw = new TicketWindow(ticketId)
+                if (e.ChangedButton == MouseButton.Left)
                 {
-                    Owner = this
-                };
-                tw.ShowDialog();
+                    uint ticketId = (uint)rowView["Номер"];
+                    var tw = new TicketWindow(ticketId)
+                    {
+                        Owner = this
+                    };
+                    tw.ShowDialog();
+                }
+                
             }
         }
     }

@@ -24,5 +24,13 @@ namespace fixflow_api.Controllers
             var ticketMalf = await _service.Post(dto.TicketId, dto.Name);
             return ticketMalf != null ? Created() : BadRequest();
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(TicketMalfunctionPutDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+            var ticketMalf = await _service.Put(dto.Id, dto.Name);
+            return ticketMalf != null ? NoContent() : BadRequest();
+        }
     }
 }

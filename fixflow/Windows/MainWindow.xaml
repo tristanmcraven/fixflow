@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
-        Title="FixFlow" Height="720" Width="1280"
+        Title="FixFlow" Height="800" Width="1440"
         WindowStartupLocation="CenterScreen"
         Activated="Window_Activated"
         Style="{StaticResource MaterialDesignWindow}"

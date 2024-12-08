@@ -156,6 +156,16 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
             }
+
+            public static async Task<bool> Put(uint ticketMalfId, string name)
+            {
+                var dto = new
+                {
+                    Id = ticketMalfId,
+                    Name = name
+                };
+                return await SendRequest($"ticketmalfunction", HttpMethod.Put, dto);
+            }
         }
 
         public static class TicketStatus
