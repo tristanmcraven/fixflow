@@ -1,5 +1,6 @@
 ﻿using fixflow_api.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 namespace fixflow_api.Services
 {
@@ -63,6 +64,53 @@ namespace fixflow_api.Services
             if (ticket != null)
             {
                 ticket.Note = note;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
+        }
+
+        public async Task<Ticket?> ChangeClientName(uint id, string clientName)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.ClientFullname = clientName;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
+        }
+
+        public async Task<Ticket?> ChangeClientPhone(uint id, string phone)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.ClientPhoneNumber = phone;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
+        }
+        public async Task<Ticket?> ChangeDeviceBrand(uint id, uint deviceBrandId)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.DeviceBrandId = deviceBrandId;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
+        }
+
+        public async Task<Ticket?> ChangeDeviceModel(uint id, uint deviceModelId)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Id.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.DeviceModelId = deviceModelId;
                 await _context.SaveChangesAsync();
                 return ticket;
             }

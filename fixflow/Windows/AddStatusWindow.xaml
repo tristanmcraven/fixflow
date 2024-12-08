@@ -4,10 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Добавить статус" Height="360" Width="520"
+        Title="Добавить статус" Height="320" Width="460"
         WindowStartupLocation="CenterOwner"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Style="{StaticResource MaterialDesignWindow}">
+    <Window.Resources>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="FontFamily" Value="{StaticResource medium}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="body">
         <Grid Margin="40">
             <Grid.RowDefinitions>
@@ -16,7 +29,8 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center">
-                <ComboBox x:Name="statuses_ComboBox"/>
+                <ComboBox x:Name="statuses_ComboBox"
+                          md:HintAssist.Hint="Статус"/>
             </StackPanel>
             <Button x:Name="addStatus_Button"
                     Content="{StaticResource add}"

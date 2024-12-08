@@ -4,9 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:fixflow.Windows"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Добавить выполненную работу" Height="360" Width="520"
-        WindowStartupLocation="CenterOwner">
+        Title="Добавить выполненную работу" Height="320" Width="460"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource MaterialDesignWindow}">
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="md:HintAssist.FloatingScale" Value="1"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="FontFamily" Value="{StaticResource medium}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="body">
         <Grid Margin="40">
             <Grid.RowDefinitions>
@@ -15,10 +29,15 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center">
-                <TextBlock Text="{StaticResource enter_repair}"/>
-                <TextBox x:Name="repairName_TextBox"/>
-                <TextBlock Text="{StaticResource price}"/>
-                <TextBox x:Name="price_TextBox"/>
+                <TextBox x:Name="repairName_TextBox"
+                         md:HintAssist.Hint="Название проведённой работы"
+                         Margin="0 0 0 20"/>
+                <TextBox x:Name="price_TextBox"
+                         KeyUp="price_TextBox_KeyUp"
+                         md:HintAssist.Hint="{StaticResource price}"
+                         PreviewTextInput="price_TextBox_PreviewTextInput"
+                         MaxLength="6"
+                         />
             </StackPanel>
             <Button x:Name="addRepair_Button"
                     Content="{StaticResource add}"

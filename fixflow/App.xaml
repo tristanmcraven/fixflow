@@ -41,6 +41,9 @@
             <SolidColorBrush x:Key="reject_hover">#FF6347</SolidColorBrush>
             <SolidColorBrush x:Key="reject">#B22222</SolidColorBrush>
 
+            <SolidColorBrush x:Key="add_background">#47B5FC</SolidColorBrush>
+            <SolidColorBrush x:Key="add_hover">#006AAD</SolidColorBrush>
+
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
             </Style>
@@ -157,7 +160,7 @@
                 </Style.Triggers>
             </Style>
 
-            <!--Accept Button style-->
+            <!--Accept Button Small style-->
             <Style x:Key="accept_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                 <Setter Property="Background" Value="{StaticResource accept_background}"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -181,7 +184,7 @@
 
             </Style>
 
-            <!--Reject Button style-->
+            <!--Reject Button Small style-->
             <Style x:Key="reject_button_small" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                 <Setter Property="Background" Value="{StaticResource reject_background}"/>
                 <Setter Property="BorderThickness" Value="0"/>
@@ -200,6 +203,29 @@
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Cursor" Value="Hand"/>
                         <Setter Property="Background" Value="{StaticResource reject_hover}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--Add Button style-->
+            <Style x:Key="add_button" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background" Value="{StaticResource add_background}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="md:ButtonAssist.CornerRadius" Value="5"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}" CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}"/>
+                                <Image Source="/Assets/Images/plus.png" Margin="4"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="{StaticResource add_hover}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>

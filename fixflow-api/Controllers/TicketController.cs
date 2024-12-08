@@ -70,5 +70,33 @@ namespace fixflow_api.Controllers
             var ticket = await _ticketService.ChangeNote(id, note);
             return ticket != null ? Ok(ticket) : BadRequest();
         }
+
+        [HttpPut("{id}/changeclientname")]
+        public async Task<IActionResult> ChangeClientName(TicketDto.ChangeName dto)
+        {
+            var ticket = await _ticketService.ChangeClientName(dto.TicketId, dto.Name);
+            return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpPut("{id}/changeclientphone")]
+        public async Task<IActionResult> ChangeClientPhone(TicketDto.ChangePhone dto)
+        {
+            var ticket = await _ticketService.ChangeClientPhone(dto.TicketId, dto.Phone);
+            return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpPut("{id}/changedevicebrand")]
+        public async Task<IActionResult> ChangeDeviceBrand(TicketDto.ChangeDeviceBrand dto)
+        {
+            var ticket = await _ticketService.ChangeDeviceBrand(dto.TicketId, dto.DeviceBrandId);
+            return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpPut("{id}/changedevicemodel")]
+        public async Task<IActionResult> ChangeDeviceModel(TicketDto.ChangeDeviceModel dto)
+        {
+            var ticket = await _ticketService.ChangeDeviceModel(dto.TicketId, dto.DeviceModelId);
+            return ticket != null ? NoContent() : BadRequest();
+        }
     }
 }

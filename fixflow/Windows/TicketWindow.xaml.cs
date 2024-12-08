@@ -144,13 +144,13 @@ namespace fixflow.Windows
             }
             brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandId)).Name;
 
-            var models = await ApiClient.DeviceModel.Get();
-            models_ComboBox.Items.Clear();
-            foreach (var model in await ApiClient.DeviceBrand.GetModelsByName(_ticket.DeviceBrand.Name))
-            {
-                models_ComboBox.Items.Add(model.Name);
-            }
-            models_ComboBox.SelectedItem = (await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId)).Name;
+            //var models = await ApiClient.DeviceModel.Get();
+            //models_ComboBox.Items.Clear();
+            //foreach (var model in await ApiClient.DeviceBrand.GetModelsByName(_ticket.DeviceBrand.Name))
+            //{
+            //    models_ComboBox.Items.Add(model.Name);
+            //}
+            //models_ComboBox.SelectedItem = (await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId)).Name;
 
         }
 
@@ -182,16 +182,37 @@ namespace fixflow.Windows
             deviceBrand_TextBlock.Visibility = Visibility.Collapsed;
             deviceModel_TextBlock.Visibility = Visibility.Collapsed;
             brands_ComboBox.Visibility = Visibility.Visible;
-            models_ComboBox.Visibility = Visibility.Visible;
+            models_Grid.Visibility = Visibility.Visible;
 
             editClient_Button.Visibility = Visibility.Collapsed;
             actionButtons_StackPanel.Visibility = Visibility.Visible;
 
         }
 
-        private void accept_Button_Click(object sender, RoutedEventArgs e)
+        private async void accept_Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (clientName_TextBox.Text.Equals(_ticket.ClientFullname) &&
+                clientPhone_TextBox.Text.Equals(_ticket.ClientPhoneNumber) &&
+                brands_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceBrand.Name) &&
+                models_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceModel.Name))
+            {
+                reject_Button_Click(null, null);
+                return;
+            }
+            if (models_ComboBox.SelectedItem == null)
+            {
+                reject_Button_Click(null, null);
+                return;
+            }
+            var nameResult = await ApiClient.Ticket.ChangeClientName(_ticket.Id, clientName_TextBox.Text);
+            var phoneResult = await ApiClient.Ticket.ChangeClientPhone(_ticket.Id, clientPhone_TextBox.Text);
+            var deviceBrandResult = await ApiClient.Ticket.ChangeDeviceBrand(_ticket.Id, (await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Id);
+            var deviceModelResult = await ApiClient.Ticket.ChangeDeviceModel(_ticket.Id, (await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString())).Id);
+            if (nameResult && phoneResult && deviceBrandResult && deviceModelResult)
+            {
+                reject_Button_Click(null, null);
+                Window_Activated(null, null);
+            }
         }
 
         private void reject_Button_Click(object sender, RoutedEventArgs e)
@@ -206,7 +227,7 @@ namespace fixflow.Windows
             deviceBrand_TextBlock.Visibility = Visibility.Visible;
             deviceModel_TextBlock.Visibility = Visibility.Visible;
             brands_ComboBox.Visibility = Visibility.Collapsed;
-            models_ComboBox.Visibility = Visibility.Collapsed;
+            models_Grid.Visibility = Visibility.Collapsed;
 
             editClient_Button.Visibility = Visibility.Visible;
             actionButtons_StackPanel.Visibility = Visibility.Collapsed;
@@ -238,6 +259,66 @@ namespace fixflow.Windows
             };
 
             return dataTemplate;
+        }
+
+        private async void brands_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (brands_ComboBox.SelectedItem != null)
+            {
+                models_ComboBox.IsEnabled = true;
+                models_ComboBox.Items.Clear();
+                var models = await ApiClient.DeviceBrand.GetModelsByName(brands_ComboBox.SelectedItem.ToString());
+                if (models == null)
+                {
+                    models_ComboBox.IsEnabled = false;
+                    return;
+                }
+                foreach (var model in models)
+                {
+                    models_ComboBox.Items.Add(model.Name);
+                }
+                models_ComboBox.SelectedIndex = 0;
+            }
+        }
+
+        private void addNewModel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            models_ComboBox.Visibility = Visibility.Collapsed;
+            newModel_TextBox.Visibility = Visibility.Visible;
+            newModel_TextBox.Focus();
+            addNewModel_Button.Visibility = Visibility.Collapsed;
+            confirmNewModel_Button.Visibility = Visibility.Visible;
+        }
+
+        private async void confirmNewModel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(newModel_TextBox.Text))
+            {
+                HideNewDeviceModelControls();
+                return;
+            }
+            var result = await ApiClient.DeviceModel.Post((await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Id, newModel_TextBox.Text);
+            if (result)
+            {
+                HideNewDeviceModelControls();
+                brands_ComboBox_SelectionChanged(null, null);
+            }
+        }
+
+        private void newModel_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                confirmNewModel_Button_Click(null, null);
+            }
+        }
+
+        private void HideNewDeviceModelControls()
+        {
+            models_ComboBox.Visibility = Visibility.Visible;
+            newModel_TextBox.Visibility = Visibility.Collapsed;
+            addNewModel_Button.Visibility = Visibility.Visible;
+            confirmNewModel_Button.Visibility = Visibility.Collapsed;
         }
     }
 }
