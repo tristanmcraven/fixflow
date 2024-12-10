@@ -2,6 +2,7 @@
 using fixflow.Utility;
 using fixflow.Windows;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows;
@@ -32,17 +33,22 @@ namespace fixflow
             if (App.Settings.CheckForUpdates) CheckForNewVersion();
         }
 
-        public void UpdateApp()
+        public async void UpdateApp()
         {
-            if (Settings.EnableAutoUpdates)
+            var lastVersion = (await GetLatestRelease());
+            if (!GetAppVersion().Equals(lastVersion))
             {
-                //Process.Start("updater.exe");
-                //Application.Current.Shutdown();
+                if (Settings.EnableAutoUpdates)
+                {
+                    Process.Start("updater.exe");
+                    Application.Current.Shutdown();
+                }
             }
         }
 
         public async void CheckForNewVersion()
         {
+            await Task.Delay(4000);
             var lastVersion = (await GetLatestRelease());
             if (!GetAppVersion().Equals(lastVersion))
             {
@@ -54,7 +60,6 @@ namespace fixflow
         }
         private static async Task<string?> GetLatestRelease()
         {
-            await Task.Delay(4000);
             using var client = new HttpClient();
             client.DefaultRequestHeaders.UserAgent.ParseAdd("FixFlow-Updater"); // required
             try
