@@ -1,0 +1,73 @@
+﻿<Window x:Class="fixflow.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:fixflow.Windows"
+        mc:Ignorable="d"
+        Title="{StaticResource settings}" Height="600" Width="750"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource MaterialDesignWindow}"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="27.5*" />
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="72.5*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="{StaticResource settings}"
+                       FontFamily="{StaticResource medium}"
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       Margin="0 10"
+                       Foreground="{StaticResource MaterialDesign.Brush.Primary}"
+                       />
+            <ListBox x:Name="settings_ListBox"
+                     ScrollViewer.CanContentScroll="False"
+                     Grid.Row="1"
+                     SelectionChanged="settings_ListBox_SelectionChanged"
+                     >
+                <ListBoxItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/Images/program.png"
+                               Height="35"/>
+                        <TextBlock Text="{StaticResource program}"
+                                   Grid.Column="1"
+                                   x:Name="settingName"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   FontFamily="{StaticResource regular}"/>
+                    </Grid>
+                </ListBoxItem>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Rectangle Fill="Black"
+                       Width="1"/>
+        </Grid>
+        <Grid Grid.Column="2"
+              Margin="15 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="currentSetting_TextBlock"
+                       FontFamily="{StaticResource medium}"
+                       VerticalAlignment="Center"
+                       Margin="0 10 0 20"
+                       FontSize="16"
+                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}"/>
+            <Frame x:Name="Frame" NavigationUIVisibility="Hidden"
+                   Grid.Row="1"/>
+        </Grid>
+    </Grid>
+</Window>

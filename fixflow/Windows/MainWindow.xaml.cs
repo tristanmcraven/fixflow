@@ -3,6 +3,7 @@ using fixflow.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -98,6 +99,35 @@ namespace fixflow.Windows
                 }
                 
             }
+        }
+
+        private void settings_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow() { Owner = this }.ShowDialog();
+        }
+
+        private void updateApp_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void newVersion_TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = App.VisitUrl,
+                UseShellExecute = true
+            });
+        }
+
+        private void newVersion_TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
+        }
+
+        private void newVersion_TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.Cursor = null;
         }
     }
 }

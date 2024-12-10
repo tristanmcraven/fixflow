@@ -1,6 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	  <Version>1.1.0</Version>
+	  <FileVersion>1.1.0</FileVersion>
+	  <AssemblyVersion>1.1.0</AssemblyVersion>
+	  <InformationalVersion>1.1.0</InformationalVersion>
+	  <Authors>tristanmcraven</Authors>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -20,6 +25,7 @@
     <None Remove="Assets\Images\cross.png" />
     <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\Images\plus.png" />
+    <None Remove="Assets\Images\program.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -57,6 +63,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\plus.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\program.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\loading-white.gif">
