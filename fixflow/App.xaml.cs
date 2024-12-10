@@ -44,7 +44,7 @@ namespace fixflow
         public async void CheckForNewVersion()
         {
             var lastVersion = (await GetLatestRelease());
-            if (GetAppVersion().Equals(lastVersion))
+            if (!GetAppVersion().Equals(lastVersion))
             {
                 var mw = WindowManager.Get<MainWindow>();
                 mw.lower_Grid.Visibility = Visibility.Visible;
