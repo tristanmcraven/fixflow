@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:fixflow"
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             
+             Startup="Application_Startup"
              StartupUri="Windows/MainWindow.xaml"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">

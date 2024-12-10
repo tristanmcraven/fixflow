@@ -7,12 +7,15 @@
       xmlns:local="clr-namespace:fixflow.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ProgramSettingsPage">
+      Title="ProgramSettingsPage"
+      Loaded="Page_Loaded">
 
     <Grid>
         <StackPanel Orientation="Vertical">
             <CheckBox x:Name="autoUpdate_CheckBox"
-                      Padding="0">
+                      Padding="0"
+                      Checked="autoUpdate_CheckBox_Checked"
+                      Unchecked="autoUpdate_CheckBox_Unchecked">
                 <CheckBox.Content>
                     <TextBlock Text="{StaticResource enable_automatic_updates}"
                                Style="{StaticResource MaterialDesignTextBlock}"

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using fixflow.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,21 @@ namespace fixflow.Pages
         public ProgramSettingsPage()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            autoUpdate_CheckBox.IsChecked = App.Settings.EnableAutoUpdates;
+        }
+
+        private void autoUpdate_CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.UpdateSetting("EnableAutoUpdates", true);
+        }
+
+        private void autoUpdate_CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.UpdateSetting("EnableAutoUpdates", false);
         }
     }
 }
