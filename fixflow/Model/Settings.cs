@@ -10,5 +10,6 @@ namespace fixflow.Model
     {
         public bool Something { get; set; }
         public bool EnableAutoUpdates { get; set; }
+        public bool CheckForUpdates { get; set; }
     }
 }

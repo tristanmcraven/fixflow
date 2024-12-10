@@ -30,7 +30,8 @@
             <ListBox x:Name="settings_ListBox"
                      ScrollViewer.CanContentScroll="False"
                      Grid.Row="1"
-                     SelectionChanged="settings_ListBox_SelectionChanged">
+                     SelectionChanged="settings_ListBox_SelectionChanged"
+                     >
                 <ListBoxItem>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -62,8 +63,9 @@
             <TextBlock x:Name="currentSetting_TextBlock"
                        FontFamily="{StaticResource medium}"
                        VerticalAlignment="Center"
-                       Margin="0 10"
-                       FontSize="16"/>
+                       Margin="0 10 0 20"
+                       FontSize="16"
+                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}"/>
             <Frame x:Name="Frame" NavigationUIVisibility="Hidden"
                    Grid.Row="1"/>
         </Grid>

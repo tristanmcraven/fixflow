@@ -44,6 +44,8 @@
             <SolidColorBrush x:Key="add_background">#47B5FC</SolidColorBrush>
             <SolidColorBrush x:Key="add_hover">#006AAD</SolidColorBrush>
 
+            <Color x:Key="blue_update">#105DE3</Color>
+
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
             </Style>

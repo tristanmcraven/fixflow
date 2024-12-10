@@ -9,7 +9,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ProgramSettingsPage"
       Loaded="Page_Loaded">
-
+    <Page.Resources>
+        <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="md:CheckBoxAssist.CheckBoxSize" Value="30"/>
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignTextBlock}">
+            <Setter Property="FontFamily" Value="{StaticResource regular}"/>
+            <Setter Property="Foreground" Value="{StaticResource MaterialDesign.Brush.Foreground}"/>
+        </Style>
+    </Page.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <CheckBox x:Name="autoUpdate_CheckBox"
@@ -18,13 +26,31 @@
                       Unchecked="autoUpdate_CheckBox_Unchecked">
                 <CheckBox.Content>
                     <TextBlock Text="{StaticResource enable_automatic_updates}"
-                               Style="{StaticResource MaterialDesignTextBlock}"
                                Padding="0"
-                               Margin="0"
-                               FontSize="20"
+                               Margin="5 0 0 0"
+                               FontSize="14"
+                               VerticalAlignment="Top"
                                />
                 </CheckBox.Content>
             </CheckBox>
+            <CheckBox x:Name="checkForUpdates_CheckBox"
+                      Padding="0"
+                      Checked="checkForUpdates_CheckBox_Checked"
+                      Unchecked="checkForUpdates_CheckBox_Unchecked"
+                      md:CheckBoxAssist.CheckBoxSize="20"
+                      Margin="20 3 0 0">
+                <CheckBox.Content>
+                    <TextBlock Text="{StaticResource check_for_updates}"
+                               Padding="0"
+                               Margin="3 0 0 0"
+                               FontSize="13"
+                               VerticalAlignment="Top"
+                               />
+                </CheckBox.Content>
+            </CheckBox>
+            <TextBlock x:Name="appVersion_TextBlock"
+                       Foreground="{StaticResource MaterialDesign.Brush.Foreground}"
+                       Margin="0 25 0 0"/>
         </StackPanel>
     </Grid>
 </Page>

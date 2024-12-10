@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,6 +30,9 @@ namespace fixflow.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             autoUpdate_CheckBox.IsChecked = App.Settings.EnableAutoUpdates;
+            checkForUpdates_CheckBox.IsChecked = App.Settings.CheckForUpdates;
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            appVersion_TextBlock.Text = "Версия: " + version.Substring(0, version.LastIndexOf('.'));
         }
 
         private void autoUpdate_CheckBox_Checked(object sender, RoutedEventArgs e)
@@ -39,6 +43,16 @@ namespace fixflow.Pages
         private void autoUpdate_CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             SettingsManager.UpdateSetting("EnableAutoUpdates", false);
+        }
+
+        private void checkForUpdates_CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.UpdateSetting("CheckForUpdates", true);
+        }
+
+        private void checkForUpdates_CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.UpdateSetting("CheckForUpdates", false);
         }
     }
 }
