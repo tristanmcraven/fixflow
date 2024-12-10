@@ -44,8 +44,13 @@
     <s:String x:Key="smth_empty">Не заполнены все поля</s:String>
 
     <s:String x:Key="device">Устройство</s:String>
+
+    <s:String x:Key="file">Файл</s:String>
     
-    
+
+    <s:String x:Key="settings">Настройки</s:String>
+    <s:String x:Key="program">Программа</s:String>
+    <s:String x:Key="enable_automatic_updates">Включить автоматические обновления</s:String>
     
 
 </ResourceDictionary>

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
         Title="FixFlow" Height="800" Width="1440"
@@ -13,19 +14,17 @@
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
                 <!--<RowDefinition Height="auto" />-->
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Button x:Name="addTicket_Button"
-                    Click="addTicket_Button_Click"
-                    Content="+"
-                    Panel.ZIndex="1"
-                    Style="{StaticResource MaterialDesignFloatingActionButton}"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Margin="0 0 30 30"
-                    FontSize="32"
-                    Foreground="White"/>
+            <Menu>
+                <MenuItem Header="{StaticResource file}">
+                    <MenuItem Header="{StaticResource settings}"
+                              x:Name="settings_MenuItem"
+                              Click="settings_MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
             <DataGrid Grid.Row="1"
                       x:Name="tickets_DataGrid"
                       CanUserAddRows="False"
@@ -36,6 +35,17 @@
                       FontFamily="{StaticResource light}"
                       FontSize="16"
                       HorizontalAlignment="Center"/>
+            <Button x:Name="addTicket_Button"
+                    Click="addTicket_Button_Click"
+                    Content="+"
+                    Panel.ZIndex="1"
+                    Style="{StaticResource MaterialDesignFloatingActionButton}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 30 30"
+                    FontSize="32"
+                    Foreground="White"
+                    Grid.RowSpan="100"/>
         </Grid>
     </Grid>
 

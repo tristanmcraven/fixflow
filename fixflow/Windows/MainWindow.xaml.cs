@@ -99,5 +99,10 @@ namespace fixflow.Windows
                 
             }
         }
+
+        private void settings_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            new SettingsWindow() { Owner = this }.ShowDialog();
+        }
     }
 }
