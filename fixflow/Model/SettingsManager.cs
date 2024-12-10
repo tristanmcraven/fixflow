@@ -19,7 +19,8 @@ namespace fixflow.Model
                 var settings = new Settings
                 {
                     Something = false,
-                    EnableAutoUpdates = true
+                    EnableAutoUpdates = false,
+                    CheckForUpdates = false
                 };
                 File.WriteAllText(Path, JsonConvert.SerializeObject(settings, Formatting.Indented));
             }

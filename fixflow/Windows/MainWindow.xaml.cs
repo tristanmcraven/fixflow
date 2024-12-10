@@ -108,7 +108,8 @@ namespace fixflow.Windows
 
         private void updateApp_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Process.Start("updater.exe");
+            Application.Current.Shutdown();
         }
 
         private void newVersion_TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
