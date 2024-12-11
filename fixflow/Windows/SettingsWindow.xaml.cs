@@ -1,4 +1,5 @@
-﻿using fixflow.Pages;
+﻿using fixflow.Model;
+using fixflow.Pages;
 using fixflow.Utility;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,14 @@ namespace fixflow.Windows
         private void settings_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _selectedSetting = ((ListBoxItem)settings_ListBox.SelectedItem).Content as Grid;
-            currentSetting_TextBlock.Text = (_selectedSetting.FindName("settingName") as TextBlock).Text;
+            currentSetting_TextBlock.Text = (_selectedSetting.Children.OfType<TextBlock>().First()).Text;
+            
             switch (settings_ListBox.SelectedIndex)
             {
                 case 0:
+                    PageManager.SettingsFrame.Navigate(new GeneralSettingsPage());
+                    break;
+                case 1:
                     PageManager.SettingsFrame.Navigate(new ProgramSettingsPage());
                     break;
             }
@@ -43,6 +48,12 @@ namespace fixflow.Windows
         {
             PageManager.SettingsFrame = Frame;
             settings_ListBox.SelectedIndex = 0;
+        }
+
+        private void SettingsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
+            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
         }
     }
 }

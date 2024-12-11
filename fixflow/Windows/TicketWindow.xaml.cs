@@ -165,6 +165,8 @@ namespace fixflow.Windows
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
+            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
             if (_noteChanged)
             {
                 await ApiClient.Ticket.Put(_ticket.Id, ticketNote_TextBox.Text);

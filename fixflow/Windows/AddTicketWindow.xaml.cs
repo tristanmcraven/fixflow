@@ -1,4 +1,5 @@
-﻿using fixflow.Utility;
+﻿using fixflow.Model;
+using fixflow.Utility;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -431,6 +432,12 @@ namespace fixflow.Windows
                 //Grid.SetColumn(whole_StackPanel, 0);
                 //Grid.SetColumnSpan(whole_StackPanel, 1);
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
+            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
         }
     }
 }

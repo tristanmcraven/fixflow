@@ -1,0 +1,54 @@
+﻿<Page x:Class="fixflow.Pages.GeneralSettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:fixflow.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GeneralSettingsPage"
+      Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="CheckBox"
+               BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="md:CheckBoxAssist.CheckBoxSize"
+                    Value="30" />
+        </Style>
+        <Style TargetType="TextBlock"
+               BasedOn="{StaticResource MaterialDesignTextBlock}">
+            <Setter Property="FontFamily"
+                    Value="{StaticResource regular}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource MaterialDesign.Brush.Foreground}" />
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <CheckBox x:Name="rememberWindowLocation_CheckBox"
+                      Padding="0"
+                      Checked="rememberWindowLocation_CheckBox_Checked"
+                      Unchecked="rememberWindowLocation_CheckBox_Unchecked">
+                <CheckBox.Content>
+                    <TextBlock Text="{StaticResource remember_window_size}"
+                               Padding="0"
+                               Margin="5 0 0 0"
+                               FontSize="14"
+                               VerticalAlignment="Top" />
+                </CheckBox.Content>
+            </CheckBox>
+            <CheckBox x:Name="rememberWindowSize_CheckBox"
+                      Padding="0"
+                      Checked="rememberWindowSize_CheckBox_Checked"
+                      Unchecked="rememberWindowSize_CheckBox_Unchecked">
+                <CheckBox.Content>
+                    <TextBlock Text="{StaticResource remember_window_location}"
+                               Padding="0"
+                               Margin="5 0 0 0"
+                               FontSize="14"
+                               VerticalAlignment="Top" />
+                </CheckBox.Content>
+            </CheckBox>
+        </StackPanel>
+    </Grid>
+</Page>

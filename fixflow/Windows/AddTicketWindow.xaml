@@ -14,7 +14,9 @@
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
         Style="{StaticResource MaterialDesignWindow}"
-        SizeChanged="Window_SizeChanged">
+        Closing="Window_Closing"
+        SizeChanged="Window_SizeChanged"
+        x:Name="AddTicketWindow">
 
     <Window.Resources>
         <Style TargetType="TextBox"
