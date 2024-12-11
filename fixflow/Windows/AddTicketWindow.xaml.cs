@@ -1,7 +1,6 @@
 ﻿using fixflow.Utility;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -233,7 +232,7 @@ namespace fixflow.Windows
                 if (obj is TextBox)
                 {
                     if (!String.IsNullOrWhiteSpace(((TextBox)obj).Text))
-                        { malfs.Add(((TextBox)obj).Text); }
+                    { malfs.Add(((TextBox)obj).Text); }
                 }
             }
             return malfs;
@@ -388,7 +387,7 @@ namespace fixflow.Windows
             if (e.NewSize.Width >= 1200 && main_Grid.ColumnDefinitions.Count < 2)
             {
                 main_Grid.ColumnDefinitions.Clear();
-                main_Grid.ColumnDefinitions.Add(new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                 main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 main_Grid.Children.Clear();
@@ -410,16 +409,27 @@ namespace fixflow.Windows
 
                 main_Grid.Children.Add(second_StackPanel);
                 Grid.SetColumn(second_StackPanel, 2);
-                
+
             }
-            else if (e.NewSize.Width < 1200)
+            else if (e.NewSize.Width < 1200 && main_Grid.ColumnDefinitions.Count > 2)
             {
                 main_Grid.Children.Clear();
                 main_Grid.ColumnDefinitions.Clear();
-                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width= new GridLength(1, GridUnitType.Star) });
+                //main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                //var parent = VisualTreeHelper.GetParent(whole_StackPanel) as Panel;
+                //if (parent != null)
+                //{
+                //    parent.Children.Remove(whole_StackPanel);
+                //}
+                whole_StackPanel.Children.Clear();
+                whole_StackPanel.Children.Add(first_StackPanel);
+                whole_StackPanel.Children.Add(second_StackPanel);
+
+
                 main_Grid.Children.Add(whole_StackPanel);
-                Grid.SetColumn(whole_StackPanel, 0);
-                Grid.SetColumnSpan(whole_StackPanel, 1);
+                //Grid.SetColumn(whole_StackPanel, 0);
+                //Grid.SetColumnSpan(whole_StackPanel, 1);
             }
         }
     }
