@@ -68,16 +68,21 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
-                CornerRadius="10"
-                Margin="25 15">
-            <TextBlock Text="Добавление нового тикета"
-                       HorizontalAlignment="Center"
-                       FontFamily="{StaticResource medium}"
-                       Foreground="Black"
-                       FontSize="22"
-                       Margin="10" />
-        </Border>
+        <Grid>
+            <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+                    CornerRadius="10"
+                    Margin="25 15">
+                <TextBlock Text="Добавление нового тикета"
+                           HorizontalAlignment="Center"
+                           FontFamily="{StaticResource medium}"
+                           Foreground="Black"
+                           FontSize="22"
+                           Margin="10" />
+            </Border>
+            <Border VerticalAlignment="Bottom"
+                    Height="0.25"
+                    Background="{StaticResource MaterialDesign_DarkOutline}"/>
+        </Grid>
 
 
 
@@ -196,7 +201,7 @@
                     </GroupBox>
 
                     <TextBox x:Name="ticketNote_TextBox"
-                             Height="100"
+                             Height="75"
                              AcceptsReturn="True"
                              md:HintAssist.Hint="{StaticResource ticket_note}" />
 

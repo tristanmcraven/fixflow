@@ -52,6 +52,8 @@
     <s:String x:Key="program">Приложение</s:String>
     <s:String x:Key="enable_automatic_updates">Включить автоматические обновления</s:String>
     <s:String x:Key="check_for_updates">Проверять наличие обновлений</s:String>
+    <s:String x:Key="remember_window_size">Запоминать размер окон</s:String>
+    <s:String x:Key="remember_window_location">Запоминать положение окон</s:String>
 
     <s:String x:Key="update_available">Доступно обновление</s:String>
     
