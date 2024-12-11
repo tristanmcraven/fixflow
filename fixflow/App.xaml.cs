@@ -73,7 +73,7 @@ namespace fixflow
                 }
                 return returnBody;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

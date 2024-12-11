@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fixflow.Model
+namespace fixflow.Utility
 {
     public class Settings
     {
@@ -13,8 +13,8 @@ namespace fixflow.Model
         public bool CheckForUpdates { get; set; }
         public bool RememberWindowSize { get; set; }
         public bool RememberWindowLocation { get; set; }
-        public Dictionary<string, WindowSize> WindowSizes { get; set; }
-        public Dictionary<string, WindowLocation> WindowLocations { get; set; }
+        public Dictionary<string, WindowSize> WindowSizes = new();
+        public Dictionary<string, WindowLocation> WindowLocations = new();
     }
 
     public struct WindowSize

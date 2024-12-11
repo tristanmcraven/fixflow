@@ -9,8 +9,7 @@
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource MaterialDesignWindow}"
         Loaded="Window_Loaded"
-        Closing="SettingsWindow_Closing"
-        x:Name="SettingsWindow">
+        Closing="SettingsWindow_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="27.5*" />
