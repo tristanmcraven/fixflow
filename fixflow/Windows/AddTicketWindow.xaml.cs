@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace fixflow.Windows
 {
@@ -379,6 +380,46 @@ namespace fixflow.Windows
             if (String.IsNullOrWhiteSpace(clientPhoneNumber_TextBox.Text) && e.Text.Equals("8"))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 1200 && main_Grid.ColumnDefinitions.Count < 2)
+            {
+                main_Grid.ColumnDefinitions.Clear();
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) });
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                main_Grid.Children.Clear();
+                whole_StackPanel.Children.Clear();
+
+                main_Grid.Children.Add(first_StackPanel);
+
+                var border = new Border
+                {
+                    BorderBrush = null,
+                    BorderThickness = new Thickness(0),
+                    Width = 2,
+                    CornerRadius = new CornerRadius(3),
+                    Background = new SolidColorBrush(Colors.DarkGray),
+                    Margin = new Thickness(15, 0, 15, 0)
+                };
+                main_Grid.Children.Add(border);
+                Grid.SetColumn(border, 1);
+
+                main_Grid.Children.Add(second_StackPanel);
+                Grid.SetColumn(second_StackPanel, 2);
+                
+            }
+            else if (e.NewSize.Width < 1200)
+            {
+                main_Grid.Children.Clear();
+                main_Grid.ColumnDefinitions.Clear();
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width= new GridLength(1, GridUnitType.Star) });
+                main_Grid.Children.Add(whole_StackPanel);
+                Grid.SetColumn(whole_StackPanel, 0);
+                Grid.SetColumnSpan(whole_StackPanel, 1);
             }
         }
     }

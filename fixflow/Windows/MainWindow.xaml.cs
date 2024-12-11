@@ -84,7 +84,7 @@ namespace fixflow.Windows
                 formattedTickets.Add(ticket);
             }
 
-            return formattedTickets;
+            return formattedTickets.OrderByDescending(t => t.Id).ToList();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
