@@ -106,11 +106,12 @@ namespace fixflow.Windows
 
             statuses_DataGrid.ItemsSource = null;
             DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Дата проставления", typeof(DateTime));
+            dataTable.Columns.Add("Дата проставления", typeof(string));
             dataTable.Columns.Add("Статус", typeof(string));
             foreach (var item in _ticket.TicketStatuses)
             {
-                dataTable.Rows.Add(item.Timestamp, (await ApiClient.Status.GetById(item.StatusId)).Name);
+                var timestamp = item.Timestamp;
+                dataTable.Rows.Add($"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")} {timestamp.ToString("HH")}:{timestamp.ToString("mm")}", (await ApiClient.Status.GetById(item.StatusId)).Name);
             }
             statuses_DataGrid.ItemsSource = dataTable.DefaultView;
 
@@ -186,6 +187,11 @@ namespace fixflow.Windows
 
             editClient_Button.Visibility = Visibility.Collapsed;
             actionButtons_StackPanel.Visibility = Visibility.Visible;
+
+            newModel_TextBox.Visibility = Visibility.Collapsed;
+            confirmNewModel_Button.Visibility = Visibility.Collapsed;
+            models_ComboBox.Visibility = Visibility.Visible;
+            addNewModel_Button.Visibility = Visibility.Visible;
 
         }
 

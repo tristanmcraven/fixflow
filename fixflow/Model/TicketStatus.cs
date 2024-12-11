@@ -11,7 +11,7 @@ public partial class TicketStatus
 
     public uint StatusId { get; set; }
 
-    public DateTime? Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
 
     public virtual Status Status { get; set; } = null!;
 

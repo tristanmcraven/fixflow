@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Добавить тикет" Height="620" Width="620"
+        Title="Добавить тикет" Height="620" Width="600"
         MinHeight="490" MinWidth="360"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
@@ -42,28 +42,30 @@
     <Grid x:Name="body">
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-
-
-        <ScrollViewer VerticalScrollBarVisibility="auto"
-                      HorizontalScrollBarVisibility="Hidden">
-            
-            <StackPanel Orientation="Vertical"
-                        Margin="40 15 40 15">
-
-                <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+        <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
                         CornerRadius="10"
-                        Margin="-15 0 -15 30">
-                    <TextBlock Text="Добавление нового тикета"
+                        Margin="25 15">
+            <TextBlock Text="Добавление нового тикета"
                                HorizontalAlignment="Center"
                                FontFamily="{StaticResource medium}"
                                Foreground="Black"
                                FontSize="22"
                                Margin="10"/>
-                </Border>
+        </Border>
+
+
+
+        <ScrollViewer VerticalScrollBarVisibility="auto"
+                      HorizontalScrollBarVisibility="Hidden"
+                      Grid.Row="1">
+
+            <StackPanel Orientation="Vertical"
+                        Margin="40 15 40 15">
 
                 <TextBox x:Name="clientName_TextBox"
                          md:HintAssist.Hint="{StaticResource client_name}"
@@ -71,7 +73,9 @@
 
                 <TextBox x:Name="clientPhoneNumber_TextBox"
                          md:HintAssist.Hint="{StaticResource phone_number}"
-                         MaxLength="15"/>
+                         MaxLength="10"
+                         md:TextFieldAssist.PrefixText="+7"
+                         PreviewTextInput="clientPhoneNumber_TextBox_PreviewTextInput"/>
 
                 <GroupBox Header="{StaticResource device_brand}">
                     <StackPanel>
@@ -177,7 +181,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 BorderThickness="0.75 1 0.75 0.75"
                 CornerRadius="0 0 8 8"
                 BorderBrush="Black"

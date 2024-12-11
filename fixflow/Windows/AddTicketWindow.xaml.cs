@@ -289,9 +289,9 @@ namespace fixflow.Windows
             LoadingOverlay.Remove(this);
         }
 
-        private void newBrand_TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void newBrand_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 acceptNewBrand_Button_Click(null, null);
             }
@@ -372,6 +372,14 @@ namespace fixflow.Windows
                 .Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
 
             return isComboBoxEmpty || !hasMalfunctions || !hasKits;
+        }
+
+        private void clientPhoneNumber_TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(clientPhoneNumber_TextBox.Text) && e.Text.Equals("8"))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
