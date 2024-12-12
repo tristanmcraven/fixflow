@@ -133,5 +133,15 @@ namespace fixflow.Windows
         {
             this.Cursor = null;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            WindowManager.SetProperties(this);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SettingsManager.SaveWindowProperties(this);
+        }
     }
 }

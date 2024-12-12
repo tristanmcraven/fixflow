@@ -18,6 +18,7 @@ namespace fixflow.Windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            WindowManager.SetProperties(this);
             LoadingOverlay.Show(this);
             await UpdateBrands();
             await UpdateModels();
@@ -436,8 +437,7 @@ namespace fixflow.Windows
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
-            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
+            SettingsManager.SaveWindowProperties(this);
         }
     }
 }

@@ -64,9 +64,9 @@ namespace fixflow.Windows
             _noteChanged = true;
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            WindowManager.SetProperties(this);
         }
 
         private async Task GetTicketData()
@@ -165,8 +165,7 @@ namespace fixflow.Windows
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
-            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
+            SettingsManager.SaveWindowProperties(this);
             if (_noteChanged)
             {
                 await ApiClient.Ticket.Put(_ticket.Id, ticketNote_TextBox.Text);

@@ -25,10 +25,10 @@
     </Page.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
-            <CheckBox x:Name="rememberWindowLocation_CheckBox"
+            <CheckBox x:Name="rememberWindowSize_CheckBox"
                       Padding="0"
-                      Checked="rememberWindowLocation_CheckBox_Checked"
-                      Unchecked="rememberWindowLocation_CheckBox_Unchecked">
+                      Checked="rememberWindowSize_CheckBox_Checked"
+                      Unchecked="rememberWindowSize_CheckBox_Unchecked">
                 <CheckBox.Content>
                     <TextBlock Text="{StaticResource remember_window_size}"
                                Padding="0"
@@ -37,10 +37,10 @@
                                VerticalAlignment="Top" />
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox x:Name="rememberWindowSize_CheckBox"
+            <CheckBox x:Name="rememberWindowLocation_CheckBox"
                       Padding="0"
-                      Checked="rememberWindowSize_CheckBox_Checked"
-                      Unchecked="rememberWindowSize_CheckBox_Unchecked">
+                      Checked="rememberWindowLocation_CheckBox_Checked"
+                      Unchecked="rememberWindowLocation_CheckBox_Unchecked">
                 <CheckBox.Content>
                     <TextBlock Text="{StaticResource remember_window_location}"
                                Padding="0"

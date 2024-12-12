@@ -48,12 +48,13 @@ namespace fixflow.Windows
         {
             PageManager.SettingsFrame = Frame;
             settings_ListBox.SelectedIndex = 0;
+            WindowManager.SetProperties(this);
+            
         }
 
         private void SettingsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            App.Settings.WindowLocations.Add(this.Name, new WindowLocation(this.Top, this.Left));
-            App.Settings.WindowSizes.Add(this.Name, new WindowSize(this.ActualWidth, this.ActualHeight));
+            SettingsManager.SaveWindowProperties(this);
         }
     }
 }

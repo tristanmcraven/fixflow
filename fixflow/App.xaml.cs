@@ -30,7 +30,7 @@ namespace fixflow
 
             UpdateSettings();
             UpdateApp();
-            if (App.Settings.CheckForUpdates) CheckForNewVersion();
+            if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
         }
 
         public async void UpdateApp()
@@ -38,7 +38,7 @@ namespace fixflow
             var lastVersion = (await GetLatestRelease());
             if (!GetAppVersion().Equals(lastVersion))
             {
-                if (Settings.EnableAutoUpdates)
+                if (Settings.EnableAutoUpdates == true)
                 {
                     Process.Start("updater.exe");
                     Application.Current.Shutdown();
