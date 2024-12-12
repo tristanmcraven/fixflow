@@ -8,7 +8,8 @@
         Title="{StaticResource settings}" Height="600" Width="750"
         WindowStartupLocation="CenterOwner"
         Style="{StaticResource MaterialDesignWindow}"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Closing="SettingsWindow_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="27.5*" />
@@ -38,11 +39,27 @@
                             <ColumnDefinition Width="0.3*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
+                        <Image Source="/Assets/Images/settings.png"
+                               Height="35" />
+                        <TextBlock Text="{StaticResource general}"
+                                   Grid.Column="1"
+                                   Tag="settingName"
+                                   VerticalAlignment="Center"
+                                   Margin="10 0 0 0"
+                                   FontFamily="{StaticResource regular}"/>
+                    </Grid>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
                         <Image Source="/Assets/Images/program.png"
                                Height="35"/>
                         <TextBlock Text="{StaticResource program}"
                                    Grid.Column="1"
-                                   x:Name="settingName"
+                                   Tag="settingName"
                                    VerticalAlignment="Center"
                                    Margin="10 0 0 0"
                                    FontFamily="{StaticResource regular}"/>

@@ -1,8 +1,9 @@
-﻿using fixflow.Utility;
+﻿using fixflow.Model;
+using fixflow.Utility;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace fixflow.Windows
 {
@@ -17,6 +18,7 @@ namespace fixflow.Windows
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            WindowManager.SetProperties(this);
             LoadingOverlay.Show(this);
             await UpdateBrands();
             await UpdateModels();
@@ -232,7 +234,7 @@ namespace fixflow.Windows
                 if (obj is TextBox)
                 {
                     if (!String.IsNullOrWhiteSpace(((TextBox)obj).Text))
-                        { malfs.Add(((TextBox)obj).Text); }
+                    { malfs.Add(((TextBox)obj).Text); }
                 }
             }
             return malfs;
@@ -289,9 +291,9 @@ namespace fixflow.Windows
             LoadingOverlay.Remove(this);
         }
 
-        private void newBrand_TextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void newBrand_TextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 acceptNewBrand_Button_Click(null, null);
             }
@@ -372,6 +374,70 @@ namespace fixflow.Windows
                 .Any(tb => !string.IsNullOrWhiteSpace(tb.Text));
 
             return isComboBoxEmpty || !hasMalfunctions || !hasKits;
+        }
+
+        private void clientPhoneNumber_TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(clientPhoneNumber_TextBox.Text) && e.Text.Equals("8"))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 1200 && main_Grid.ColumnDefinitions.Count < 2)
+            {
+                main_Grid.ColumnDefinitions.Clear();
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+                main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                main_Grid.Children.Clear();
+                whole_StackPanel.Children.Clear();
+
+                main_Grid.Children.Add(first_StackPanel);
+
+                var border = new Border
+                {
+                    BorderBrush = null,
+                    BorderThickness = new Thickness(0),
+                    Width = 2,
+                    CornerRadius = new CornerRadius(3),
+                    Background = new SolidColorBrush(Colors.DarkGray),
+                    Margin = new Thickness(15, 0, 15, 0)
+                };
+                main_Grid.Children.Add(border);
+                Grid.SetColumn(border, 1);
+
+                main_Grid.Children.Add(second_StackPanel);
+                Grid.SetColumn(second_StackPanel, 2);
+
+            }
+            else if (e.NewSize.Width < 1200 && main_Grid.ColumnDefinitions.Count > 2)
+            {
+                main_Grid.Children.Clear();
+                main_Grid.ColumnDefinitions.Clear();
+                //main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+                //var parent = VisualTreeHelper.GetParent(whole_StackPanel) as Panel;
+                //if (parent != null)
+                //{
+                //    parent.Children.Remove(whole_StackPanel);
+                //}
+                whole_StackPanel.Children.Clear();
+                whole_StackPanel.Children.Add(first_StackPanel);
+                whole_StackPanel.Children.Add(second_StackPanel);
+
+
+                main_Grid.Children.Add(whole_StackPanel);
+                //Grid.SetColumn(whole_StackPanel, 0);
+                //Grid.SetColumnSpan(whole_StackPanel, 1);
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SettingsManager.SaveWindowProperties(this);
         }
     }
 }

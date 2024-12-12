@@ -50,7 +50,7 @@ namespace fixflow.Windows
 
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Номер", typeof(uint));
-            dataTable.Columns.Add("Дата принятия", typeof(DateTime));
+            dataTable.Columns.Add("Дата принятия", typeof(string));
             dataTable.Columns.Add("Марка", typeof(string));
             dataTable.Columns.Add("Модель", typeof(string));
             dataTable.Columns.Add("Имя клиента", typeof(string));
@@ -58,12 +58,15 @@ namespace fixflow.Windows
 
             foreach (var ticket in tickets)
             {
+                var timestamp = ticket.Timestamp;
                 dataTable.Rows.Add(ticket.Id,
-                                   ticket.Timestamp,
+                                   $"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")}"
+                                   //+ $"{timestamp.ToString("HH")}:{timestamp.ToString("mm")}"
+                                   ,
                                    ticket.DeviceBrand.Name,
                                    ticket.DeviceModel.Name,
                                    ticket.ClientFullname,
-                                   ticket.ClientPhoneNumber);
+                                   $"+7{ticket.ClientPhoneNumber}");
             }
 
             tickets_DataGrid.ItemsSource = dataTable.DefaultView;
@@ -81,7 +84,7 @@ namespace fixflow.Windows
                 formattedTickets.Add(ticket);
             }
 
-            return formattedTickets;
+            return formattedTickets.OrderByDescending(t => t.Id).ToList();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -129,6 +132,16 @@ namespace fixflow.Windows
         private void newVersion_TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
             this.Cursor = null;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            WindowManager.SetProperties(this);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SettingsManager.SaveWindowProperties(this);
         }
     }
 }

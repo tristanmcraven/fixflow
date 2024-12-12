@@ -26,6 +26,7 @@
     <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\Images\plus.png" />
     <None Remove="Assets\Images\program.png" />
+    <None Remove="Assets\Images\settings.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
   </ItemGroup>
@@ -66,6 +67,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\program.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\settings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\loading-white.gif">

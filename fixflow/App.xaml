@@ -49,6 +49,7 @@
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
             </Style>
+
             
             <!--Custom style for GroupBox-->
             <BorderGapMaskConverter x:Key="BorderGapMaskConverter"/>
