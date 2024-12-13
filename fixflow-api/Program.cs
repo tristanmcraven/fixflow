@@ -48,6 +48,8 @@ namespace fixflow_api
 
             app.UseAuthorization();
 
+            app.Urls.Add("http://localhost:5108");
+
 
             app.MapControllers();
 
