@@ -17,6 +17,12 @@ namespace fixflow_api.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.Get());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketMalfunctionDto dto)
         {

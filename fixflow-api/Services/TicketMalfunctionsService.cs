@@ -1,4 +1,5 @@
 ﻿using fixflow_api.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace fixflow_api.Services
 {
@@ -7,6 +8,11 @@ namespace fixflow_api.Services
         private readonly FixflowContext _context;
 
         public TicketMalfunctionsService(FixflowContext context) => _context = context;
+
+        public async Task<List<TicketMalfunction>> Get()
+        {
+            return await _context.TicketMalfunctions.ToListAsync();
+        }
 
         public async Task<TicketMalfunction> Post(uint ticketId, string Name)
         {

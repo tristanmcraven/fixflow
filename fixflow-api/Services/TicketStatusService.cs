@@ -9,6 +9,11 @@ namespace fixflow_api.Services
 
         public TicketStatusService(FixflowContext context) => _context = context;
 
+        public async Task<List<TicketStatus>> Get()
+        {
+            return await _context.TicketStatuses.ToListAsync();
+        }
+
         public async Task<List<TicketStatus>> GetByTicketId(uint id)
         {
             return await _context.TicketStatuses.Where(ts => ts.TicketId.Equals(id)).ToListAsync();

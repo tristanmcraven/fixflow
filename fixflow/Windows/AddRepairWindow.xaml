@@ -42,14 +42,12 @@
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center">
-                <TextBox x:Name="repairName_TextBox"
-                         md:HintAssist.Hint="Название проведённой работы"
-                         Margin="0 0 0 20"/>
 
                 <md:AutoSuggestBox x:Name="repairs_Asb"
                                    md:HintAssist.Hint="Название проведённой работы"
                                    Margin="0 0 0 20"
                                    TextChanged="repairs_Asb_TextChanged"
+                                   KeyUp="repairs_Asb_KeyUp"
                                    />
                 <TextBox x:Name="price_TextBox"
                          KeyUp="price_TextBox_KeyUp"

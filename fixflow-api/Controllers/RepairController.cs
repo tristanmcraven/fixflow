@@ -1,5 +1,7 @@
-﻿using fixflow_api.Services;
+﻿using fixflow_api.Model.DTO;
+using fixflow_api.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,11 +15,31 @@ namespace fixflow_api.Controllers
 
         public RepairController(RepairService service) => _service = service;
 
-        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.Get());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(uint id)
+        {
+            var repair = await _service.GetById(id);
+            return repair != null ? Ok(repair) : NotFound();
+        }
+
+        [HttpGet("name")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var repair = await _service.GetByName(name);
+            return repair != null ? Ok(repair) : NotFound();
+        }
+
+        [HttpPost("name")]
         public async Task<IActionResult> Post(string name)
         {
             var repair = await _service.Post(name);
-            return repair != null ? Created() : BadRequest(); 
+            return repair != null ? Ok(repair) : BadRequest(); 
         }
     }
 }

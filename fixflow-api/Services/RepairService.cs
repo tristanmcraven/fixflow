@@ -1,4 +1,5 @@
 ﻿using fixflow_api.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace fixflow_api.Services
 {
@@ -7,6 +8,23 @@ namespace fixflow_api.Services
         private readonly FixflowContext _context;
 
         public RepairService(FixflowContext context) => _context = context;
+
+        public async Task<List<Repair>> Get()
+        {
+            return await _context.Repairs.ToListAsync();
+        }
+
+        public async Task<Repair?> GetByName(string name)
+        {
+            var repair = await _context.Repairs.Where(r => r.Name.Equals(name)).FirstOrDefaultAsync();
+            return repair;
+        }
+
+        public async Task<Repair?> GetById(uint id)
+        {
+            var repair = await _context.Repairs.Where(r => r.Id.Equals(id)).FirstOrDefaultAsync();
+            return repair;
+        }
 
         public async Task<Repair> Post(string name)
         {

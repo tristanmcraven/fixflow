@@ -78,6 +78,10 @@ namespace fixflow.Windows
             _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Id);
             _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Id);
             _ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(_ticket.Id);
+            foreach (var repair in _ticket.TicketRepairs)
+            {
+                repair.Repair = await ApiClient.Repair.GetById(repair.RepairId);
+            }
         }
 
         private async Task UpdateTicketData()
@@ -121,7 +125,7 @@ namespace fixflow.Windows
             rDataTable.Columns.Add("Цена", typeof(int));
             foreach (var item in _ticket.TicketRepairs)
             {
-                rDataTable.Rows.Add(item.Repair, item.Price);
+                rDataTable.Rows.Add(item.Repair.Name, item.Price);
             }
             repairs_DataGrid.ItemsSource = rDataTable.DefaultView;
 

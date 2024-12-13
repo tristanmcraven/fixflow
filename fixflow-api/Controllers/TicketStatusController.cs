@@ -14,6 +14,12 @@ namespace fixflow_api.Controllers
 
         public TicketStatusController(TicketStatusService ticketStatusService) => _ticketStatusService = ticketStatusService;
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _ticketStatusService.Get());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketStatusDto dto)
         {

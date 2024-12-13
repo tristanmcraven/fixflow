@@ -18,6 +18,7 @@ namespace fixflow.Utility
 
         private static async Task<T?> SendRequest<T>(string url, HttpMethod httpMethod, object? body = null)
         {
+
             using var request = new HttpRequestMessage(httpMethod, apiPath + url);
             if (body != null)
             {
@@ -161,6 +162,7 @@ namespace fixflow.Utility
 
         public static class TicketKit
         {
+            public static async Task<List<Model.TicketKit>> Get() => await SendRequest<List<Model.TicketKit>>($"ticketkit", HttpMethod.Get);
             public static async Task<bool> Post(uint ticketId, string name)
             {
                 var dto = new
@@ -184,6 +186,8 @@ namespace fixflow.Utility
 
         public static class TicketMalfunction
         {
+
+            public static async Task<List<Model.TicketMalfunction>> Get() => await SendRequest<List<Model.TicketMalfunction>>("ticketmalfunction", HttpMethod.Get);
             public static async Task<bool> Post(uint ticketId, string name)
             {
                 var dto = new
@@ -207,6 +211,7 @@ namespace fixflow.Utility
 
         public static class TicketStatus
         {
+            public static async Task<List<Model.TicketStatus>> Get() => await SendRequest<List<Model.TicketStatus>>("ticketstatus", HttpMethod.Get);
             public static async Task<bool> Post(uint ticketId, uint statusId)
             {
                 var dto = new
@@ -220,16 +225,36 @@ namespace fixflow.Utility
 
         public static class TicketRepair
         {
-            public static async Task<bool> Post(uint ticketId, string repair, int price)
+            public static async Task<List<Model.TicketRepair>> Get() => await SendRequest<List<Model.TicketRepair>>("ticketrepair", HttpMethod.Get);
+            public static async Task<bool> Post(uint ticketId, uint repairId, int price)
             {
                 var dto = new
                 {
                     TicketId = ticketId,
-                    Name = repair,
+                    RepairId = repairId,
                     Price = price
                 };
                 return await SendRequest($"ticketrepair", HttpMethod.Post, dto);
             }
+        }
+
+        public static class Repair
+        {
+            public static async Task<List<Model.Repair>> Get() => await SendRequest<List<Model.Repair>>("repair", HttpMethod.Get);
+
+            public static async Task<Model.Repair?> GetByName(string name)
+            {
+                var escapedName = Uri.EscapeDataString(name);
+                return await SendRequest<Model.Repair>($"repair/name?name={name}", HttpMethod.Get);
+            }
+
+            public static async Task<Model.Repair?> GetById(uint id) => await SendRequest<Model.Repair>($"repair/{id}", HttpMethod.Get);
+
+            public static async Task<Model.Repair> Post(string name)
+            {
+                return await SendRequest<Model.Repair>($"repair/name?name={name}", HttpMethod.Post);
+            }
+                    
         }
     }
 }

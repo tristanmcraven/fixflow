@@ -19,16 +19,19 @@ namespace fixflow
     public partial class App : Application
     {
         public static Settings Settings { get; set; }
+        public static Backup Backup { get; set; }
 
         public static readonly string url = $"https://api.github.com/repos/tristanmcraven/fixflow/releases/latest";
         public static readonly string VisitUrl = $"https://github.com/tristanmcraven/fixflow/releases/latest";
 
         public static bool OfflineMode = false;
         public static bool HasInternetConnection = true;
+        
 
         public void UpdateSettings()
         {
             Settings = SettingsManager.GetSettings();
+            
         }
 
         private async void Application_Startup(object sender, StartupEventArgs e)
@@ -39,6 +42,7 @@ namespace fixflow
             UpdateApp();
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
             CheckConnection();
+            BackupManager.CreateBackup();
         }
 
         public async void UpdateApp()

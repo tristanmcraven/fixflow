@@ -17,11 +17,17 @@ namespace fixflow_api.Controllers
             _ticketRepairService = ticketRepairService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _ticketRepairService.Get());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketRepairDto dto)
         {
             if (!ModelState.IsValid) BadRequest(ModelState);
-            var ticket = await _ticketRepairService.Post(dto.TicketId, dto.TicketId, dto.Price);
+            var ticket = await _ticketRepairService.Post(dto.TicketId, dto.RepairId, dto.Price);
             return ticket != null ? Created() : BadRequest(ModelState);
         }
     }
