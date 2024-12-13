@@ -6,6 +6,10 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows;
+using System.Net;
+using System.Linq.Expressions;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
 namespace fixflow
 {
@@ -19,18 +23,22 @@ namespace fixflow
         public static readonly string url = $"https://api.github.com/repos/tristanmcraven/fixflow/releases/latest";
         public static readonly string VisitUrl = $"https://github.com/tristanmcraven/fixflow/releases/latest";
 
+        public static bool OfflineMode = false;
+        public static bool HasInternetConnection = true;
+
         public void UpdateSettings()
         {
             Settings = SettingsManager.GetSettings();
         }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             //base.OnStartup(e);
 
             UpdateSettings();
             UpdateApp();
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
+            CheckConnection();
         }
 
         public async void UpdateApp()
@@ -58,6 +66,32 @@ namespace fixflow
                 mw.newVersion_TextBlock.Text = $"({lastVersion})";
             }
         }
+
+        public static async Task CheckConnection()
+        {
+            try
+            {
+                var response = await new HttpClient().GetAsync("https://www.google.com/generate_204");
+                if (response.IsSuccessStatusCode)
+                {
+                    App.HasInternetConnection = true;
+                    try
+                    {
+                        var db = await new HttpClient().GetAsync("http://localhost:5108/api/devicebrand");
+                    }
+                    catch
+                    {
+                        App.OfflineMode = true;
+                    }
+                }
+            }
+            catch
+            {
+                App.HasInternetConnection = false;
+                App.OfflineMode = true;
+            }
+        }
+
         private static async Task<string?> GetLatestRelease()
         {
             using var client = new HttpClient();

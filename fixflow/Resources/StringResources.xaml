@@ -57,6 +57,7 @@
     <s:String x:Key="general">Общие</s:String>
 
     <s:String x:Key="update_available">Доступно обновление</s:String>
+    <s:String x:Key="offline_mode">Оффлайн-режим</s:String>
     
 
 </ResourceDictionary>

@@ -54,22 +54,28 @@
             <Grid Grid.Row="2"
                   Height="28"
                   x:Name="lower_Grid"
-                  Visibility="Collapsed">
+                  Visibility="Visible">
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="FontFamily" Value="{StaticResource light}"/>
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Padding" Value="0"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Foreground"
+                                Value="White" />
                     </Style>
                 </Grid.Resources>
                 <Grid.Background>
                     <LinearGradientBrush StartPoint="0,0.5"
                                          EndPoint="1,0.5">
                         <GradientStop Color="{StaticResource blue_update}"
-                                      Offset="0"/>
+                                      Offset="0" />
                         <GradientStop Color="{StaticResource blue_update}"
-                                      Offset="1"/>
+                                      Offset="0.45" />
+                        <GradientStop Color="Red"
+                                      Offset="0.55" />
+                        <GradientStop Color="Red"
+                                      Offset="1" />
                     </LinearGradientBrush>
                 </Grid.Background>
                 <Grid.ColumnDefinitions>
@@ -80,7 +86,7 @@
                             Grid.Column="0"
                             Margin="10 0 0 0"
                             x:Name="update_StackPanel"
-                            Visibility="Collapsed">
+                            Visibility="Visible">
                     <TextBlock Text="{StaticResource update_available}"/>
                     <TextBlock x:Name="newVersion_TextBlock"
                                Margin="5 0 0 0"
@@ -102,6 +108,15 @@
                             FontFamily="{StaticResource light}"
                             VerticalContentAlignment="Center"
                             />
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1"
+                            Margin="0 0 10 0"
+                            x:Name="offlineMode_StackPanel"
+                            Visibility="Visible"
+                            HorizontalAlignment="Right">
+                    <TextBlock Text="{StaticResource offline_mode}" />
                 </StackPanel>
             </Grid>
         </Grid>

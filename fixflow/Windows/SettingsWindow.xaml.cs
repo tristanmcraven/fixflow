@@ -30,6 +30,7 @@ namespace fixflow.Windows
 
         private void settings_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (settings_ListBox.SelectedItem == null) settings_ListBox.SelectedIndex = 0;
             _selectedSetting = ((ListBoxItem)settings_ListBox.SelectedItem).Content as Grid;
             currentSetting_TextBlock.Text = (_selectedSetting.Children.OfType<TextBlock>().First()).Text;
             

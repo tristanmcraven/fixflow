@@ -23,6 +23,7 @@ namespace fixflow.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _let = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,9 +40,12 @@ namespace fixflow.Windows
 
         private async void Window_Activated(object sender, EventArgs e)
         {
-            LoadingOverlay.Show(this);
-            UpdateTickets(await GetFormattedTickets());
-            LoadingOverlay.Remove(this);
+            if (_let)
+            {
+                LoadingOverlay.Show(this);
+                UpdateTickets(await GetFormattedTickets());
+                LoadingOverlay.Remove(this);
+            }
         }
 
         private void UpdateTickets(List<Ticket> tickets)
@@ -134,8 +138,14 @@ namespace fixflow.Windows
             this.Cursor = null;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // pizda))))))
+            LoadingOverlay.Show(this);
+            await App.CheckConnection();
+            _let = true;
+            LoadingOverlay.Remove(this);
+            Window_Activated(null, null);
             WindowManager.SetProperties(this);
         }
 
