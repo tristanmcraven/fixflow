@@ -27,6 +27,7 @@ namespace fixflow.Windows
             InitializeComponent();
             _ticket = ticket;
             repairName_TextBox.Focus();
+            
         }
 
         private async void addRepair_Button_Click(object sender, RoutedEventArgs e)
@@ -58,6 +59,11 @@ namespace fixflow.Windows
             {
                 e.Handled = true;
             }
+        }
+
+        private void repairs_Asb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
         }
     }
 }

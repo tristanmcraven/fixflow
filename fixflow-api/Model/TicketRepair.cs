@@ -9,9 +9,11 @@ public partial class TicketRepair
 
     public uint TicketId { get; set; }
 
-    public string Repair { get; set; } = null!;
+    public uint RepairId { get; set; }
 
     public int? Price { get; set; }
+
+    public virtual Repair Repair { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
 
@@ -19,10 +21,10 @@ public partial class TicketRepair
     {
     }
 
-    public TicketRepair(uint ticketId, string repair, int? price)
+    public TicketRepair(uint ticketId, uint repairId, int? price)
     {
         TicketId = ticketId;
-        Repair = repair;
+        RepairId = repairId;
         Price = price;
     }
 }

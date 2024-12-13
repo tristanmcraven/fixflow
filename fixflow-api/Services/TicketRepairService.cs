@@ -12,9 +12,9 @@ namespace fixflow_api.Services
             _context = context;
         }
 
-        public async Task<TicketRepair> Post(uint ticketId, string repair, int? price)
+        public async Task<TicketRepair> Post(uint ticketId, uint repairId, int? price)
         {
-            var ticketRepair = new TicketRepair(ticketId, repair, price);
+            var ticketRepair = new TicketRepair(ticketId, repairId, price);
             _context.TicketRepairs.Add(ticketRepair);
             await _context.SaveChangesAsync();
             return ticketRepair;

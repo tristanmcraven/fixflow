@@ -20,6 +20,8 @@ public partial class FixflowContext : DbContext
 
     public virtual DbSet<DeviceModel> DeviceModels { get; set; }
 
+    public virtual DbSet<Repair> Repairs { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Ticket> Tickets { get; set; }
@@ -33,8 +35,7 @@ public partial class FixflowContext : DbContext
     public virtual DbSet<TicketStatus> TicketStatuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234;database=fixflow", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234;database=fixflow", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.40-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,6 +79,22 @@ public partial class FixflowContext : DbContext
                 .HasForeignKey(d => d.DeviceBrandId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_devicemodel_device_brand_id");
+        });
+
+        modelBuilder.Entity<Repair>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("repair");
+
+            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+
+            entity.HasIndex(e => e.Name, "name_UNIQUE").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Status>(entity =>
@@ -189,16 +206,21 @@ public partial class FixflowContext : DbContext
 
             entity.ToTable("ticket_repairs");
 
+            entity.HasIndex(e => e.RepairId, "fk_ticketrepairs_repaid_id_idx");
+
             entity.HasIndex(e => e.TicketId, "fk_ticketrepairs_ticket_id_idx");
 
             entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Price).HasColumnName("price");
-            entity.Property(e => e.Repair)
-                .HasMaxLength(150)
-                .HasColumnName("repair");
+            entity.Property(e => e.RepairId).HasColumnName("repair_id");
             entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+
+            entity.HasOne(d => d.Repair).WithMany(p => p.TicketRepairs)
+                .HasForeignKey(d => d.RepairId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ticketrepairs_repaid_id");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketRepairs)
                 .HasForeignKey(d => d.TicketId)

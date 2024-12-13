@@ -15,10 +15,23 @@
             <Setter Property="Padding" Value="10"/>
             <Setter Property="FontFamily" Value="{StaticResource regular}"/>
         </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-            <Setter Property="FontFamily" Value="{StaticResource medium}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
+        <Style TargetType="Button"
+               BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <Setter Property="FontFamily"
+                    Value="{StaticResource medium}" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Setter Property="FontSize"
+                    Value="16" />
+        </Style>
+        <Style TargetType="md:AutoSuggestBox"
+               BasedOn="{StaticResource MaterialDesignOutlinedAutoSuggestBox}">
+            <Setter Property="md:HintAssist.FloatingScale"
+                    Value="1" />
+            <Setter Property="Padding"
+                    Value="10" />
+            <Setter Property="FontFamily"
+                    Value="{StaticResource regular}" />
         </Style>
     </Window.Resources>
     <Grid x:Name="body">
@@ -32,6 +45,12 @@
                 <TextBox x:Name="repairName_TextBox"
                          md:HintAssist.Hint="Название проведённой работы"
                          Margin="0 0 0 20"/>
+
+                <md:AutoSuggestBox x:Name="repairs_Asb"
+                                   md:HintAssist.Hint="Название проведённой работы"
+                                   Margin="0 0 0 20"
+                                   TextChanged="repairs_Asb_TextChanged"
+                                   />
                 <TextBox x:Name="price_TextBox"
                          KeyUp="price_TextBox_KeyUp"
                          md:HintAssist.Hint="{StaticResource price}"
