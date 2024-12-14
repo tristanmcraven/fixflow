@@ -50,11 +50,11 @@ namespace fixflow.Windows
             if (repair == null)
             {
                 var repairResult = await ApiClient.Repair.Post(repairs_Asb.Text);
-                result = await ApiClient.TicketRepair.Post(_ticket.Id, repairResult.Id, p);
+                result = await ApiClient.TicketRepair.Post(_ticket.Guid, repairResult.Guid, p);
             }
             else
             {
-                result = await ApiClient.TicketRepair.Post(_ticket.Id, repair.Id, p);
+                result = await ApiClient.TicketRepair.Post(_ticket.Guid, repair.Guid, p);
             }
             if (result)
             {

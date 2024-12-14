@@ -34,7 +34,7 @@ namespace fixflow.Windows
             else
             {
                 var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString()!);
-                var result = await ApiClient.DeviceModel.Post(brand.Id, model_TextBox.Text);
+                var result = await ApiClient.DeviceModel.Post(brand.Guid, model_TextBox.Text);
                 if (result)
                 {
                     DialogResult = true;

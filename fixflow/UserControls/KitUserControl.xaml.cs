@@ -68,7 +68,7 @@ namespace fixflow.UserControls
                 }
                 else
                 {
-                    await ApiClient.TicketKit.Post(_ticket.Id, kitName_TextBox.Text);
+                    await ApiClient.TicketKit.Post(_ticket.Guid, kitName_TextBox.Text);
                     WindowManager.Get<TicketWindow>().Window_Activated(null, null);
                     return;
                 }
@@ -79,13 +79,13 @@ namespace fixflow.UserControls
             }
             if (String.IsNullOrWhiteSpace(kitName_TextBox.Text))
             {
-                if (await ApiClient.TicketKit.Delete(_kit.Id))
+                if (await ApiClient.TicketKit.Delete(_kit.Guid))
                 {
                     WindowManager.Get<TicketWindow>().Window_Activated(null, null);
                 }
                 return;
             }
-            if (await ApiClient.TicketKit.Put(_kit.Id, kitName_TextBox.Text))
+            if (await ApiClient.TicketKit.Put(_kit.Guid, kitName_TextBox.Text))
             {
                 reject_Button_Click(null, null);
                 WindowManager.Get<TicketWindow>().Window_Activated(null, null);

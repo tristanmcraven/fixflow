@@ -72,15 +72,15 @@ namespace fixflow.Windows
         private async Task GetTicketData()
         {
             _ticket = await ApiClient.Ticket.GetById(_ticketId);
-            _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandId);
-            _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId);
-            _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Id);
-            _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Id);
-            _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Id);
-            _ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(_ticket.Id);
+            _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid);
+            _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelGuid);
+            _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Guid);
+            _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Guid);
+            _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Guid);
+            _ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(_ticket.Guid);
             foreach (var repair in _ticket.TicketRepairs)
             {
-                repair.Repair = await ApiClient.Repair.GetById(repair.RepairId);
+                repair.Repair = await ApiClient.Repair.GetById(repair.RepairGuid);
             }
         }
 
@@ -88,7 +88,7 @@ namespace fixflow.Windows
         {
             DataContext = _ticket;
 
-            ticketNumber_TextBlock.Text = _ticket.Id.ToString();
+            ticketNumber_TextBlock.Text = _ticket.Guid.ToString();
             ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
   
              
@@ -115,7 +115,7 @@ namespace fixflow.Windows
             foreach (var item in _ticket.TicketStatuses)
             {
                 var timestamp = item.Timestamp;
-                dataTable.Rows.Add($"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")} {timestamp.ToString("HH")}:{timestamp.ToString("mm")}", (await ApiClient.Status.GetById(item.StatusId)).Name);
+                dataTable.Rows.Add($"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")} {timestamp.ToString("HH")}:{timestamp.ToString("mm")}", (await ApiClient.Status.GetById(item.StatusGuid)).Name);
             }
             statuses_DataGrid.ItemsSource = dataTable.DefaultView;
 
@@ -147,7 +147,7 @@ namespace fixflow.Windows
             {
                 brands_ComboBox.Items.Add(brand.Name);
             }
-            brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandId)).Name;
+            brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid)).Name;
 
             //var models = await ApiClient.DeviceModel.Get();
             //models_ComboBox.Items.Clear();
@@ -155,7 +155,7 @@ namespace fixflow.Windows
             //{
             //    models_ComboBox.Items.Add(model.Name);
             //}
-            //models_ComboBox.SelectedItem = (await ApiClient.DeviceModel.GetById(_ticket.DeviceModelId)).Name;
+            //models_ComboBox.SelectedItem = (await ApiClient.DeviceModel.GetById(_ticket.DeviceModelGuid)).Name;
 
         }
 
@@ -172,7 +172,7 @@ namespace fixflow.Windows
             SettingsManager.SaveWindowProperties(this);
             if (_noteChanged)
             {
-                await ApiClient.Ticket.Put(_ticket.Id, ticketNote_TextBox.Text);
+                await ApiClient.Ticket.Put(_ticket.Guid, ticketNote_TextBox.Text);
             }
         }
 
@@ -215,10 +215,10 @@ namespace fixflow.Windows
                 reject_Button_Click(null, null);
                 return;
             }
-            var nameResult = await ApiClient.Ticket.ChangeClientName(_ticket.Id, clientName_TextBox.Text);
-            var phoneResult = await ApiClient.Ticket.ChangeClientPhone(_ticket.Id, clientPhone_TextBox.Text);
-            var deviceBrandResult = await ApiClient.Ticket.ChangeDeviceBrand(_ticket.Id, (await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Id);
-            var deviceModelResult = await ApiClient.Ticket.ChangeDeviceModel(_ticket.Id, (await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString())).Id);
+            var nameResult = await ApiClient.Ticket.ChangeClientName(_ticket.Guid, clientName_TextBox.Text);
+            var phoneResult = await ApiClient.Ticket.ChangeClientPhone(_ticket.Guid, clientPhone_TextBox.Text);
+            var deviceBrandResult = await ApiClient.Ticket.ChangeDeviceBrand(_ticket.Guid, (await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Guid);
+            var deviceModelResult = await ApiClient.Ticket.ChangeDeviceModel(_ticket.Guid, (await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString())).Guid);
             if (nameResult && phoneResult && deviceBrandResult && deviceModelResult)
             {
                 reject_Button_Click(null, null);
@@ -308,7 +308,7 @@ namespace fixflow.Windows
                 HideNewDeviceModelControls();
                 return;
             }
-            var result = await ApiClient.DeviceModel.Post((await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Id, newModel_TextBox.Text);
+            var result = await ApiClient.DeviceModel.Post((await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Guid, newModel_TextBox.Text);
             if (result)
             {
                 HideNewDeviceModelControls();

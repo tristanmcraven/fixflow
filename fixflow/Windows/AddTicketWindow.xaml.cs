@@ -142,7 +142,7 @@ namespace fixflow.Windows
 
         private async Task UpdateStatuses()
         {
-            var statuses = (await ApiClient.Status.Get()).OrderBy(s => s.Id).ToList();
+            var statuses = (await ApiClient.Status.Get()).ToList();
             status_ComboBox.Items.Clear();
             foreach (var status in statuses)
             {
@@ -188,25 +188,25 @@ namespace fixflow.Windows
             var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString());
             var model = await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString());
 
-            var ticket = await ApiClient.Ticket.Post(brand.Id, model.Id, clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
+            var ticket = await ApiClient.Ticket.Post(brand.Guid, model.Guid, clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
             if (ticket == null) return false;
 
             var kits = GetKit();
             foreach (var kit in kits)
             {
-                var ticketKit = await ApiClient.TicketKit.Post(ticket.Id, kit);
+                var ticketKit = await ApiClient.TicketKit.Post(ticket.Guid, kit);
                 if (!ticketKit) return false;
             }
 
             var malfs = GetMalfunctions();
             foreach (var malf in malfs)
             {
-                var malfres = await ApiClient.TicketMalfunction.Post(ticket.Id, malf);
+                var malfres = await ApiClient.TicketMalfunction.Post(ticket.Guid, malf);
                 if (!malfres) return false;
             }
 
             var status = await ApiClient.Status.GetByName(status_ComboBox.SelectedItem.ToString());
-            var statusres = await ApiClient.TicketStatus.Post(ticket.Id, status.Id);
+            var statusres = await ApiClient.TicketStatus.Post(ticket.Guid, status.Guid);
             if (!statusres) return false;
 
             return true;
@@ -348,7 +348,7 @@ namespace fixflow.Windows
             else
             {
                 var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString()!);
-                var result = await ApiClient.DeviceModel.Post(brand.Id, newModel_TextBox.Text);
+                var result = await ApiClient.DeviceModel.Post(brand.Guid, newModel_TextBox.Text);
                 if (result)
                 {
 

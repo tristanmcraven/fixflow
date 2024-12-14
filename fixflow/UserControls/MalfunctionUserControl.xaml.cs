@@ -85,7 +85,7 @@ namespace fixflow.UserControls
                 }
                 else
                 {
-                    await ApiClient.TicketMalfunction.Post(_ticket.Id, malfName_TextBox.Text);
+                    await ApiClient.TicketMalfunction.Post(_ticket.Guid, malfName_TextBox.Text);
                     WindowManager.Get<TicketWindow>().Window_Activated(null, null);
                     return;
                 }
@@ -97,13 +97,13 @@ namespace fixflow.UserControls
             }
             if (String.IsNullOrWhiteSpace(malfName_TextBox.Text))
             {
-                if (await ApiClient.TicketMalfunction.Delete(_malf.Id))
+                if (await ApiClient.TicketMalfunction.Delete(_malf.Guid))
                 {
                     WindowManager.Get<TicketWindow>().Window_Activated(null, null);
                 }
                 return;
             }
-            if (await ApiClient.TicketMalfunction.Put(_malf.Id, malfName_TextBox.Text))
+            if (await ApiClient.TicketMalfunction.Put(_malf.Guid, malfName_TextBox.Text))
             {
                 reject_Button_Click(null, null);
                 WindowManager.Get<TicketWindow>().Window_Activated(null, null);

@@ -73,7 +73,7 @@ namespace fixflow.Utility
             public static async Task<Model.DeviceModel> GetById(uint id) => await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
             public static async Task<Model.DeviceModel> GetByName(string name) => await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
 
-            public static async Task<bool> Post(uint deviceBrandId, string name)
+            public static async Task<bool> Post(Guid deviceBrandId, string name)
             {
                 var dto = new
                 {
@@ -163,7 +163,7 @@ namespace fixflow.Utility
         public static class TicketKit
         {
             public static async Task<List<Model.TicketKit>> Get() => await SendRequest<List<Model.TicketKit>>($"ticketkit", HttpMethod.Get);
-            public static async Task<bool> Post(uint ticketId, string name)
+            public static async Task<bool> Post(Guid ticketId, string name)
             {
                 var dto = new
                 {
@@ -173,7 +173,7 @@ namespace fixflow.Utility
                 return await SendRequest($"ticketkit", HttpMethod.Post, dto);
             }
 
-            public static async Task<bool> Put(uint ticketKitid, string name)
+            public static async Task<bool> Put(Guid ticketKitid, string name)
             {
                 var dto = new
                 {
@@ -183,14 +183,14 @@ namespace fixflow.Utility
                 return await SendRequest($"ticketkit", HttpMethod.Put, dto);
             }
 
-            public static async Task<bool> Delete(uint ticketKitId) => await SendRequest($"ticketkit/{ticketKitId}", HttpMethod.Delete);
+            public static async Task<bool> Delete(Guid ticketKitId) => await SendRequest($"ticketkit/{ticketKitId}", HttpMethod.Delete);
         }
 
         public static class TicketMalfunction
         {
 
             public static async Task<List<Model.TicketMalfunction>> Get() => await SendRequest<List<Model.TicketMalfunction>>("ticketmalfunction", HttpMethod.Get);
-            public static async Task<bool> Post(uint ticketId, string name)
+            public static async Task<bool> Post(Guid ticketId, string name)
             {
                 var dto = new
                 {
@@ -200,9 +200,9 @@ namespace fixflow.Utility
                 return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
             }
 
-            public static async Task<bool> Delete(uint ticketMalfId) => await SendRequest($"ticketmalfunction/{ticketMalfId}", HttpMethod.Delete);
+            public static async Task<bool> Delete(Guid ticketMalfId) => await SendRequest($"ticketmalfunction/{ticketMalfId}", HttpMethod.Delete);
 
-            public static async Task<bool> Put(uint ticketMalfId, string name)
+            public static async Task<bool> Put(Guid ticketMalfId, string name)
             {
                 var dto = new
                 {
@@ -216,7 +216,7 @@ namespace fixflow.Utility
         public static class TicketStatus
         {
             public static async Task<List<Model.TicketStatus>> Get() => await SendRequest<List<Model.TicketStatus>>("ticketstatus", HttpMethod.Get);
-            public static async Task<bool> Post(uint ticketId, uint statusId)
+            public static async Task<bool> Post(Guid ticketId, Guid statusId)
             {
                 var dto = new
                 {
@@ -230,7 +230,7 @@ namespace fixflow.Utility
         public static class TicketRepair
         {
             public static async Task<List<Model.TicketRepair>> Get() => await SendRequest<List<Model.TicketRepair>>("ticketrepair", HttpMethod.Get);
-            public static async Task<bool> Post(uint ticketId, uint repairId, int price)
+            public static async Task<bool> Post(Guid ticketId, Guid repairId, int price)
             {
                 var dto = new
                 {

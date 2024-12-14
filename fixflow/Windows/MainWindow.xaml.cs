@@ -63,7 +63,7 @@ namespace fixflow.Windows
             foreach (var ticket in tickets)
             {
                 var timestamp = ticket.Timestamp;
-                dataTable.Rows.Add(ticket.Id,
+                dataTable.Rows.Add(ticket.Guid,
                                    $"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")}"
                                    //+ $"{timestamp.ToString("HH")}:{timestamp.ToString("mm")}"
                                    ,
@@ -83,12 +83,12 @@ namespace fixflow.Windows
 
             foreach (var ticket in tickets)
             {
-                ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandId);
-                ticket.DeviceModel = await ApiClient.DeviceModel.GetById(ticket.DeviceModelId);
+                ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandGuid);
+                ticket.DeviceModel = await ApiClient.DeviceModel.GetById(ticket.DeviceModelGuid);
                 formattedTickets.Add(ticket);
             }
 
-            return formattedTickets.OrderByDescending(t => t.Id).ToList();
+            return formattedTickets.OrderByDescending(t => t.Guid).ToList();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
