@@ -71,9 +71,9 @@
                         <GradientStop Color="{StaticResource blue_update}"
                                       Offset="0" />
                         <GradientStop Color="{StaticResource blue_update}"
-                                      Offset="0.45" />
+                                      Offset="0.44" />
                         <GradientStop Color="Red"
-                                      Offset="0.55" />
+                                      Offset="0.60" />
                         <GradientStop Color="Red"
                                       Offset="1" />
                     </LinearGradientBrush>

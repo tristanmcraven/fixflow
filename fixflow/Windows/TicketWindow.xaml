@@ -172,7 +172,14 @@
                 <GroupBox Grid.Column="1"
                           Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource kit}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource kit}" />
+                            <Button x:Name="addKit_Button"
+                                    Style="{StaticResource add_button_small}"
+                                    Margin="5 0 0 0"
+                                    Click="addKit_Button_Click"/>
+                        </StackPanel>
+
                     </GroupBox.Header>
                     <ListBox x:Name="parts_ListBox"
                              HorizontalContentAlignment="Stretch"
@@ -191,12 +198,12 @@
                 </GroupBox>
 
                 <TextBox x:Name="ticketNote_TextBox"
-                        TextChanged="ticketNote_TextBox_TextChanged"
-                        AcceptsReturn="True"
-                        TextWrapping="Wrap"
-                        md:HintAssist.Hint="{StaticResource ticket_note}"
+                         TextChanged="ticketNote_TextBox_TextChanged"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         md:HintAssist.Hint="{StaticResource ticket_note}"
                          Margin="0 10 0 0"
-                         Grid.Column="2"/>
+                         Grid.Column="2" />
 
             </Grid>
             <Grid Grid.Row="2"
@@ -210,7 +217,13 @@
                 <GroupBox Grid.Column="0"
                           Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                            <Button x:Name="addMalf_Buton"
+                                    Style="{StaticResource add_button_small}"
+                                    Margin="5 0 0 0"
+                                    Click="addMalf_Buton_Click"/>
+                        </StackPanel>
                     </GroupBox.Header>
                     <ListBox x:Name="malfunctions_ListBox"
                             HorizontalContentAlignment="Stretch"

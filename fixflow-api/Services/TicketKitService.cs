@@ -38,5 +38,17 @@ namespace fixflow_api.Services
             }
             return null;
         }
+
+        public async Task<bool> Delete(uint ticketKitId)
+        {
+            var ticketKit = await _context.TicketKits.FindAsync(ticketKitId);
+            if (ticketKit != null)
+            {
+                _context.TicketKits.Remove(ticketKit);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

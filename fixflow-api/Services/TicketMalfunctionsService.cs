@@ -34,5 +34,17 @@ namespace fixflow_api.Services
             return null;
 
         }
+
+        public async Task<bool> Delete(uint ticketMalfId)
+        {
+            var ticketMalf = await _context.TicketMalfunctions.FindAsync(ticketMalfId);
+            if (ticketMalf != null)
+            {
+                _context.TicketMalfunctions.Remove(ticketMalf);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
     }
 }

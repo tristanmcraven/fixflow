@@ -182,6 +182,8 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticketkit", HttpMethod.Put, dto);
             }
+
+            public static async Task<bool> Delete(uint ticketKitId) => await SendRequest($"ticketkit/{ticketKitId}", HttpMethod.Delete);
         }
 
         public static class TicketMalfunction
@@ -197,6 +199,8 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
             }
+
+            public static async Task<bool> Delete(uint ticketMalfId) => await SendRequest($"ticketmalfunction/{ticketMalfId}", HttpMethod.Delete);
 
             public static async Task<bool> Put(uint ticketMalfId, string name)
             {

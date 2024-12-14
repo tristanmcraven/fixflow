@@ -35,5 +35,11 @@ namespace fixflow_api.Controllers
             var ticketKit = await _ticketKitService.Put(dto.TicketKitId, dto.Name);
             return ticketKit != null ? NoContent() : BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(uint id)
+        {
+            return await _ticketKitService.Delete(id) ? NoContent() : BadRequest();
+        }
     }
 }

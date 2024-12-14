@@ -23,13 +23,18 @@ namespace fixflow.UserControls
     /// </summary>
     public partial class MalfunctionUserControl : UserControl
     {
-        private TicketMalfunction _malf;
+        private TicketMalfunction? _malf;
+        private Ticket _ticket;
         private bool _isEditing = false;
-        public MalfunctionUserControl(TicketMalfunction malf)
+        private bool _creating;
+        public MalfunctionUserControl(TicketMalfunction? malf, Ticket ticket, bool creating)
         {
             _malf = malf;
+            _ticket = ticket;
+            _creating = creating;
             DataContext = _malf;
             InitializeComponent();
+            if (_creating) edit_Button_Click(null, null);
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
@@ -54,19 +59,48 @@ namespace fixflow.UserControls
         {
             _isEditing = true;
             malfName_TextBlock.Visibility = Visibility.Collapsed;
-            malfName_TextBox.Text = _malf.Name;
+            malfName_TextBox.Text = _malf == null ? "" : _malf.Name;
             malfName_TextBox.Visibility = Visibility.Visible;
             edit_Button.Visibility = Visibility.Collapsed;
             actionButtons_StackPanel.Visibility = Visibility.Visible;
-            malfName_TextBox.Focus();
-            malfName_TextBox.SelectionStart = malfName_TextBox.Text.Length;
+            //malfName_TextBox.Focus();
+            //malfName_TextBox.SelectionStart = malfName_TextBox.Text.Length;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                malfName_TextBox.Focus();
+                malfName_TextBox.SelectionStart = malfName_TextBox.Text.Length;
+            }), System.Windows.Threading.DispatcherPriority.Input);
         }
 
         private async void accept_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (_creating)
+            {
+                if (String.IsNullOrWhiteSpace(malfName_TextBox.Text))
+                {
+                    var tw = WindowManager.Get<TicketWindow>();
+                    tw.malfunctions_ListBox.Items.RemoveAt(tw.malfunctions_ListBox.Items.Count - 1);
+                    return;
+                }
+                else
+                {
+                    await ApiClient.TicketMalfunction.Post(_ticket.Id, malfName_TextBox.Text);
+                    WindowManager.Get<TicketWindow>().Window_Activated(null, null);
+                    return;
+                }
+            }
             if (malfName_TextBox.Text.Equals(_malf.Name))
             {
                 reject_Button_Click(null, null);
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(malfName_TextBox.Text))
+            {
+                if (await ApiClient.TicketMalfunction.Delete(_malf.Id))
+                {
+                    WindowManager.Get<TicketWindow>().Window_Activated(null, null);
+                }
                 return;
             }
             if (await ApiClient.TicketMalfunction.Put(_malf.Id, malfName_TextBox.Text))
@@ -78,6 +112,12 @@ namespace fixflow.UserControls
 
         private void reject_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (_creating)
+            {
+                var tw = WindowManager.Get<TicketWindow>();
+                tw.malfunctions_ListBox.Items.RemoveAt(tw.malfunctions_ListBox.Items.Count - 1);
+                return;
+            }
             _isEditing = false;
             malfName_TextBlock.Visibility = Visibility.Visible;
             malfName_TextBox.Visibility = Visibility.Collapsed;

@@ -44,6 +44,10 @@
             <SolidColorBrush x:Key="add_background">#47B5FC</SolidColorBrush>
             <SolidColorBrush x:Key="add_hover">#006AAD</SolidColorBrush>
 
+            <SolidColorBrush x:Key="add_small_background">#E8F5E9</SolidColorBrush>
+            <SolidColorBrush x:Key="add_small_hover">#C8E6C9</SolidColorBrush>
+            
+
             <Color x:Key="blue_update">#105DE3</Color>
 
             <Style TargetType="Image">
@@ -233,6 +237,40 @@
                 </Style.Triggers>
             </Style>
 
+            <!--Add Button Small style-->
+            <Style x:Key="add_button_small"
+                   TargetType="Button"
+                   BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="Background"
+                        Value="{StaticResource add_small_background}" />
+                <Setter Property="BorderThickness"
+                        Value="0" />
+                <Setter Property="md:ButtonAssist.CornerRadius"
+                        Value="10" />
+                <Setter Property="Height"
+                        Value="20" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(md:ButtonAssist.CornerRadius)}" />
+                                <Image Source="/Assets/Images/plus-bold.png"
+                                       Margin="3" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver"
+                             Value="True">
+                        <Setter Property="Cursor"
+                                Value="Hand" />
+                        <Setter Property="Background"
+                                Value="{StaticResource add_small_hover}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
         </ResourceDictionary>
         

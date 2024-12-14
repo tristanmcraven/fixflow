@@ -99,13 +99,13 @@ namespace fixflow.Windows
             malfunctions_ListBox.Items.Clear();
             foreach (var item in _ticket.TicketMalfunctions)
             {
-                malfunctions_ListBox.Items.Add(new MalfunctionUserControl(item));
+                malfunctions_ListBox.Items.Add(new MalfunctionUserControl(item, _ticket, false));
             }
 
             parts_ListBox.Items.Clear();
             foreach (var item in _ticket.TicketKits)
             {
-                parts_ListBox.Items.Add(new KitUserControl(item));
+                parts_ListBox.Items.Add(new KitUserControl(item, _ticket, false));
             }
 
             statuses_DataGrid.ItemsSource = null;
@@ -330,6 +330,20 @@ namespace fixflow.Windows
             newModel_TextBox.Visibility = Visibility.Collapsed;
             addNewModel_Button.Visibility = Visibility.Visible;
             confirmNewModel_Button.Visibility = Visibility.Collapsed;
+        }
+
+        private void addKit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var kit = new KitUserControl(null, _ticket, true);
+            parts_ListBox.Items.Add(kit);
+            parts_ListBox.ScrollIntoView(kit);
+        }
+
+        private void addMalf_Buton_Click(object sender, RoutedEventArgs e)
+        {
+            var malf = new MalfunctionUserControl(null, _ticket, true);
+            malfunctions_ListBox.Items.Add(malf);
+            malfunctions_ListBox.ScrollIntoView(malf);
         }
     }
 }

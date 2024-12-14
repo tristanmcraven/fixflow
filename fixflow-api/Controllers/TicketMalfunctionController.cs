@@ -38,5 +38,11 @@ namespace fixflow_api.Controllers
             var ticketMalf = await _service.Put(dto.Id, dto.Name);
             return ticketMalf != null ? NoContent() : BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(uint id)
+        {
+            return await _service.Delete(id) ? NoContent() : BadRequest();
+        }
     }
 }
