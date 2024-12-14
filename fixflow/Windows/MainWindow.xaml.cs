@@ -53,7 +53,7 @@ namespace fixflow.Windows
             tickets_DataGrid.ItemsSource = null;
 
             DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Номер", typeof(uint));
+            dataTable.Columns.Add("Номер", typeof(Guid));
             dataTable.Columns.Add("Дата принятия", typeof(string));
             dataTable.Columns.Add("Марка", typeof(string));
             dataTable.Columns.Add("Модель", typeof(string));
@@ -97,7 +97,7 @@ namespace fixflow.Windows
             {
                 if (e.ChangedButton == MouseButton.Left)
                 {
-                    uint ticketId = (uint)rowView["Номер"];
+                    Guid ticketId = (Guid)rowView["Номер"];
                     var tw = new TicketWindow(ticketId)
                     {
                         Owner = this

@@ -188,7 +188,7 @@ namespace fixflow.Windows
             var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString());
             var model = await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString());
 
-            var ticket = await ApiClient.Ticket.Post(brand.Guid, model.Guid, clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
+            var ticket = await ApiClient.Ticket.Post(brand.Guid, model.Guid, Guid.Parse("c9b35dde-48bf-4e73-a7e9-f207badb537b"), clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
             if (ticket == null) return false;
 
             var kits = GetKit();

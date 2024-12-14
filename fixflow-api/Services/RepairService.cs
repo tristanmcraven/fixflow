@@ -20,9 +20,9 @@ namespace fixflow_api.Services
             return repair;
         }
 
-        public async Task<Repair?> GetById(uint id)
+        public async Task<Repair?> GetById(Guid id)
         {
-            var repair = await _context.Repairs.Where(r => r.Id.Equals(id)).FirstOrDefaultAsync();
+            var repair = await _context.Repairs.Where(r => r.Guid.Equals(id)).FirstOrDefaultAsync();
             return repair;
         }
 

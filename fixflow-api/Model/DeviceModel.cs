@@ -6,9 +6,9 @@ namespace fixflow_api.Model;
 
 public partial class DeviceModel
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint DeviceBrandId { get; set; }
+    public Guid DeviceBrandGuid { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -22,9 +22,10 @@ public partial class DeviceModel
     {
     }
 
-    public DeviceModel(uint deviceBrandId, string name)
+    public DeviceModel(Guid deviceBrandId, string name)
     {
-        DeviceBrandId = deviceBrandId;
+        Guid = Guid.NewGuid();
+        DeviceBrandGuid = deviceBrandId;
         Name = name;
     }
 }

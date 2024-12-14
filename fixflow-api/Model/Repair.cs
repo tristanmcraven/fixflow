@@ -5,7 +5,7 @@ namespace fixflow_api.Model;
 
 public partial class Repair
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -17,6 +17,7 @@ public partial class Repair
 
     public Repair(string name)
     {
+        Guid = Guid.NewGuid();
         Name = name;
     }
 }

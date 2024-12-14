@@ -20,8 +20,8 @@ namespace fixflow_api.Controllers
             return Ok(await _deviceBrandService.Get());
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(uint id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var brand = await _deviceBrandService.GetById(id);
             return brand != null ? Ok(brand) : NotFound();
@@ -34,8 +34,8 @@ namespace fixflow_api.Controllers
             return brand != null? Ok(brand) : NotFound();
         }
 
-        [HttpGet("{id:int}/models")]
-        public async Task<IActionResult> GetModelsById(uint id)
+        [HttpGet("{id:Guid}/models")]
+        public async Task<IActionResult> GetModelsById(Guid id)
         {
             var models = await _deviceBrandService.GetModelsById(id);
             return !models.Any() ? NotFound() : Ok(models);

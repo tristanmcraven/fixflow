@@ -14,12 +14,12 @@ namespace fixflow_api.Services
             return await _context.TicketKits.ToListAsync();
         }
 
-        public async Task<List<TicketKit>> GetByTicketId(uint id)
+        public async Task<List<TicketKit>> GetByTicketId(Guid id)
         {
-            return await _context.TicketKits.Where(t => t.TicketId.Equals(id)).ToListAsync();
+            return await _context.TicketKits.Where(t => t.TicketGuid.Equals(id)).ToListAsync();
         }
 
-        public async Task<TicketKit> Post(uint ticketId, string name)
+        public async Task<TicketKit> Post(Guid ticketId, string name)
         {
             var ticketKit = new TicketKit(ticketId, name);
             _context.TicketKits.Add(ticketKit);
@@ -27,9 +27,9 @@ namespace fixflow_api.Services
             return ticketKit;
         }
 
-        public async Task<TicketKit?> Put(uint ticketKitId, string name)
+        public async Task<TicketKit?> Put(Guid ticketKitId, string name)
         {
-            var ticketKit = _context.TicketKits.Where(tk => tk.Id.Equals(ticketKitId)).FirstOrDefault();
+            var ticketKit = _context.TicketKits.Where(tk => tk.Guid.Equals(ticketKitId)).FirstOrDefault();
             if (ticketKit != null)
             {
                 ticketKit.Name = name;
@@ -39,7 +39,7 @@ namespace fixflow_api.Services
             return null;
         }
 
-        public async Task<bool> Delete(uint ticketKitId)
+        public async Task<bool> Delete(Guid ticketKitId)
         {
             var ticketKit = await _context.TicketKits.FindAsync(ticketKitId);
             if (ticketKit != null)

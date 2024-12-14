@@ -26,7 +26,7 @@ namespace fixflow.Windows
     /// </summary>
     public partial class TicketWindow : Window
     {
-        private uint _ticketId = 0;
+        private Guid _ticketId;
         private Ticket _ticket;
         private TicketKit _ticketKit;
         private TicketStatus _ticketStatus;
@@ -35,7 +35,7 @@ namespace fixflow.Windows
 
         private bool _noteChanged = false;
         
-        public TicketWindow(uint ticketId)
+        public TicketWindow(Guid ticketId)
         {
             InitializeComponent();
             _ticketId = ticketId;

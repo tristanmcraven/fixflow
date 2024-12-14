@@ -21,8 +21,8 @@ namespace fixflow_api.Controllers
             return Ok(await _service.Get());
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(uint id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var repair = await _service.GetById(id);
             return repair != null ? Ok(repair) : NotFound();

@@ -37,7 +37,7 @@ namespace fixflow_api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(uint id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             return await _ticketKitService.Delete(id) ? NoContent() : BadRequest();
         }

@@ -14,7 +14,7 @@ namespace fixflow_api.Services
             return await _context.TicketMalfunctions.ToListAsync();
         }
 
-        public async Task<TicketMalfunction> Post(uint ticketId, string Name)
+        public async Task<TicketMalfunction> Post(Guid ticketId, string Name)
         {
             var ticketMalf = new TicketMalfunction(ticketId, Name);
             _context.TicketMalfunctions.Add(ticketMalf);
@@ -22,9 +22,9 @@ namespace fixflow_api.Services
             return ticketMalf;
         }
 
-        public async Task<TicketMalfunction?> Put(uint ticketMalfId, string name)
+        public async Task<TicketMalfunction?> Put(Guid ticketMalfId, string name)
         {
-            var ticketMalf = _context.TicketMalfunctions.Where(tm => tm.Id.Equals(ticketMalfId)).FirstOrDefault();
+            var ticketMalf = _context.TicketMalfunctions.Where(tm => tm.Guid.Equals(ticketMalfId)).FirstOrDefault();
             if (ticketMalf != null)
             {
                 ticketMalf.Name = name;
@@ -35,7 +35,7 @@ namespace fixflow_api.Services
 
         }
 
-        public async Task<bool> Delete(uint ticketMalfId)
+        public async Task<bool> Delete(Guid ticketMalfId)
         {
             var ticketMalf = await _context.TicketMalfunctions.FindAsync(ticketMalfId);
             if (ticketMalf != null)

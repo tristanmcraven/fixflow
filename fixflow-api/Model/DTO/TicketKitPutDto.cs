@@ -2,7 +2,7 @@
 {
     public class TicketKitPutDto
     {
-        public uint TicketKitId { get; set; }
+        public Guid TicketKitId { get; set; }
         public string Name { get; set; }
     }
 }

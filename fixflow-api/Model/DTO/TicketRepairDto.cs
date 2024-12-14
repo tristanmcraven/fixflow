@@ -2,8 +2,8 @@
 {
     public class TicketRepairDto
     {
-        public uint TicketId { get; set; }
-        public uint RepairId { get; set; }
-        public int? Price { get; set; }
+        public Guid TicketId { get; set; }
+        public Guid RepairId { get; set; }
+        public uint Price { get; set; }
     }
 }

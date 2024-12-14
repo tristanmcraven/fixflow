@@ -19,8 +19,8 @@ namespace fixflow_api.Controllers
             return Ok(await _statusService.Get());
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(uint id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var status = await _statusService.GetById(id);
             return status != null ? Ok(status) : NotFound();

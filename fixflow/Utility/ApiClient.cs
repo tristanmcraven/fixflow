@@ -51,7 +51,7 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.DeviceBrand>> Get() => await SendRequest<List<Model.DeviceBrand>>("devicebrand", HttpMethod.Get);
 
-            public static async Task<Model.DeviceBrand> GetById(uint id) => await SendRequest<Model.DeviceBrand>($"devicebrand/{id}", HttpMethod.Get);
+            public static async Task<Model.DeviceBrand> GetById(Guid id) => await SendRequest<Model.DeviceBrand>($"devicebrand/{id}", HttpMethod.Get);
             public static async Task<Model.DeviceBrand> GetByName(string name) => await SendRequest<Model.DeviceBrand>($"devicebrand/{name}", HttpMethod.Get);
 
             public static async Task<List<Model.DeviceModel>> GetModelsByName(string name) => await SendRequest<List<Model.DeviceModel>>($"devicebrand/{name}/models", HttpMethod.Get);
@@ -70,7 +70,7 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.DeviceModel>> Get() => await SendRequest<List<Model.DeviceModel>>("devicemodel", HttpMethod.Get);
 
-            public static async Task<Model.DeviceModel> GetById(uint id) => await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
+            public static async Task<Model.DeviceModel> GetById(Guid id) => await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
             public static async Task<Model.DeviceModel> GetByName(string name) => await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
 
             public static async Task<bool> Post(Guid deviceBrandId, string name)
@@ -88,7 +88,7 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.Status>> Get() => await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
 
-            public static async Task<Model.Status> GetById(uint id) => await SendRequest<Model.Status>($"status/{id}", HttpMethod.Get);
+            public static async Task<Model.Status> GetById(Guid id) => await SendRequest<Model.Status>($"status/{id}", HttpMethod.Get);
             public static async Task<Model.Status> GetByName(string name) => await SendRequest<Model.Status>($"status/{name}", HttpMethod.Get);
         }
 
@@ -96,18 +96,19 @@ namespace fixflow.Utility
         {
             public static async Task<List<Model.Ticket>> Get() => await SendRequest<List<Model.Ticket>>("ticket", HttpMethod.Get);
 
-            public static async Task<Model.Ticket> GetById(uint id) => await SendRequest<Model.Ticket>($"ticket/{id}", HttpMethod.Get);
-            public static async Task<List<Model.TicketKit>> GetKits(uint id) => await SendRequest<List<Model.TicketKit>>($"ticket/{id}/kits", HttpMethod.Get);
-            public static async Task<List<Model.TicketStatus>> GetStatuses(uint id) => await SendRequest<List<Model.TicketStatus>>($"ticket/{id}/statuses", HttpMethod.Get);
-            public static async Task<List<Model.TicketMalfunction>> GetMalfunctions(uint id) => await SendRequest<List<Model.TicketMalfunction>>($"ticket/{id}/malfunctions", HttpMethod.Get);
-            public static async Task<List<Model.TicketRepair>> GetRepairs(uint id) => await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
+            public static async Task<Model.Ticket> GetById(Guid id) => await SendRequest<Model.Ticket>($"ticket/{id}", HttpMethod.Get);
+            public static async Task<List<Model.TicketKit>> GetKits(Guid id) => await SendRequest<List<Model.TicketKit>>($"ticket/{id}/kits", HttpMethod.Get);
+            public static async Task<List<Model.TicketStatus>> GetStatuses(Guid id) => await SendRequest<List<Model.TicketStatus>>($"ticket/{id}/statuses", HttpMethod.Get);
+            public static async Task<List<Model.TicketMalfunction>> GetMalfunctions(Guid id) => await SendRequest<List<Model.TicketMalfunction>>($"ticket/{id}/malfunctions", HttpMethod.Get);
+            public static async Task<List<Model.TicketRepair>> GetRepairs(Guid id) => await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
 
-            public static async Task<Model.Ticket> Post(uint deviceBrandId, uint deviceModelId, string? clientName, string? clientPhone, string? note, string? description)
+            public static async Task<Model.Ticket> Post(Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientName, string? clientPhone, string? note, string? description)
             {
                 var dto = new
                 {
                     DeviceBrandId = deviceBrandId,
                     DeviceModelId = deviceModelId,
+                    deviceTypeId = deviceTypeId,
                     ClientFullname = clientName,
                     ClientPhoneNumber = clientPhone,
                     Timestamp = DateTime.Now,
@@ -117,12 +118,12 @@ namespace fixflow.Utility
                 return await SendRequest<Model.Ticket>($"ticket", HttpMethod.Post, dto);
             }
 
-            public static async Task<Model.Ticket> Put(uint ticketId, string note)
+            public static async Task<Model.Ticket> Put(Guid ticketId, string note)
             {
                 return await SendRequest<Model.Ticket>($"ticket?id={ticketId}&note={note}", HttpMethod.Put);
             }
 
-            public static async Task<bool> ChangeClientName(uint ticketId, string name)
+            public static async Task<bool> ChangeClientName(Guid ticketId, string name)
             {
                 var dto = new
                 {
@@ -131,7 +132,7 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticket/{ticketId}/changeclientname", HttpMethod.Put, dto);
             }
-            public static async Task<bool> ChangeClientPhone(uint ticketId, string phone)
+            public static async Task<bool> ChangeClientPhone(Guid ticketId, string phone)
             {
                 var dto = new
                 {
@@ -140,7 +141,7 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticket/{ticketId}/changeclientphone", HttpMethod.Put, dto);
             }
-            public static async Task<bool> ChangeDeviceBrand(uint ticketId, uint deviceBrandId)
+            public static async Task<bool> ChangeDeviceBrand(Guid ticketId, Guid deviceBrandId)
             {
                 var dto = new
                 {
@@ -149,7 +150,7 @@ namespace fixflow.Utility
                 };
                 return await SendRequest($"ticket/{ticketId}/changedevicebrand", HttpMethod.Put, dto);
             }
-            public static async Task<bool> ChangeDeviceModel(uint ticketId, uint deviceModelId)
+            public static async Task<bool> ChangeDeviceModel(Guid ticketId, Guid deviceModelId)
             {
                 var dto = new
                 {
@@ -252,7 +253,7 @@ namespace fixflow.Utility
                 return await SendRequest<Model.Repair>($"repair/name?name={name}", HttpMethod.Get);
             }
 
-            public static async Task<Model.Repair?> GetById(uint id) => await SendRequest<Model.Repair>($"repair/{id}", HttpMethod.Get);
+            public static async Task<Model.Repair?> GetById(Guid id) => await SendRequest<Model.Repair>($"repair/{id}", HttpMethod.Get);
 
             public static async Task<Model.Repair> Post(string name)
             {
