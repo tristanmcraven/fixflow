@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -73,18 +75,22 @@ namespace fixflow.Windows
                     ticket.DeviceBrand.Name,
                     ticket.DeviceModel.Name,
                     ticket.ClientFullname,
-                    $"+7{ticket.ClientPhoneNumber}",
-                    ticket.Guid
+                    $"+7{ticket.ClientPhoneNumber}"
+                    , ticket.Guid
                 );
             }
 
             tickets_DataGrid.ItemsSource = dataTable.DefaultView;
 
-            if (tickets_DataGrid.Columns.Cast<DataGridColumn>().Any(c => c.Header.ToString() == "Guid"))
+            if (tickets_DataGrid.Columns.Count > 0)
             {
-                tickets_DataGrid.Columns
-                    .First(c => c.Header.ToString() == "Guid")
-                    .Visibility = Visibility.Collapsed;
+                var guidColumn = tickets_DataGrid.Columns
+                    .FirstOrDefault(c => c.Header.ToString() == "Guid");
+
+                if (guidColumn != null)
+                {
+                    guidColumn.Visibility = Visibility.Collapsed;
+                }
             }
 
             if (tickets.Count > 0)
@@ -92,10 +98,10 @@ namespace fixflow.Windows
                 tickets_DataGrid.Visibility = Visibility.Visible;
                 noTickets_Grid.Visibility = Visibility.Collapsed;
             }
-            else
+            else if (tickets.Count == 0) 
             {
-                tickets_DataGrid.Visibility = Visibility.Visible;
-                noTickets_Grid.Visibility = Visibility.Collapsed;
+                tickets_DataGrid.Visibility = Visibility.Collapsed;
+                noTickets_Grid.Visibility = Visibility.Visible;
             }
         }
 
@@ -191,10 +197,10 @@ namespace fixflow.Windows
 
         private async void deleteTickets_ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            contextMenu_Popup.IsOpen = false;
             var selectedItems = tickets_DataGrid.SelectedItems;
             if (selectedItems.Count <= 0)
             {
-                contextMenu_Popup.IsOpen = false;
                 return;
             }
 

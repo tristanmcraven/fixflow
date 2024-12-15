@@ -14,7 +14,7 @@
         Style="{StaticResource MaterialDesignWindow}"
         Loaded="Window_Loaded"
         Closing="Window_Closing"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"    >
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
@@ -23,13 +23,15 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Menu md:MenuAssist.TopLevelMenuItemHeight="35"
-                  Padding="0">
+            <Menu md:MenuAssist.TopLevelMenuItemHeight="30"
+                  Padding="0"
+                  FontFamily="{StaticResource light}">
                 <MenuItem Header="{StaticResource program}">
                     <MenuItem Header="{StaticResource settings}"
                               x:Name="settings_MenuItem"
                               Click="settings_MenuItem_Click"
-                              Margin="0 -10 0 0" />
+                              Margin="0 -10 0 0"
+                              Height="30"/>
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="1"
@@ -41,9 +43,10 @@
                     <TextBlock Text="У вас пока нет тикетов."
                                HorizontalAlignment="Center"
                                FontSize="36"
-                               Foreground="#bbbbbb"/>
+                               Foreground="#bbbbbb"
+                               Margin="0 30 0 0"/>
                 </StackPanel>
-                <TextBlock Text="Создайте его сейчас ➜"
+                <TextBlock Text="Создайте тикет сейчас ➜"
                            FontSize="24"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
@@ -62,7 +65,37 @@
                       FontSize="16"
                       HorizontalAlignment="Center"
                       MouseRightButtonUp="tickets_DataGrid_MouseRightButtonUp"
-                      Visibility="Collapsed"/>
+                      Visibility="Collapsed"
+                      Height="auto"
+                      AutoGenerateColumns="False"
+                      ScrollViewer.CanContentScroll="False"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Номер"
+                                        Binding="{Binding Номер}"
+                                        Width="Auto" />
+                    <DataGridTextColumn Header="Дата принятия"
+                                        Binding="{Binding Дата принятия}"
+                                        Width="Auto" />
+                    <DataGridTextColumn Header="Марка"
+                                        Binding="{Binding Марка}"
+                                        Width="Auto" />
+                    <DataGridTextColumn Header="Модель"
+                                        Binding="{Binding Модель}"
+                                        Width="Auto" />
+                    <DataGridTextColumn Header="Имя клиента"
+                                        Binding="{Binding Имя клиента}"
+                                        Width="Auto" />
+                    <DataGridTextColumn Header="Номер клиента"
+                                        Binding="{Binding Номер клиента}"
+                                        Width="Auto" />
+
+                    <!-- Hidden column for GUID -->
+                    <DataGridTextColumn Header="Guid"
+                                        Binding="{Binding Guid}"
+                                        Visibility="Collapsed" />
+                </DataGrid.Columns>
+            </DataGrid>
             <Popup x:Name="contextMenu_Popup"
                    Placement="Mouse">
                 <ListBox Background="{StaticResource MaterialDesign.Brush.Background}">
@@ -107,7 +140,7 @@
                         <GradientStop Color="{StaticResource blue_update}"
                                       Offset="0" />
                         <GradientStop Color="{StaticResource blue_update}"
-                                      Offset="0.44" />
+                                      Offset="0.45" />
                         <GradientStop Color="Red"
                                       Offset="0.60" />
                         <GradientStop Color="Red"

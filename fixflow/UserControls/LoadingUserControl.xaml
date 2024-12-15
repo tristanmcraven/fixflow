@@ -10,15 +10,8 @@
              Loaded="UserControl_Loaded"
              Name="LoadingOverlay">
     <Grid Opacity="0.79 ">
-        <Grid.Background>
-            <RadialGradientBrush Center="0.5,0.5"
-                                 GradientOrigin="0.5,0.5"
-                                 RadiusX="0.5"
-                                 RadiusY="0.5">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="Black" Offset="1"/>
-            </RadialGradientBrush>
-        </Grid.Background>
+        <Grid Background="Black">
+        </Grid>
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
