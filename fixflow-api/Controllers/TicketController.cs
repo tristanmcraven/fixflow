@@ -2,6 +2,7 @@
 using fixflow_api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -97,6 +98,19 @@ namespace fixflow_api.Controllers
         {
             var ticket = await _ticketService.ChangeDeviceModel(dto.TicketId, dto.DeviceModelId);
             return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpPut("{id}/changedevicetype")]
+        public async Task<IActionResult> ChangeDeviceType(TicketDto.ChangeDeviceType dto)
+        {
+            var ticket = await _ticketService.ChangeDeviceType(dto.TicketId, dto.DeviceTypeId);
+            return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return await _ticketService.Delete(id) ? NoContent() : BadRequest();
         }
     }
 }

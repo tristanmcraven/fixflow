@@ -74,6 +74,7 @@ namespace fixflow.Windows
             _ticket = await ApiClient.Ticket.GetById(_ticketId);
             _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid);
             _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelGuid);
+            _ticket.DeviceType = await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid);
             _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Guid);
             _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Guid);
             _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Guid);
@@ -149,6 +150,13 @@ namespace fixflow.Windows
             }
             brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid)).Name;
 
+            var types = await ApiClient.DeviceType.Get();
+            deviceTypes_ComboBox.Items.Clear();
+            foreach (var type in types)
+            {
+                deviceTypes_ComboBox.Items.Add(type.Name);
+            }
+            deviceTypes_ComboBox.SelectedItem = (await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid)).Name;
             //var models = await ApiClient.DeviceModel.Get();
             //models_ComboBox.Items.Clear();
             //foreach (var model in await ApiClient.DeviceBrand.GetModelsByName(_ticket.DeviceBrand.Name))
@@ -185,6 +193,9 @@ namespace fixflow.Windows
             clientName_TextBox.Visibility = Visibility.Visible;
             clientPhone_TextBox.Visibility = Visibility.Visible;
 
+            deviceType_TextBlock.Visibility = Visibility.Collapsed;
+            deviceTypes_ComboBox.Visibility = Visibility.Visible;
+
             deviceBrand_TextBlock.Visibility = Visibility.Collapsed;
             deviceModel_TextBlock.Visibility = Visibility.Collapsed;
             brands_ComboBox.Visibility = Visibility.Visible;
@@ -205,7 +216,8 @@ namespace fixflow.Windows
             if (clientName_TextBox.Text.Equals(_ticket.ClientFullname) &&
                 clientPhone_TextBox.Text.Equals(_ticket.ClientPhoneNumber) &&
                 brands_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceBrand.Name) &&
-                models_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceModel.Name))
+                models_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceModel.Name) &&
+                deviceTypes_ComboBox.SelectedItem.ToString().Equals(_ticket.DeviceType.Name))
             {
                 reject_Button_Click(null, null);
                 return;
@@ -219,7 +231,8 @@ namespace fixflow.Windows
             var phoneResult = await ApiClient.Ticket.ChangeClientPhone(_ticket.Guid, clientPhone_TextBox.Text);
             var deviceBrandResult = await ApiClient.Ticket.ChangeDeviceBrand(_ticket.Guid, (await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString())).Guid);
             var deviceModelResult = await ApiClient.Ticket.ChangeDeviceModel(_ticket.Guid, (await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString())).Guid);
-            if (nameResult && phoneResult && deviceBrandResult && deviceModelResult)
+            var deviceTypeResult = await ApiClient.Ticket.ChangeDeviceType(_ticket.Guid, (await ApiClient.DeviceType.GetByName(deviceTypes_ComboBox.SelectedItem.ToString())).Guid);
+            if (nameResult && phoneResult && deviceBrandResult && deviceModelResult && deviceTypeResult)
             {
                 reject_Button_Click(null, null);
                 Window_Activated(null, null);
@@ -234,6 +247,9 @@ namespace fixflow.Windows
             clientPhone_TextBox.Text = _ticket.ClientPhoneNumber;
             clientName_TextBox.Visibility = Visibility.Collapsed;
             clientPhone_TextBox.Visibility = Visibility.Collapsed;
+
+            deviceType_TextBlock.Visibility = Visibility.Visible;
+            deviceTypes_ComboBox.Visibility = Visibility.Collapsed;
 
             deviceBrand_TextBlock.Visibility = Visibility.Visible;
             deviceModel_TextBlock.Visibility = Visibility.Visible;

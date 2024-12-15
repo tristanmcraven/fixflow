@@ -24,6 +24,7 @@
     <None Remove="Assets\Images\check.png" />
     <None Remove="Assets\Images\cross.png" />
     <None Remove="Assets\Images\edit.png" />
+    <None Remove="Assets\Images\empty.png" />
     <None Remove="Assets\Images\plus-bold.png" />
     <None Remove="Assets\Images\plus.png" />
     <None Remove="Assets\Images\program.png" />
@@ -62,6 +63,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\empty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\plus-bold.png">

@@ -45,5 +45,10 @@ namespace fixflow_api.Model.DTO
             public Guid TicketId { get; set; }
             public Guid DeviceModelId { get; set; }
         }
+        public class ChangeDeviceType
+        {
+            public Guid TicketId { get; set; }
+            public Guid DeviceTypeId { get; set; }
+        }
     }
 }

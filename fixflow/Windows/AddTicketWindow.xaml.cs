@@ -22,6 +22,7 @@ namespace fixflow.Windows
             LoadingOverlay.Show(this);
             await UpdateBrands();
             await UpdateModels();
+            await UpdateTypes();
             await UpdateStatuses();
             AddMalfunction();
             AddKit();
@@ -100,39 +101,32 @@ namespace fixflow.Windows
             }
         }
 
+        private async Task UpdateTypes()
+        {
+            var types = await ApiClient.DeviceType.Get();
+            deviceTypes_ComboBox.Items.Clear();
+            if (types.Any())
+            {
+                foreach (var type in types)
+                {
+                    deviceTypes_ComboBox.Items.Add(type.Name);
+                }
+                deviceTypes_ComboBox.SelectedIndex = 0;
+                deviceTypes_ComboBox.IsEnabled = true;
+            }
+            else deviceTypes_ComboBox.IsEnabled = false;
+        }
+
         private async void addBrand_Button_Click(object sender, RoutedEventArgs e)
         {
             addBrand_Grid.Visibility = Visibility.Visible;
             addBrand_Button.Visibility = Visibility.Collapsed;
-            //var abw = new AddBrandWindow()
-            //{
-            //    Owner = this
-            //};
-            //abw.ShowDialog();
-            //LoadingOverlay.Show(this);
-            //if (abw.DialogResult == true)
-            //{
-            //    await UpdateBrands();
-            //}
-            //LoadingOverlay.Remove(this);
         }
 
         private async void addModel_Button_Click(object sender, RoutedEventArgs e)
         {
             addModel_Grid.Visibility = Visibility.Visible;
             addModel_Button.Visibility = Visibility.Collapsed;
-            //var amw = new AddModelWindow(brands_ComboBox.SelectedItem.ToString()!)
-            //{
-            //    Owner = this
-            //};
-            //amw.ShowDialog();
-            //LoadingOverlay.Show(this);
-            //if (amw.DialogResult == true)
-            //{
-            //    await UpdateModels();
-            //    models_ComboBox.SelectedItem = amw.NewModel;
-            //}
-            //LoadingOverlay.Remove(this);
         }
 
         private async void brands_ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -187,8 +181,9 @@ namespace fixflow.Windows
         {
             var brand = await ApiClient.DeviceBrand.GetByName(brands_ComboBox.SelectedItem.ToString());
             var model = await ApiClient.DeviceModel.GetByName(models_ComboBox.SelectedItem.ToString());
+            var type = await ApiClient.DeviceType.GetByName(deviceTypes_ComboBox.SelectedItem.ToString());
 
-            var ticket = await ApiClient.Ticket.Post(brand.Guid, model.Guid, Guid.Parse("c9b35dde-48bf-4e73-a7e9-f207badb537b"), clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
+            var ticket = await ApiClient.Ticket.Post(brand.Guid, model.Guid, type.Guid, clientName_TextBox.Text, clientPhoneNumber_TextBox.Text, ticketNote_TextBox.Text, null);
             if (ticket == null) return false;
 
             var kits = GetKit();
@@ -417,27 +412,89 @@ namespace fixflow.Windows
             {
                 main_Grid.Children.Clear();
                 main_Grid.ColumnDefinitions.Clear();
-                //main_Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-                //var parent = VisualTreeHelper.GetParent(whole_StackPanel) as Panel;
-                //if (parent != null)
-                //{
-                //    parent.Children.Remove(whole_StackPanel);
-                //}
                 whole_StackPanel.Children.Clear();
                 whole_StackPanel.Children.Add(first_StackPanel);
                 whole_StackPanel.Children.Add(second_StackPanel);
 
 
                 main_Grid.Children.Add(whole_StackPanel);
-                //Grid.SetColumn(whole_StackPanel, 0);
-                //Grid.SetColumnSpan(whole_StackPanel, 1);
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SettingsManager.SaveWindowProperties(this);
+        }
+
+        private void deviceTypes_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void newDeviceType_TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                acceptNewDeviceType_Button_Click(null, null);
+            }
+        }
+
+        private async void acceptNewDeviceType_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(newDeviceType_TextBox.Text))
+            {
+                addDeviceType_Grid.Visibility = Visibility.Collapsed;
+                addDeviceType_Button.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                await AddNewType();
+                await UpdateTypes();
+                deviceTypes_ComboBox.SelectedItem = newDeviceType_TextBox.Text;
+                newDeviceType_TextBox.Text = String.Empty;
+                addDeviceType_Grid.Visibility = Visibility.Collapsed;
+                addDeviceType_Button.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void rejectNewDeviceType_Button_Click(object sender, RoutedEventArgs e)
+        {
+            addDeviceType_Grid.Visibility = Visibility.Collapsed;
+            addDeviceType_Button.Visibility = Visibility.Visible;
+        }
+
+        private void addDeviceType_Button_Click(object sender, RoutedEventArgs e)
+        {
+            addDeviceType_Grid.Visibility = Visibility.Visible;
+            addDeviceType_Button.Visibility = Visibility.Collapsed;
+        }
+
+        private async Task AddNewType()
+        {
+            if (String.IsNullOrEmpty(newDeviceType_TextBox.Text))
+            {
+                MessageBox.Show(Rm.Get("enter_type_name"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var brand = await ApiClient.DeviceType.GetByName(newDeviceType_TextBox.Text);
+            if (brand != null)
+            {
+                MessageBox.Show(Rm.Get("type_exists"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            LoadingOverlay.Show(this);
+            var result = await ApiClient.DeviceType.Post(newDeviceType_TextBox.Text);
+            if (result == true)
+            {
+
+            }
+            else
+            {
+                MessageBox.Show(Rm.Get("smth_went_wrong"), Rm.Get("error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            LoadingOverlay.Remove(this);
         }
     }
 }

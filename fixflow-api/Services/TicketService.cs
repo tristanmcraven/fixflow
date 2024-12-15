@@ -1,6 +1,5 @@
 ﻿using fixflow_api.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Numerics;
 
 namespace fixflow_api.Services
 {
@@ -61,7 +60,7 @@ namespace fixflow_api.Services
 
         public async Task<Ticket?> ChangeNote(Guid id, string note)
         {
-            var ticket = await _context.Tickets.Where(t=> t.Guid.Equals(id)).FirstOrDefaultAsync();
+            var ticket = await _context.Tickets.Where(t => t.Guid.Equals(id)).FirstOrDefaultAsync();
             if (ticket != null)
             {
                 ticket.Note = note;
@@ -116,6 +115,41 @@ namespace fixflow_api.Services
                 return ticket;
             }
             return null;
+        }
+
+        public async Task<Ticket?> ChangeDeviceType(Guid id, Guid deviceTypeId)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Guid.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                ticket.DeviceTypeGuid = deviceTypeId;
+                await _context.SaveChangesAsync();
+                return ticket;
+            }
+            return null;
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            var ticket = await _context.Tickets.Where(t => t.Guid.Equals(id)).FirstOrDefaultAsync();
+            if (ticket != null)
+            {
+                var ticketKits = await _context.TicketKits.Where(tk => tk.TicketGuid.Equals(id)).ToListAsync();
+                var ticketMalfs = await _context.TicketMalfunctions.Where(tk => tk.TicketGuid.Equals(id)).ToListAsync();
+                var ticketRepairs = await _context.TicketRepairs.Where(tk => tk.TicketGuid.Equals(id)).ToListAsync();
+                var ticketStatuses = await _context.TicketStatuses.Where(tk => tk.TicketGuid.Equals(id)).ToListAsync();
+
+                _context.TicketKits.RemoveRange(ticketKits);
+                _context.TicketMalfunctions.RemoveRange(ticketMalfs);
+                _context.TicketRepairs.RemoveRange(ticketRepairs);
+                _context.TicketStatuses.RemoveRange(ticketStatuses);
+
+                _context.Tickets.Remove(ticket);
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

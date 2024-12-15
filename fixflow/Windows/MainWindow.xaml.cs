@@ -53,28 +53,52 @@ namespace fixflow.Windows
             tickets_DataGrid.ItemsSource = null;
 
             DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Номер", typeof(Guid));
+            dataTable.Columns.Add("Номер", typeof(uint));
             dataTable.Columns.Add("Дата принятия", typeof(string));
             dataTable.Columns.Add("Марка", typeof(string));
             dataTable.Columns.Add("Модель", typeof(string));
             dataTable.Columns.Add("Имя клиента", typeof(string));
             dataTable.Columns.Add("Номер клиента", typeof(string));
+            dataTable.Columns.Add("Guid", typeof(Guid));
+
+            int numericId = tickets.Count;
 
             foreach (var ticket in tickets)
             {
                 var timestamp = ticket.Timestamp;
-                dataTable.Rows.Add(ticket.Guid,
-                                   $"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")}"
-                                   //+ $"{timestamp.ToString("HH")}:{timestamp.ToString("mm")}"
-                                   ,
-                                   ticket.DeviceBrand.Name,
-                                   ticket.DeviceModel.Name,
-                                   ticket.ClientFullname,
-                                   $"+7{ticket.ClientPhoneNumber}");
+
+                dataTable.Rows.Add(
+                    numericId--, 
+                    $"{timestamp:dd}/{timestamp:MM}/{timestamp:yyyy}",
+                    ticket.DeviceBrand.Name,
+                    ticket.DeviceModel.Name,
+                    ticket.ClientFullname,
+                    $"+7{ticket.ClientPhoneNumber}",
+                    ticket.Guid
+                );
             }
 
             tickets_DataGrid.ItemsSource = dataTable.DefaultView;
+
+            if (tickets_DataGrid.Columns.Cast<DataGridColumn>().Any(c => c.Header.ToString() == "Guid"))
+            {
+                tickets_DataGrid.Columns
+                    .First(c => c.Header.ToString() == "Guid")
+                    .Visibility = Visibility.Collapsed;
+            }
+
+            if (tickets.Count > 0)
+            {
+                tickets_DataGrid.Visibility = Visibility.Visible;
+                noTickets_Grid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                tickets_DataGrid.Visibility = Visibility.Visible;
+                noTickets_Grid.Visibility = Visibility.Collapsed;
+            }
         }
+
 
         private async Task<List<Ticket>> GetFormattedTickets()
         {
@@ -88,7 +112,7 @@ namespace fixflow.Windows
                 formattedTickets.Add(ticket);
             }
 
-            return formattedTickets.OrderByDescending(t => t.Guid).ToList();
+            return formattedTickets.OrderByDescending(t => t.Timestamp).ToList();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -97,7 +121,7 @@ namespace fixflow.Windows
             {
                 if (e.ChangedButton == MouseButton.Left)
                 {
-                    Guid ticketId = (Guid)rowView["Номер"];
+                    Guid ticketId = (Guid)rowView["Guid"];
                     var tw = new TicketWindow(ticketId)
                     {
                         Owner = this
@@ -153,5 +177,58 @@ namespace fixflow.Windows
         {
             SettingsManager.SaveWindowProperties(this);
         }
+
+        private void tickets_DataGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            contextMenu_Popup.IsOpen = false;
+            contextMenu_Popup.IsOpen = true;
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            contextMenu_Popup.IsOpen = false;
+        }
+
+        private async void deleteTickets_ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var selectedItems = tickets_DataGrid.SelectedItems;
+            if (selectedItems.Count <= 0)
+            {
+                contextMenu_Popup.IsOpen = false;
+                return;
+            }
+
+            var selectedGuids = selectedItems
+                .Cast<DataRowView>()
+                .Select(row => (Guid)row["Guid"])
+                .ToList();
+
+            if (selectedItems.Count == 1)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить выбранный тикет?",
+                                    "Подтверждение",
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    await ApiClient.Ticket.Delete(selectedGuids.First());
+                }
+            }
+            else if (selectedItems.Count > 1)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить выбранные тикеты?",
+                                    "Подтверждение",
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    foreach (var guid in selectedGuids)
+                    {
+                        await ApiClient.Ticket.Delete(guid);
+                    }
+                }
+            }
+            contextMenu_Popup.IsOpen = false;
+            Window_Activated(null, null);
+        }
+
     }
 }

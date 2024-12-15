@@ -6,30 +6,51 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:fixflow.Windows"
         mc:Ignorable="d"
-        Title="FixFlow" Height="800" Width="1440"
+        Title="FixFlow"
+        Height="800"
+        Width="1440"
         WindowStartupLocation="CenterScreen"
         Activated="Window_Activated"
         Style="{StaticResource MaterialDesignWindow}"
         Loaded="Window_Loaded"
         Closing="Window_Closing"
-        >
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
                 <!--<RowDefinition Height="auto" />-->
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Menu md:MenuAssist.TopLevelMenuItemHeight="35"
                   Padding="0">
-                <MenuItem Header="{StaticResource file}">
+                <MenuItem Header="{StaticResource program}">
                     <MenuItem Header="{StaticResource settings}"
                               x:Name="settings_MenuItem"
                               Click="settings_MenuItem_Click"
-                              Margin="0 -10 0 0"/>
+                              Margin="0 -10 0 0" />
                 </MenuItem>
             </Menu>
+            <Grid Grid.Row="1"
+                  x:Name="noTickets_Grid">
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Center">
+                    <Image Source="/Assets/Images/empty.png"
+                           Height="130"/>
+                    <TextBlock Text="У вас пока нет тикетов."
+                               HorizontalAlignment="Center"
+                               FontSize="36"
+                               Foreground="#bbbbbb"/>
+                </StackPanel>
+                <TextBlock Text="Создайте его сейчас ➜"
+                           FontSize="24"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Margin="0 0 110 40"
+                           FontFamily="{StaticResource regular}"
+                           Foreground="#bbbbbb"/>
+            </Grid>
             <DataGrid Grid.Row="1"
                       x:Name="tickets_DataGrid"
                       CanUserAddRows="False"
@@ -39,7 +60,18 @@
                       CanUserResizeColumns="False"
                       FontFamily="{StaticResource light}"
                       FontSize="16"
-                      HorizontalAlignment="Center"/>
+                      HorizontalAlignment="Center"
+                      MouseRightButtonUp="tickets_DataGrid_MouseRightButtonUp"
+                      Visibility="Collapsed"/>
+            <Popup x:Name="contextMenu_Popup"
+                   Placement="Mouse">
+                <ListBox Background="{StaticResource MaterialDesign.Brush.Background}">
+                    <ListBoxItem x:Name="deleteTickets_ListBoxItem"
+                                 MouseLeftButtonUp="deleteTickets_ListBoxItem_MouseLeftButtonUp">
+                        <TextBlock Text="Удалить" />
+                    </ListBoxItem>
+                </ListBox>
+            </Popup>
             <Button x:Name="addTicket_Button"
                     Click="addTicket_Button_Click"
                     Content="+"
@@ -50,17 +82,21 @@
                     Margin="0 0 30 30"
                     FontSize="32"
                     Foreground="White"
-                    Grid.Row="1"/>
+                    Grid.Row="1" />
             <Grid Grid.Row="2"
                   Height="28"
                   x:Name="lower_Grid"
                   Visibility="Visible">
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
-                        <Setter Property="FontFamily" Value="{StaticResource light}"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="FontFamily"
+                                Value="{StaticResource light}" />
+                        <Setter Property="Margin"
+                                Value="0" />
+                        <Setter Property="Padding"
+                                Value="0" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
                         <Setter Property="Foreground"
                                 Value="White" />
                     </Style>
@@ -87,13 +123,13 @@
                             Margin="10 0 0 0"
                             x:Name="update_StackPanel"
                             Visibility="Visible">
-                    <TextBlock Text="{StaticResource update_available}"/>
+                    <TextBlock Text="{StaticResource update_available}" />
                     <TextBlock x:Name="newVersion_TextBlock"
                                Margin="5 0 0 0"
                                TextDecorations="Underline"
                                MouseLeftButtonUp="newVersion_TextBlock_MouseLeftButtonUp"
                                MouseEnter="newVersion_TextBlock_MouseEnter"
-                               MouseLeave="newVersion_TextBlock_MouseLeave"/>
+                               MouseLeave="newVersion_TextBlock_MouseLeave" />
                     <Button x:Name="updateApp_Button"
                             Click="updateApp_Button_Click"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
@@ -106,10 +142,9 @@
                             VerticalAlignment="Center"
                             Margin="15 0 0 0"
                             FontFamily="{StaticResource light}"
-                            VerticalContentAlignment="Center"
-                            />
+                            VerticalContentAlignment="Center" />
                 </StackPanel>
-                
+
                 <StackPanel Orientation="Horizontal"
                             Grid.Column="1"
                             Margin="0 0 10 0"
@@ -121,5 +156,4 @@
             </Grid>
         </Grid>
     </Grid>
-
 </Window>

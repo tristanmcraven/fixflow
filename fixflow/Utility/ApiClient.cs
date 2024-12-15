@@ -84,6 +84,15 @@ namespace fixflow.Utility
             }
         }
 
+        public static class DeviceType
+        {
+            public static async Task<List<Model.DeviceType>> Get() => await SendRequest<List<Model.DeviceType>>("devicetype", HttpMethod.Get);
+            public static async Task<bool> Post(string name) => await SendRequest($"devicetype/{name}", HttpMethod.Post);
+
+            public static async Task<Model.DeviceType> GetByName(string name) => await SendRequest<Model.DeviceType>($"devicetype/{name}", HttpMethod.Get);
+            public static async Task<Model.DeviceType> GetById(Guid id) => await SendRequest<Model.DeviceType>($"devicetype/{id}", HttpMethod.Get);
+        }
+
         public static class Status
         {
             public static async Task<List<Model.Status>> Get() => await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
@@ -158,6 +167,21 @@ namespace fixflow.Utility
                     DeviceModelId = deviceModelId
                 };
                 return await SendRequest($"ticket/{ticketId}/changedevicemodel", HttpMethod.Put, dto);
+            }
+
+            public static async Task<bool> ChangeDeviceType(Guid ticketId, Guid deviceTypeId)
+            {
+                var dto = new
+                {
+                    TicketId = ticketId,
+                    DeviceTypeId = deviceTypeId
+                };
+                return await SendRequest($"ticket/{ticketId}/changedevicetype", HttpMethod.Put, dto);
+            }
+
+            public static async Task<bool> Delete(Guid id)
+            {
+                return await SendRequest($"ticket/{id}", HttpMethod.Delete);
             }
         }
 
