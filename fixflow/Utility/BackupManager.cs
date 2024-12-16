@@ -19,6 +19,7 @@ namespace fixflow.Utility
             {
                 DeviceBrands = await ApiClient.DeviceBrand.Get(),
                 DeviceModels = await ApiClient.DeviceModel.Get(),
+                DeviceTypes = await ApiClient.DeviceType.Get(),
                 Repairs = await ApiClient.Repair.Get(),
                 Statuses = await ApiClient.Status.Get(),
                 Tickets = await ApiClient.Ticket.Get(),
@@ -32,9 +33,12 @@ namespace fixflow.Utility
             return backup;
         }
 
-        public static async void SetBackup()
+        public static void SetBackup()
         {
-            App.Backup = await CreateBackup();
+            if (File.Exists(Path))
+            {
+                App.Backup = JsonConvert.DeserializeObject<Backup>(File.ReadAllText(Path));
+            }
         }
 
         public static void SaveBackup(Backup backup)

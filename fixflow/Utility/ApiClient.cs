@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
+using System.Xml.Linq;
 
 namespace fixflow.Utility
 {
@@ -49,15 +50,50 @@ namespace fixflow.Utility
 
         public static class DeviceBrand
         {
-            public static async Task<List<Model.DeviceBrand>> Get() => await SendRequest<List<Model.DeviceBrand>>("devicebrand", HttpMethod.Get);
+            public static async Task<List<Model.DeviceBrand>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceBrands;
+                }
+                return await SendRequest<List<Model.DeviceBrand>>("devicebrand", HttpMethod.Get);
+            }
 
-            public static async Task<Model.DeviceBrand> GetById(Guid id) => await SendRequest<Model.DeviceBrand>($"devicebrand/{id}", HttpMethod.Get);
-            public static async Task<Model.DeviceBrand> GetByName(string name) => await SendRequest<Model.DeviceBrand>($"devicebrand/{name}", HttpMethod.Get);
+            public static async Task<Model.DeviceBrand> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceBrands.Where(db => db.Guid.Equals(id)).FirstOrDefault();
+                }
+                return await SendRequest<Model.DeviceBrand>($"devicebrand/{id}", HttpMethod.Get);
+            }
 
-            public static async Task<List<Model.DeviceModel>> GetModelsByName(string name) => await SendRequest<List<Model.DeviceModel>>($"devicebrand/{name}/models", HttpMethod.Get);
+            public static async Task<Model.DeviceBrand> GetByName(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceBrands.Where(db => db.Name.Equals(name)).FirstOrDefault();
+                }
+                return await SendRequest<Model.DeviceBrand>($"devicebrand/{name}", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.DeviceModel>> GetModelsByName(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    var brand = await GetByName(name);
+                    return App.Backup.DeviceModels.Where(dm => dm.DeviceBrandGuid.Equals(brand.Guid)).ToList();
+                }
+                return await SendRequest<List<Model.DeviceModel>>($"devicebrand/{name}/models", HttpMethod.Get);
+            }
 
             public static async Task<bool> Post(string name)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.DeviceBrands.Add(new Model.DeviceBrand(name));
+                    return true;
+                }
                 var dto = new
                 {
                     Name = name
@@ -68,13 +104,40 @@ namespace fixflow.Utility
 
         public static class DeviceModel
         {
-            public static async Task<List<Model.DeviceModel>> Get() => await SendRequest<List<Model.DeviceModel>>("devicemodel", HttpMethod.Get);
+            public static async Task<List<Model.DeviceModel>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceModels;
+                }
+                return await SendRequest<List<Model.DeviceModel>>("devicemodel", HttpMethod.Get);
+            }
 
-            public static async Task<Model.DeviceModel> GetById(Guid id) => await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
-            public static async Task<Model.DeviceModel> GetByName(string name) => await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
+            public static async Task<Model.DeviceModel> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceModels.Where(dm => dm.Guid.Equals(id)).FirstOrDefault();
+                }
+                return await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
+            }
+
+            public static async Task<Model.DeviceModel> GetByName(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceModels.Where(dm => dm.Name.Equals(name)).FirstOrDefault();
+                }
+                return await SendRequest<Model.DeviceModel>($"devicemodel/{name}", HttpMethod.Get);
+            }
 
             public static async Task<bool> Post(Guid deviceBrandId, string name)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.DeviceModels.Add(new Model.DeviceModel(deviceBrandId, name));
+                    return true;
+                }
                 var dto = new
                 {
                     DeviceBrandId = deviceBrandId,
@@ -86,33 +149,145 @@ namespace fixflow.Utility
 
         public static class DeviceType
         {
-            public static async Task<List<Model.DeviceType>> Get() => await SendRequest<List<Model.DeviceType>>("devicetype", HttpMethod.Get);
-            public static async Task<bool> Post(string name) => await SendRequest($"devicetype/{name}", HttpMethod.Post);
+            public static async Task<List<Model.DeviceType>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceTypes;
+                }
+                return await SendRequest<List<Model.DeviceType>>("devicetype", HttpMethod.Get);
+            }
 
-            public static async Task<Model.DeviceType> GetByName(string name) => await SendRequest<Model.DeviceType>($"devicetype/{name}", HttpMethod.Get);
-            public static async Task<Model.DeviceType> GetById(Guid id) => await SendRequest<Model.DeviceType>($"devicetype/{id}", HttpMethod.Get);
+            public static async Task<bool> Post(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    App.Backup.DeviceTypes.Add(new Model.DeviceType(name));
+                    return true;
+                }
+                return await SendRequest($"devicetype/{name}", HttpMethod.Post);
+            }
+
+            public static async Task<Model.DeviceType> GetByName(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceTypes.FirstOrDefault(dt => dt.Name.Equals(name));
+                }
+                return await SendRequest<Model.DeviceType>($"devicetype/{name}", HttpMethod.Get);
+            }
+
+            public static async Task<Model.DeviceType> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.DeviceTypes.FirstOrDefault(x => x.Guid.Equals(id));
+                }
+                return await SendRequest<Model.DeviceType>($"devicetype/{id}", HttpMethod.Get);
+            }
         }
 
         public static class Status
         {
-            public static async Task<List<Model.Status>> Get() => await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
+            public static async Task<List<Model.Status>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Statuses;
+                }
+                return await SendRequest<List<Model.Status>>("status", HttpMethod.Get);
+            }
 
-            public static async Task<Model.Status> GetById(Guid id) => await SendRequest<Model.Status>($"status/{id}", HttpMethod.Get);
-            public static async Task<Model.Status> GetByName(string name) => await SendRequest<Model.Status>($"status/{name}", HttpMethod.Get);
+            public static async Task<Model.Status> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Statuses.FirstOrDefault(s => s.Guid.Equals(id));
+                }
+                return await SendRequest<Model.Status>($"status/{id}", HttpMethod.Get);
+            }
+
+            public static async Task<Model.Status> GetByName(string name)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Statuses.FirstOrDefault(s => s.Name.Equals(name));
+                }
+                return await SendRequest<Model.Status>($"status/{name}", HttpMethod.Get);
+            }
         }
 
         public static class Ticket
         {
-            public static async Task<List<Model.Ticket>> Get() => await SendRequest<List<Model.Ticket>>("ticket", HttpMethod.Get);
+            public static async Task<List<Model.Ticket>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Tickets;
+                }
+                return await SendRequest<List<Model.Ticket>>("ticket", HttpMethod.Get);
+            }
 
-            public static async Task<Model.Ticket> GetById(Guid id) => await SendRequest<Model.Ticket>($"ticket/{id}", HttpMethod.Get);
-            public static async Task<List<Model.TicketKit>> GetKits(Guid id) => await SendRequest<List<Model.TicketKit>>($"ticket/{id}/kits", HttpMethod.Get);
-            public static async Task<List<Model.TicketStatus>> GetStatuses(Guid id) => await SendRequest<List<Model.TicketStatus>>($"ticket/{id}/statuses", HttpMethod.Get);
-            public static async Task<List<Model.TicketMalfunction>> GetMalfunctions(Guid id) => await SendRequest<List<Model.TicketMalfunction>>($"ticket/{id}/malfunctions", HttpMethod.Get);
-            public static async Task<List<Model.TicketRepair>> GetRepairs(Guid id) => await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
+            public static async Task<Model.Ticket> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(id));
+                }
+                return await SendRequest<Model.Ticket>($"ticket/{id}", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.TicketKit>> GetKits(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketKits.Where(tk => tk.TicketGuid.Equals(id)).ToList();
+                }
+                return await SendRequest<List<Model.TicketKit>>($"ticket/{id}/kits", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.TicketStatus>> GetStatuses(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketStatuses.Where(tk => tk.TicketGuid.Equals(id)).ToList();
+                }
+                return await SendRequest<List<Model.TicketStatus>>($"ticket/{id}/statuses", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.TicketMalfunction>> GetMalfunctions(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketMalfunctions.Where(tk => tk.TicketGuid.Equals(id)).ToList();
+                }
+                return await SendRequest<List<Model.TicketMalfunction>>($"ticket/{id}/malfunctions", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.TicketRepair>> GetRepairs(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketRepairs.Where(tk => tk.TicketGuid.Equals(id)).ToList();
+                }
+                return await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
+            }
 
             public static async Task<Model.Ticket> Post(Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientName, string? clientPhone, string? note, string? description)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = new Model.Ticket(deviceBrandId,
+                                                  deviceModelId,
+                                                  deviceTypeId,
+                                                  clientName,
+                                                  clientPhone,
+                                                  DateTime.Now,
+                                                  note,
+                                                  description);
+                    App.Backup.Tickets.Add(ticket);
+                    return ticket;
+                }
                 var dto = new
                 {
                     DeviceBrandId = deviceBrandId,
@@ -129,11 +304,27 @@ namespace fixflow.Utility
 
             public static async Task<Model.Ticket> Put(Guid ticketId, string note)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.Note = note;
+                    var index = App.Backup.Tickets.FindIndex(t=> t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return ticket;
+                }
                 return await SendRequest<Model.Ticket>($"ticket?id={ticketId}&note={note}", HttpMethod.Put);
             }
 
             public static async Task<bool> ChangeClientName(Guid ticketId, string name)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.ClientFullname = name;
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -143,6 +334,14 @@ namespace fixflow.Utility
             }
             public static async Task<bool> ChangeClientPhone(Guid ticketId, string phone)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.ClientPhoneNumber = phone;
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -152,6 +351,14 @@ namespace fixflow.Utility
             }
             public static async Task<bool> ChangeDeviceBrand(Guid ticketId, Guid deviceBrandId)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.DeviceBrandGuid = deviceBrandId;
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -161,6 +368,14 @@ namespace fixflow.Utility
             }
             public static async Task<bool> ChangeDeviceModel(Guid ticketId, Guid deviceModelId)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.DeviceModelGuid = deviceModelId;
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -171,6 +386,14 @@ namespace fixflow.Utility
 
             public static async Task<bool> ChangeDeviceType(Guid ticketId, Guid deviceTypeId)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
+                    ticket.DeviceTypeGuid = deviceTypeId;
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
+                    App.Backup.Tickets[index] = ticket;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -181,15 +404,34 @@ namespace fixflow.Utility
 
             public static async Task<bool> Delete(Guid id)
             {
+                if (App.OfflineMode)
+                {
+                    var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(id));
+                    App.Backup.Tickets.Remove(ticket);
+                    return true;
+                }
                 return await SendRequest($"ticket/{id}", HttpMethod.Delete);
             }
         }
 
         public static class TicketKit
         {
-            public static async Task<List<Model.TicketKit>> Get() => await SendRequest<List<Model.TicketKit>>($"ticketkit", HttpMethod.Get);
+            public static async Task<List<Model.TicketKit>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketKits;
+                }
+                return await SendRequest<List<Model.TicketKit>>($"ticketkit", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, string name)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.TicketKits.Add(new Model.TicketKit(ticketId, name));
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -200,6 +442,14 @@ namespace fixflow.Utility
 
             public static async Task<bool> Put(Guid ticketKitid, string name)
             {
+                if (App.OfflineMode)
+                {
+                    var ticketkit = App.Backup.TicketKits.FirstOrDefault(tk => tk.Guid.Equals(ticketKitid));
+                    ticketkit.Name = name;
+                    var index = App.Backup.TicketKits.FindIndex(tk => tk.Guid.Equals(ticketKitid));
+                    App.Backup.TicketKits[index] = ticketkit;
+                    return true;
+                }
                 var dto = new
                 {
                     TicketKitId = ticketKitid,
@@ -208,15 +458,37 @@ namespace fixflow.Utility
                 return await SendRequest($"ticketkit", HttpMethod.Put, dto);
             }
 
-            public static async Task<bool> Delete(Guid ticketKitId) => await SendRequest($"ticketkit/{ticketKitId}", HttpMethod.Delete);
+            public static async Task<bool> Delete(Guid ticketKitId)
+            {
+                if (App.OfflineMode)
+                {
+                    var ticketKit = App.Backup.TicketKits.FirstOrDefault(tk => tk.Guid.Equals(ticketKitId));
+                    App.Backup.TicketKits.Remove(ticketKit);
+                    return true;
+                }
+                return await SendRequest($"ticketkit/{ticketKitId}", HttpMethod.Delete);
+            }
         }
 
         public static class TicketMalfunction
         {
 
-            public static async Task<List<Model.TicketMalfunction>> Get() => await SendRequest<List<Model.TicketMalfunction>>("ticketmalfunction", HttpMethod.Get);
+            public static async Task<List<Model.TicketMalfunction>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketMalfunctions;
+                }
+                return await SendRequest<List<Model.TicketMalfunction>>("ticketmalfunction", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, string name)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.TicketMalfunctions.Add(new Model.TicketMalfunction(ticketId, name));
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -225,10 +497,27 @@ namespace fixflow.Utility
                 return await SendRequest($"ticketmalfunction", HttpMethod.Post, dto);
             }
 
-            public static async Task<bool> Delete(Guid ticketMalfId) => await SendRequest($"ticketmalfunction/{ticketMalfId}", HttpMethod.Delete);
+            public static async Task<bool> Delete(Guid ticketMalfId)
+            {
+                if (App.OfflineMode)
+                {
+                    var ticketMalf = App.Backup.TicketMalfunctions.FirstOrDefault(tm => tm.Guid.Equals(ticketMalfId));
+                    App.Backup.TicketMalfunctions.Remove(ticketMalf);
+                    return true;
+                }
+                return await SendRequest($"ticketmalfunction/{ticketMalfId}", HttpMethod.Delete);
+            }
 
             public static async Task<bool> Put(Guid ticketMalfId, string name)
             {
+                if (App.OfflineMode)
+                {
+                    var ticketMalf = App.Backup.TicketMalfunctions.FirstOrDefault(tm => tm.Guid.Equals(ticketMalfId));
+                    ticketMalf.Name = name;
+                    var index = App.Backup.TicketMalfunctions.FindIndex(tm => tm.Guid.Equals(ticketMalfId));
+                    App.Backup.TicketMalfunctions[index] = ticketMalf;
+                    return true;
+                }
                 var dto = new
                 {
                     Id = ticketMalfId,
@@ -240,9 +529,22 @@ namespace fixflow.Utility
 
         public static class TicketStatus
         {
-            public static async Task<List<Model.TicketStatus>> Get() => await SendRequest<List<Model.TicketStatus>>("ticketstatus", HttpMethod.Get);
+            public static async Task<List<Model.TicketStatus>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketStatuses;
+                }
+                return await SendRequest<List<Model.TicketStatus>>("ticketstatus", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, Guid statusId)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.TicketStatuses.Add(new Model.TicketStatus(ticketId, statusId));
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -254,9 +556,22 @@ namespace fixflow.Utility
 
         public static class TicketRepair
         {
-            public static async Task<List<Model.TicketRepair>> Get() => await SendRequest<List<Model.TicketRepair>>("ticketrepair", HttpMethod.Get);
+            public static async Task<List<Model.TicketRepair>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketRepairs;
+                }
+                return await SendRequest<List<Model.TicketRepair>>("ticketrepair", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, Guid repairId, int price)
             {
+                if (App.OfflineMode)
+                {
+                    App.Backup.TicketRepairs.Add(new Model.TicketRepair(ticketId, repairId, (uint)price));
+                    return true;
+                }
                 var dto = new
                 {
                     TicketId = ticketId,
@@ -269,19 +584,43 @@ namespace fixflow.Utility
 
         public static class Repair
         {
-            public static async Task<List<Model.Repair>> Get() => await SendRequest<List<Model.Repair>>("repair", HttpMethod.Get);
+            public static async Task<List<Model.Repair>> Get()
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Repairs;
+                }
+                return await SendRequest<List<Model.Repair>>("repair", HttpMethod.Get);
+            }
 
             public static async Task<Model.Repair?> GetByName(string name)
             {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Repairs.FirstOrDefault(x => x.Name.Equals(name));
+                }
                 var escapedName = Uri.EscapeDataString(name);
-                return await SendRequest<Model.Repair>($"repair/name?name={name}", HttpMethod.Get);
+                return await SendRequest<Model.Repair>($"repair/{name}", HttpMethod.Get);
             }
 
-            public static async Task<Model.Repair?> GetById(Guid id) => await SendRequest<Model.Repair>($"repair/{id}", HttpMethod.Get);
+            public static async Task<Model.Repair?> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.Repairs.FirstOrDefault(r => r.Guid.Equals(id));
+                }
+                return await SendRequest<Model.Repair>($"repair/{id}", HttpMethod.Get);
+            }
 
             public static async Task<Model.Repair> Post(string name)
             {
-                return await SendRequest<Model.Repair>($"repair/name?name={name}", HttpMethod.Post);
+                if (App.OfflineMode)
+                {
+                    var repair = new Model.Repair(name);
+                    App.Backup.Repairs.Add(repair);
+                    return repair;
+                }
+                return await SendRequest<Model.Repair>($"repair/{name}", HttpMethod.Post);
             }
                     
         }

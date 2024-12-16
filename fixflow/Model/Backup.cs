@@ -8,21 +8,23 @@ namespace fixflow.Model
 {
     public class Backup
     {
-        public List<DeviceBrand> DeviceBrands { get; set; }
-        public List<DeviceModel> DeviceModels { get; set; }
-        public List<Repair> Repairs { get; set; }
-        public List<Status> Statuses { get; set; }
-        public List<Ticket> Tickets { get; set; }
-        public List<TicketKit> TicketKits { get; set; }
-        public List<TicketMalfunction> TicketMalfunctions { get; set; }
-        public List<TicketRepair> TicketRepairs { get; set; }
-        public List<TicketStatus> TicketStatuses { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public List<DeviceBrand> DeviceBrands = new();
+        public List<DeviceModel> DeviceModels = new();
+        public List<DeviceType> DeviceTypes = new();
+        public List<Repair> Repairs = new();
+        public List<Status> Statuses = new();
+        public List<Ticket> Tickets = new();
+        public List<TicketKit> TicketKits = new();
+        public List<TicketMalfunction> TicketMalfunctions = new();
+        public List<TicketRepair> TicketRepairs = new();
+        public List<TicketStatus> TicketStatuses = new();
+        public DateTime TimeStamp = new();
 
         public Backup() { }
 
         public Backup(List<DeviceBrand> deviceBrands,
                       List<DeviceModel> deviceModels,
+                      List<DeviceType> deviceTypes,
                       List<Repair> repairs,
                       List<Status> statuses,
                       List<Ticket> tickets,
@@ -33,6 +35,7 @@ namespace fixflow.Model
         {
             DeviceBrands = deviceBrands;
             DeviceModels = deviceModels;
+            DeviceTypes = deviceTypes;
             Repairs = repairs;
             Statuses = statuses;
             Tickets = tickets;

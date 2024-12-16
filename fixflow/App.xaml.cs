@@ -41,8 +41,8 @@ namespace fixflow
             UpdateSettings();
             UpdateApp();
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
-            CheckConnection();
-            BackupManager.CreateBackup();
+            //CheckConnection();
+            //BackupManager.CreateBackup();
         }
 
         public async void UpdateApp()
@@ -86,6 +86,7 @@ namespace fixflow
                     catch
                     {
                         App.OfflineMode = true;
+                        BackupManager.SetBackup();
                     }
                 }
             }
@@ -93,6 +94,7 @@ namespace fixflow
             {
                 App.HasInternetConnection = false;
                 App.OfflineMode = true;
+                BackupManager.SetBackup();
             }
         }
 
@@ -134,6 +136,11 @@ namespace fixflow
             return $"v{version}";
         }
 
+        private async void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (App.OfflineMode) BackupManager.SaveBackup(Backup);
+            else BackupManager.CreateBackup().GetAwaiter().GetResult();
+        }
     }
 
 }

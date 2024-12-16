@@ -119,7 +119,7 @@
             <Grid Grid.Row="2"
                   Height="28"
                   x:Name="lower_Grid"
-                  Visibility="Visible">
+                  Visibility="Collapsed">
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="FontFamily"
@@ -155,7 +155,7 @@
                             Grid.Column="0"
                             Margin="10 0 0 0"
                             x:Name="update_StackPanel"
-                            Visibility="Visible">
+                            Visibility="Collapsed">
                     <TextBlock Text="{StaticResource update_available}" />
                     <TextBlock x:Name="newVersion_TextBlock"
                                Margin="5 0 0 0"

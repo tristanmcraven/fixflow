@@ -16,4 +16,16 @@ public partial class TicketRepair
     public virtual Repair Repair { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketRepair()
+    {
+    }
+
+    public TicketRepair(Guid ticketGuid, Guid repairGuid, uint price)
+    {
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketGuid;
+        RepairGuid = repairGuid;
+        Price = price;
+    }
 }

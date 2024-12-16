@@ -16,4 +16,16 @@ public partial class TicketStatus
     public virtual Status Status { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketStatus()
+    {
+    }
+
+    public TicketStatus(Guid ticketGuid, Guid statusGuid)
+    {
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketGuid;
+        StatusGuid = statusGuid;
+        Timestamp = DateTime.Now;
+    }
 }

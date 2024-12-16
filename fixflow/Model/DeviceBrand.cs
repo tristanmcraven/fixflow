@@ -12,4 +12,14 @@ public partial class DeviceBrand
     public virtual ICollection<DeviceModel> DeviceModels { get; set; } = new List<DeviceModel>();
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
+    public DeviceBrand()
+    {
+    }
+
+    public DeviceBrand(string name)
+    {
+        Guid = Guid.NewGuid();
+        Name = name;
+    }
 }

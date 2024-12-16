@@ -234,8 +234,8 @@ namespace fixflow.Windows
             var deviceTypeResult = await ApiClient.Ticket.ChangeDeviceType(_ticket.Guid, (await ApiClient.DeviceType.GetByName(deviceTypes_ComboBox.SelectedItem.ToString())).Guid);
             if (nameResult && phoneResult && deviceBrandResult && deviceModelResult && deviceTypeResult)
             {
-                reject_Button_Click(null, null);
                 Window_Activated(null, null);
+                reject_Button_Click(null, null);
             }
         }
 
