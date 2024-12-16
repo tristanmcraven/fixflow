@@ -5,11 +5,13 @@ namespace fixflow_api.Model;
 
 public partial class Ticket
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint DeviceBrandId { get; set; }
+    public Guid DeviceBrandGuid { get; set; }
 
-    public uint DeviceModelId { get; set; }
+    public Guid DeviceModelGuid { get; set; }
+
+    public Guid DeviceTypeGuid { get; set; }
 
     public string? ClientFullname { get; set; }
 
@@ -25,6 +27,8 @@ public partial class Ticket
 
     public virtual DeviceModel DeviceModel { get; set; } = null!;
 
+    public virtual DeviceType DeviceType { get; set; } = null!;
+
     public virtual ICollection<TicketKit> TicketKits { get; set; } = new List<TicketKit>();
 
     public virtual ICollection<TicketMalfunction> TicketMalfunctions { get; set; } = new List<TicketMalfunction>();
@@ -37,10 +41,12 @@ public partial class Ticket
     {
     }
 
-    public Ticket(uint deviceBrandId, uint deviceModelId, string? clientFullname, string? clientPhoneNumber, DateTime timestamp, string? note, string? description)
+    public Ticket(Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientFullname, string? clientPhoneNumber, DateTime timestamp, string? note, string? description)
     {
-        DeviceBrandId = deviceBrandId;
-        DeviceModelId = deviceModelId;
+        Guid = Guid.NewGuid();
+        DeviceBrandGuid = deviceBrandId;
+        DeviceModelGuid = deviceModelId;
+        DeviceTypeGuid = deviceTypeId;
         ClientFullname = clientFullname;
         ClientPhoneNumber = clientPhoneNumber;
         Timestamp = timestamp;

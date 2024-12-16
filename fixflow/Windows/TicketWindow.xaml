@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:fixflow.Windows"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Тикет" Height="768" Width="1366"
+        Title="Тикет" Height="805" Width="1366"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded"
         Activated="Window_Activated"
         Closing="Window_Closing"
+        MinHeight="805"
         Style="{StaticResource MaterialDesignWindow}">
 
     <Window.Resources>
@@ -83,18 +84,20 @@
                             <TextBox x:Name="clientName_TextBox"
                                      md:HintAssist.Hint="Имя"
                                      Visibility="Collapsed"
-                                     Padding="10"
-                                     Margin="0 0 74 0"/>
+                                     Padding="10 7.5"
+                                     Margin="0 0 74 0"
+                                     md:HintAssist.FloatingScale="0.85"/>
 
                             <TextBlock x:Name="clientPhone_TextBlock"
                                    Text="{Binding ClientPhoneNumber, StringFormat='Телефон: +7{0}'}"/>
                             <TextBox x:Name="clientPhone_TextBox"
                                      md:HintAssist.Hint="Телефон"
                                      Visibility="Collapsed"
-                                     Padding="10"
+                                     Padding="10 7.5"
                                      Margin="0 10 0 0"
                                      MaxLength="10"
-                                     md:TextFieldAssist.PrefixText="+7"/>
+                                     md:TextFieldAssist.PrefixText="+7"
+                                     md:HintAssist.FloatingScale="0.85"/>
                         </StackPanel>
 
                         <GroupBox Grid.Row="1">
@@ -103,13 +106,22 @@
                             </GroupBox.Header>
                             <StackPanel Orientation="Vertical">
 
+                                <TextBlock x:Name="deviceType_TextBlock"
+                                           Text="{Binding DeviceType.Name, StringFormat='Тип: {0}'}"
+                                           Margin="0 0 0 10" />
+                                <ComboBox x:Name="deviceTypes_ComboBox"
+                                          Visibility="Collapsed"
+                                          Padding="10, 7.5"
+                                          Margin="0 0 0 5"/>
+
+
                                 <TextBlock x:Name="deviceBrand_TextBlock"
                                    Text="{Binding DeviceBrand.Name, StringFormat='Марка: {0}'}"
                                            Margin="0 0 0 10"/>
                                 <ComboBox x:Name="brands_ComboBox"
                                           Visibility="Collapsed"
-                                          Padding="10"
-                                          SelectionChanged="brands_ComboBox_SelectionChanged"/>
+                                          Padding="10 7.5"
+                                          SelectionChanged="brands_ComboBox_SelectionChanged" />
 
                                 <TextBlock x:Name="deviceModel_TextBlock"
                                    Text="{Binding DeviceModel.Name, StringFormat='Модель: {0}'}"/>
@@ -121,10 +133,10 @@
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
                                     <ComboBox x:Name="models_ComboBox"
-                                          Padding="10"/>
+                                              Padding="10 7.5" />
                                     <TextBox x:Name="newModel_TextBox"
                                              md:HintAssist.Hint="Модель"
-                                             Padding="10"
+                                             Padding="10 7.5"
                                              Visibility="Collapsed"
                                              KeyUp="newModel_TextBox_KeyUp"/>
                                     <Button x:Name="addNewModel_Button"
@@ -172,7 +184,14 @@
                 <GroupBox Grid.Column="1"
                           Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource kit}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource kit}" />
+                            <Button x:Name="addKit_Button"
+                                    Style="{StaticResource add_button_small}"
+                                    Margin="5 0 0 0"
+                                    Click="addKit_Button_Click"/>
+                        </StackPanel>
+
                     </GroupBox.Header>
                     <ListBox x:Name="parts_ListBox"
                              HorizontalContentAlignment="Stretch"
@@ -191,12 +210,12 @@
                 </GroupBox>
 
                 <TextBox x:Name="ticketNote_TextBox"
-                        TextChanged="ticketNote_TextBox_TextChanged"
-                        AcceptsReturn="True"
-                        TextWrapping="Wrap"
-                        md:HintAssist.Hint="{StaticResource ticket_note}"
+                         TextChanged="ticketNote_TextBox_TextChanged"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         md:HintAssist.Hint="{StaticResource ticket_note}"
                          Margin="0 10 0 0"
-                         Grid.Column="2"/>
+                         Grid.Column="2" />
 
             </Grid>
             <Grid Grid.Row="2"
@@ -210,7 +229,13 @@
                 <GroupBox Grid.Column="0"
                           Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                            <Button x:Name="addMalf_Buton"
+                                    Style="{StaticResource add_button_small}"
+                                    Margin="5 0 0 0"
+                                    Click="addMalf_Buton_Click"/>
+                        </StackPanel>
                     </GroupBox.Header>
                     <ListBox x:Name="malfunctions_ListBox"
                             HorizontalContentAlignment="Stretch"

@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <Version>1.4.0</Version>
-	  <FileVersion>1.4.0</FileVersion>
-	  <AssemblyVersion>1.4.0</AssemblyVersion>
-	  <InformationalVersion>1.4.0</InformationalVersion>
+	  <Version>1.5.0</Version>
+	  <FileVersion>1.5.0</FileVersion>
+	  <AssemblyVersion>1.5.0</AssemblyVersion>
+	  <InformationalVersion>1.5.0</InformationalVersion>
 	  <Authors>tristanmcraven</Authors>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
@@ -24,6 +24,8 @@
     <None Remove="Assets\Images\check.png" />
     <None Remove="Assets\Images\cross.png" />
     <None Remove="Assets\Images\edit.png" />
+    <None Remove="Assets\Images\empty.png" />
+    <None Remove="Assets\Images\plus-bold.png" />
     <None Remove="Assets\Images\plus.png" />
     <None Remove="Assets\Images\program.png" />
     <None Remove="Assets\Images\settings.png" />
@@ -61,6 +63,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\empty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\plus-bold.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\plus.png">

@@ -3,24 +3,21 @@ using System.Collections.Generic;
 
 namespace fixflow_api.Model;
 
-public partial class TicketKit
+public partial class Repair
 {
     public Guid Guid { get; set; }
 
-    public Guid TicketGuid { get; set; }
-
     public string Name { get; set; } = null!;
 
-    public virtual Ticket Ticket { get; set; } = null!;
+    public virtual ICollection<TicketRepair> TicketRepairs { get; set; } = new List<TicketRepair>();
 
-    public TicketKit()
+    public Repair()
     {
     }
 
-    public TicketKit(Guid ticketId, string name)
+    public Repair(string name)
     {
         Guid = Guid.NewGuid();
-        TicketGuid = ticketId;
         Name = name;
     }
 }

@@ -31,7 +31,7 @@ namespace fixflow.Windows
         private async void addStatus_Button_Click(object sender, RoutedEventArgs e)
         {
             var status = await ApiClient.Status.GetByName(statuses_ComboBox.SelectedItem.ToString());
-            var result = await ApiClient.TicketStatus.Post(_ticket.Id, status.Id);
+            var result = await ApiClient.TicketStatus.Post(_ticket.Guid, status.Guid);
             if (result)
             {
                 this.Close();

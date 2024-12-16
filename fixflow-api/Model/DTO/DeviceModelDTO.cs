@@ -5,7 +5,7 @@ namespace fixflow_api.Model.DTO
     public class DeviceModelDTO
     {
         [Required]
-        public uint DeviceBrandId { get; set; }
+        public Guid DeviceBrandId { get; set; }
         [Required]
         public string Name { get; set; }
 

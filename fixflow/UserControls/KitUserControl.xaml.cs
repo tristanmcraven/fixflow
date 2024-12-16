@@ -23,34 +23,69 @@ namespace fixflow.UserControls
     /// </summary>
     public partial class KitUserControl : UserControl
     {
-        private TicketKit _kit;
+        private TicketKit? _kit;
+        private Ticket _ticket;
         private bool _isEditing;
-        public KitUserControl(TicketKit kit)
+        private bool _creating;
+        public KitUserControl(TicketKit? kit, Ticket ticket, bool creating)
         {
             _kit = kit;
+            _creating = creating;
+            _ticket = ticket;
             DataContext = _kit;
             InitializeComponent();
+            if (_creating) edit_Button_Click(null, null);
         }
 
         private void edit_Button_Click(object sender, RoutedEventArgs e)
         {
             _isEditing = true;
             kitName_TextBlock.Visibility = Visibility.Collapsed;
-            kitName_TextBox.Text = _kit.Name;
+            kitName_TextBox.Text = _kit == null ? "" : _kit.Name;
             kitName_TextBox.Visibility = Visibility.Visible;
             edit_Button.Visibility = Visibility.Collapsed;
             actionButtons_StackPanel.Visibility = Visibility.Visible;
-            kitName_TextBox.Focus();
             kitName_TextBox.SelectionStart = kitName_TextBox.Text.Length;
+            //kitName_TextBox.Focus();
+
+            //если делать как сверху то хуй будет а не фокус
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                kitName_TextBox.Focus();
+                kitName_TextBox.SelectionStart = kitName_TextBox.Text.Length;
+            }), System.Windows.Threading.DispatcherPriority.Input);
         }
 
         private async void accept_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (_creating)
+            {
+                if (String.IsNullOrWhiteSpace(kitName_TextBox.Text))
+                {
+                    var tw = WindowManager.Get<TicketWindow>();
+                    tw.parts_ListBox.Items.RemoveAt(tw.parts_ListBox.Items.Count - 1);
+                    return;
+                }
+                else
+                {
+                    await ApiClient.TicketKit.Post(_ticket.Guid, kitName_TextBox.Text);
+                    WindowManager.Get<TicketWindow>().Window_Activated(null, null);
+                    return;
+                }
+            }
             if (kitName_TextBox.Text.Equals(_kit.Name))
                 {reject_Button_Click(null, null);
                 return;
             }
-            if (await ApiClient.TicketKit.Put(_kit.Id, kitName_TextBox.Text))
+            if (String.IsNullOrWhiteSpace(kitName_TextBox.Text))
+            {
+                if (await ApiClient.TicketKit.Delete(_kit.Guid))
+                {
+                    WindowManager.Get<TicketWindow>().Window_Activated(null, null);
+                }
+                return;
+            }
+            if (await ApiClient.TicketKit.Put(_kit.Guid, kitName_TextBox.Text))
             {
                 reject_Button_Click(null, null);
                 WindowManager.Get<TicketWindow>().Window_Activated(null, null);
@@ -59,6 +94,12 @@ namespace fixflow.UserControls
 
         private void reject_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (_creating)
+            {
+                var tw = WindowManager.Get<TicketWindow>();
+                tw.parts_ListBox.Items.RemoveAt(tw.parts_ListBox.Items.Count - 1);
+                return;
+            }
             _isEditing = false;
             kitName_TextBlock.Visibility = Visibility.Visible;
             kitName_TextBox.Visibility = Visibility.Collapsed;

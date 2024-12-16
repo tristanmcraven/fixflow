@@ -20,6 +20,10 @@ public partial class FixflowContext : DbContext
 
     public virtual DbSet<DeviceModel> DeviceModels { get; set; }
 
+    public virtual DbSet<DeviceType> DeviceTypes { get; set; }
+
+    public virtual DbSet<Repair> Repairs { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Ticket> Tickets { get; set; }
@@ -33,8 +37,7 @@ public partial class FixflowContext : DbContext
     public virtual DbSet<TicketStatus> TicketStatuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234;database=fixflow", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234;database=fixflow", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.40-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,15 +47,15 @@ public partial class FixflowContext : DbContext
 
         modelBuilder.Entity<DeviceBrand>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("device_brand");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.Name, "name_UNIQUE").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
@@ -60,37 +63,63 @@ public partial class FixflowContext : DbContext
 
         modelBuilder.Entity<DeviceModel>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("device_model");
 
-            entity.HasIndex(e => e.DeviceBrandId, "fk_devicemodel_device_brand_id_idx");
+            entity.HasIndex(e => e.DeviceBrandGuid, "fk_dm_device_brand_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DeviceBrandId).HasColumnName("device_brand_id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
+            entity.Property(e => e.DeviceBrandGuid).HasColumnName("device_brand_guid");
             entity.Property(e => e.Name)
-                .HasMaxLength(250)
+                .HasMaxLength(100)
                 .HasColumnName("name");
 
             entity.HasOne(d => d.DeviceBrand).WithMany(p => p.DeviceModels)
-                .HasForeignKey(d => d.DeviceBrandId)
+                .HasForeignKey(d => d.DeviceBrandGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_devicemodel_device_brand_id");
+                .HasConstraintName("fk_dm_device_brand_guid");
+        });
+
+        modelBuilder.Entity<DeviceType>(entity =>
+        {
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
+
+            entity.ToTable("device_type");
+
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
+
+            entity.Property(e => e.Guid).HasColumnName("guid");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Repair>(entity =>
+        {
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
+
+            entity.ToTable("repair");
+
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
+
+            entity.Property(e => e.Guid).HasColumnName("guid");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
         });
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("status");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
-            entity.HasIndex(e => e.Name, "name_UNIQUE").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
@@ -98,17 +127,19 @@ public partial class FixflowContext : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("ticket");
 
-            entity.HasIndex(e => e.DeviceBrandId, "fk_ticket_device_brand_id_idx");
+            entity.HasIndex(e => e.DeviceBrandGuid, "fk_ticket_device_brand_guid_idx");
 
-            entity.HasIndex(e => e.DeviceModelId, "fk_ticket_device_model_id_idx");
+            entity.HasIndex(e => e.DeviceModelGuid, "fk_ticket_device_model_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.DeviceTypeGuid, "fk_ticket_device_type_guid_idx");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
+
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.ClientFullname)
                 .HasMaxLength(150)
                 .HasColumnName("client_fullname");
@@ -118,8 +149,9 @@ public partial class FixflowContext : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(5000)
                 .HasColumnName("description");
-            entity.Property(e => e.DeviceBrandId).HasColumnName("device_brand_id");
-            entity.Property(e => e.DeviceModelId).HasColumnName("device_model_id");
+            entity.Property(e => e.DeviceBrandGuid).HasColumnName("device_brand_guid");
+            entity.Property(e => e.DeviceModelGuid).HasColumnName("device_model_guid");
+            entity.Property(e => e.DeviceTypeGuid).HasColumnName("device_type_guid");
             entity.Property(e => e.Note)
                 .HasMaxLength(5000)
                 .HasColumnName("note");
@@ -129,112 +161,122 @@ public partial class FixflowContext : DbContext
                 .HasColumnName("timestamp");
 
             entity.HasOne(d => d.DeviceBrand).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.DeviceBrandId)
+                .HasForeignKey(d => d.DeviceBrandGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticket_device_brand_id");
+                .HasConstraintName("fk_ticket_device_brand_guid");
 
             entity.HasOne(d => d.DeviceModel).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.DeviceModelId)
+                .HasForeignKey(d => d.DeviceModelGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticket_device_model_id");
+                .HasConstraintName("fk_ticket_device_model_guid");
+
+            entity.HasOne(d => d.DeviceType).WithMany(p => p.Tickets)
+                .HasForeignKey(d => d.DeviceTypeGuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_ticket_device_type_guid");
         });
 
         modelBuilder.Entity<TicketKit>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("ticket_kit");
 
-            entity.HasIndex(e => e.TicketId, "fk_ticketkit_ticket_id_idx");
+            entity.HasIndex(e => e.TicketGuid, "fk_tk_ticket_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Name)
-                .HasMaxLength(150)
+                .HasMaxLength(100)
                 .HasColumnName("name");
-            entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+            entity.Property(e => e.TicketGuid).HasColumnName("ticket_guid");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketKits)
-                .HasForeignKey(d => d.TicketId)
+                .HasForeignKey(d => d.TicketGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticketkit_ticket_id");
+                .HasConstraintName("fk_tk_ticket_guid");
         });
 
         modelBuilder.Entity<TicketMalfunction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("ticket_malfunctions");
 
-            entity.HasIndex(e => e.TicketId, "fk_ticketmalfunctions_ticket_id_idx");
+            entity.HasIndex(e => e.TicketGuid, "fk_tm_ticket_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Name)
-                .HasMaxLength(150)
+                .HasMaxLength(100)
                 .HasColumnName("name");
-            entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+            entity.Property(e => e.TicketGuid).HasColumnName("ticket_guid");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketMalfunctions)
-                .HasForeignKey(d => d.TicketId)
+                .HasForeignKey(d => d.TicketGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticketmalfunctions_ticket_id");
+                .HasConstraintName("fk_tm_ticket_guid");
         });
 
         modelBuilder.Entity<TicketRepair>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("ticket_repairs");
 
-            entity.HasIndex(e => e.TicketId, "fk_ticketrepairs_ticket_id_idx");
+            entity.HasIndex(e => e.RepairGuid, "fk_tr_repair_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.TicketGuid, "fk_tr_ticket_guid_idx");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
+
+            entity.Property(e => e.Guid).HasColumnName("guid");
             entity.Property(e => e.Price).HasColumnName("price");
-            entity.Property(e => e.Repair)
-                .HasMaxLength(150)
-                .HasColumnName("repair");
-            entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+            entity.Property(e => e.RepairGuid).HasColumnName("repair_guid");
+            entity.Property(e => e.TicketGuid).HasColumnName("ticket_guid");
+
+            entity.HasOne(d => d.Repair).WithMany(p => p.TicketRepairs)
+                .HasForeignKey(d => d.RepairGuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_tr_repair_guid");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketRepairs)
-                .HasForeignKey(d => d.TicketId)
+                .HasForeignKey(d => d.TicketGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticketrepairs_ticket_id");
+                .HasConstraintName("fk_tr_ticket_guid");
         });
 
         modelBuilder.Entity<TicketStatus>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Guid).HasName("PRIMARY");
 
             entity.ToTable("ticket_status");
 
-            entity.HasIndex(e => e.StatusId, "fk_ticketstatus_status_id_idx");
+            entity.HasIndex(e => e.StatusGuid, "fk_ts_status_guid_idx");
 
-            entity.HasIndex(e => e.TicketId, "fk_ticketstatus_ticket_id_idx");
+            entity.HasIndex(e => e.TicketGuid, "fk_ts_ticket_guid_idx");
 
-            entity.HasIndex(e => e.Id, "id_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Guid, "guid_UNIQUE").IsUnique();
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.StatusId).HasColumnName("status_id");
-            entity.Property(e => e.TicketId).HasColumnName("ticket_id");
+            entity.Property(e => e.Guid).HasColumnName("guid");
+            entity.Property(e => e.StatusGuid).HasColumnName("status_guid");
+            entity.Property(e => e.TicketGuid).HasColumnName("ticket_guid");
             entity.Property(e => e.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("timestamp");
 
             entity.HasOne(d => d.Status).WithMany(p => p.TicketStatuses)
-                .HasForeignKey(d => d.StatusId)
+                .HasForeignKey(d => d.StatusGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticketstatus_status_id");
+                .HasConstraintName("fk_ts_status_guid");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.TicketStatuses)
-                .HasForeignKey(d => d.TicketId)
+                .HasForeignKey(d => d.TicketGuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ticketstatus_ticket_id");
+                .HasConstraintName("fk_ts_ticket_guid");
         });
 
         OnModelCreatingPartial(modelBuilder);

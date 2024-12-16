@@ -21,8 +21,8 @@ namespace fixflow_api.Controllers
             return Ok(await _deviceModelService.Get());
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(uint id)
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var model = await _deviceModelService.GetById(id);
             return model != null ? Ok(model) : NotFound();

@@ -14,9 +14,9 @@ namespace fixflow_api.Services
             return await _context.DeviceModels.ToListAsync();
         }
 
-        public async Task<DeviceModel?> GetById(uint id)
+        public async Task<DeviceModel?> GetById(Guid id)
         {
-            var model = await _context.DeviceModels.Where(m => m.Id.Equals(id)).FirstOrDefaultAsync();
+            var model = await _context.DeviceModels.Where(m => m.Guid.Equals(id)).FirstOrDefaultAsync();
             return model;
         }
 
@@ -26,7 +26,7 @@ namespace fixflow_api.Services
             return model;
         }
 
-        public async Task<DeviceModel> Post(uint brandDeviceId, string name)
+        public async Task<DeviceModel> Post(Guid brandDeviceId, string name)
         {
             var deviceModel = new DeviceModel(brandDeviceId, name);
             _context.DeviceModels.Add(deviceModel);

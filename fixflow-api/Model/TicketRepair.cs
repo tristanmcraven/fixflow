@@ -5,13 +5,15 @@ namespace fixflow_api.Model;
 
 public partial class TicketRepair
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint TicketId { get; set; }
+    public Guid TicketGuid { get; set; }
 
-    public string Repair { get; set; } = null!;
+    public Guid RepairGuid { get; set; }
 
-    public int? Price { get; set; }
+    public uint Price { get; set; }
+
+    public virtual Repair Repair { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
 
@@ -19,10 +21,11 @@ public partial class TicketRepair
     {
     }
 
-    public TicketRepair(uint ticketId, string repair, int? price)
+    public TicketRepair(Guid ticketId, Guid repairId, uint price)
     {
-        TicketId = ticketId;
-        Repair = repair;
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketId;
+        RepairGuid = repairId;
         Price = price;
     }
 }

@@ -2,6 +2,7 @@
 using fixflow_api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,35 +23,35 @@ namespace fixflow_api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(uint id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var ticket = await _ticketService.GetById(id);
             return ticket != null ? Ok(ticket) : NotFound();
         }
 
-        [HttpGet("{id:int}/kits")]
-        public async Task<IActionResult> GetKits(uint id)
+        [HttpGet("{id:Guid}/kits")]
+        public async Task<IActionResult> GetKits(Guid id)
         {
             var kits = await _ticketService.GetKits(id);
             return Ok(kits);
         }
 
-        [HttpGet("{id:int}/statuses")]
-        public async Task<IActionResult> GetStatuses(uint id)
+        [HttpGet("{id:Guid}/statuses")]
+        public async Task<IActionResult> GetStatuses(Guid id)
         {
             var statuses = await _ticketService.GetStatuses(id);
             return Ok(statuses);
         }
 
-        [HttpGet("{id:int}/malfunctions")]
-        public async Task<IActionResult> GetMalfunctions(uint id)
+        [HttpGet("{id:Guid}/malfunctions")]
+        public async Task<IActionResult> GetMalfunctions(Guid id)
         {
             var malfs = await _ticketService.GetMalfunctions(id);
             return Ok(malfs);
         }
 
-        [HttpGet("{id:int}/repairs")]
-        public async Task<IActionResult> GetRepairs(uint id)
+        [HttpGet("{id:Guid}/repairs")]
+        public async Task<IActionResult> GetRepairs(Guid id)
         {
             var repairs = await _ticketService.GetRepairs(id);
             return Ok(repairs);
@@ -60,12 +61,12 @@ namespace fixflow_api.Controllers
         public async Task<IActionResult> Post(TicketDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var ticket = await _ticketService.Post(dto.DeviceBrandId, dto.DeviceModelId, dto.ClientFullname, dto.ClientPhoneNumber, dto.Timestamp, dto.Note, dto.Description);
+            var ticket = await _ticketService.Post(dto.DeviceBrandId, dto.DeviceModelId, dto.DeviceTypeId, dto.ClientFullname, dto.ClientPhoneNumber, dto.Timestamp, dto.Note, dto.Description);
             return ticket != null ? Ok(ticket) : BadRequest(ModelState);
         }
 
         [HttpPut]
-        public async Task<IActionResult> ChangeNote(uint id, string note)
+        public async Task<IActionResult> ChangeNote(Guid id, string note)
         {
             var ticket = await _ticketService.ChangeNote(id, note);
             return ticket != null ? Ok(ticket) : BadRequest();
@@ -97,6 +98,19 @@ namespace fixflow_api.Controllers
         {
             var ticket = await _ticketService.ChangeDeviceModel(dto.TicketId, dto.DeviceModelId);
             return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpPut("{id}/changedevicetype")]
+        public async Task<IActionResult> ChangeDeviceType(TicketDto.ChangeDeviceType dto)
+        {
+            var ticket = await _ticketService.ChangeDeviceType(dto.TicketId, dto.DeviceTypeId);
+            return ticket != null ? NoContent() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return await _ticketService.Delete(id) ? NoContent() : BadRequest();
         }
     }
 }

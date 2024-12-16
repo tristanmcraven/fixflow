@@ -5,11 +5,11 @@ namespace fixflow_api.Model;
 
 public partial class TicketStatus
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint TicketId { get; set; }
+    public Guid TicketGuid { get; set; }
 
-    public uint StatusId { get; set; }
+    public Guid StatusGuid { get; set; }
 
     public DateTime? Timestamp { get; set; }
 
@@ -21,10 +21,11 @@ public partial class TicketStatus
     {
     }
 
-    public TicketStatus(uint ticketId, uint statusId, DateTime? timestamp)
+    public TicketStatus(Guid ticketId, Guid statusId, DateTime? timestamp)
     {
-        TicketId = ticketId;
-        StatusId = statusId;
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketId;
+        StatusGuid = statusId;
         Timestamp = timestamp;
     }
 }

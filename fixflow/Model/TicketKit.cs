@@ -5,9 +5,9 @@ namespace fixflow.Model;
 
 public partial class TicketKit
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint TicketId { get; set; }
+    public Guid TicketGuid { get; set; }
 
     public string Name { get; set; } = null!;
 

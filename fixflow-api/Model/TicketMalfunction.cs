@@ -5,9 +5,9 @@ namespace fixflow_api.Model;
 
 public partial class TicketMalfunction
 {
-    public uint Id { get; set; }
+    public Guid Guid { get; set; }
 
-    public uint TicketId { get; set; }
+    public Guid TicketGuid { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -17,9 +17,11 @@ public partial class TicketMalfunction
     {
     }
 
-    public TicketMalfunction(uint ticketId, string name)
+    public TicketMalfunction(Guid ticketId, string name)
     {
-        TicketId = ticketId;
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketId;
         Name = name;
     }
+
 }

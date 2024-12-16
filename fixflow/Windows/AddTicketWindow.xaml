@@ -108,6 +108,41 @@
                                  md:TextFieldAssist.PrefixText="+7"
                                  PreviewTextInput="clientPhoneNumber_TextBox_PreviewTextInput" />
 
+                        <GroupBox Header="{StaticResource device_type}">
+                            <StackPanel>
+                                <ComboBox x:Name="deviceTypes_ComboBox"
+                                          SelectionChanged="deviceTypes_ComboBox_SelectionChanged" />
+                                <Grid x:Name="addDeviceType_Grid"
+                                      Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="newDeviceType_TextBox"
+                                             Margin="0"
+                                             Height="32"
+                                             Padding="10 5"
+                                             VerticalContentAlignment="Center"
+                                             md:HintAssist.Hint="Тип устройства"
+                                             KeyUp="newDeviceType_TextBox_KeyUp" />
+                                    <Button x:Name="acceptNewDeviceType_Button"
+                                            Grid.Column="1"
+                                            Style="{StaticResource accept_button}"
+                                            Margin="5 0 0 0"
+                                            Click="acceptNewDeviceType_Button_Click" />
+                                    <Button x:Name="rejectNewDeviceType_Button"
+                                            Grid.Column="2"
+                                            Style="{StaticResource reject_button}"
+                                            Margin="2 0 0 0"
+                                            Click="rejectNewDeviceType_Button_Click" />
+                                </Grid>
+                                <Button x:Name="addDeviceType_Button"
+                                        Content="{StaticResource add_device_type}"
+                                        Click="addDeviceType_Button_Click" />
+                            </StackPanel>
+                        </GroupBox>
+
                         <GroupBox Header="{StaticResource device_brand}">
                             <StackPanel>
                                 <ComboBox x:Name="brands_ComboBox"

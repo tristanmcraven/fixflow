@@ -17,6 +17,12 @@ namespace fixflow_api.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.Get());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketMalfunctionDto dto)
         {
@@ -31,6 +37,12 @@ namespace fixflow_api.Controllers
             if (!ModelState.IsValid) return BadRequest();
             var ticketMalf = await _service.Put(dto.Id, dto.Name);
             return ticketMalf != null ? NoContent() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return await _service.Delete(id) ? NoContent() : BadRequest();
         }
     }
 }

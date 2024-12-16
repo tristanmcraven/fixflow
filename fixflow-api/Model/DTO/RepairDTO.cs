@@ -1,8 +1,7 @@
 ﻿namespace fixflow_api.Model.DTO
 {
-    public class TicketKitPutDto
+    public class RepairDTO
     {
-        public Guid TicketKitId { get; set; }
         public string Name { get; set; }
     }
 }

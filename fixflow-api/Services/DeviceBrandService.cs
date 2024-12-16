@@ -14,9 +14,9 @@ namespace fixflow_api.Services
             return await (_context.DeviceBrands.ToListAsync());
         }
 
-        public async Task<DeviceBrand?> GetById(uint id)
+        public async Task<DeviceBrand?> GetById(Guid id)
         {
-            var brand = await _context.DeviceBrands.Where(db => db.Id.Equals(id)).FirstOrDefaultAsync();
+            var brand = await _context.DeviceBrands.Where(db => db.Guid.Equals(id)).FirstOrDefaultAsync();
             return brand;
         }
 
@@ -26,16 +26,16 @@ namespace fixflow_api.Services
             return brand;
         }
 
-        public async Task<List<DeviceModel>> GetModelsById(uint id)
+        public async Task<List<DeviceModel>> GetModelsById(Guid id)
         {
-            var brands = await _context.DeviceModels.Where(dm => dm.DeviceBrandId.Equals(id)).ToListAsync();
+            var brands = await _context.DeviceModels.Where(dm => dm.DeviceBrandGuid.Equals(id)).ToListAsync();
             return brands;
         }
 
         public async Task<List<DeviceModel>> GetModelsByName(string name)
         {
             var brand = await GetByName(name);
-            var brands = await _context.DeviceModels.Where(dm => dm.DeviceBrandId.Equals(brand.Id)).ToListAsync();
+            var brands = await _context.DeviceModels.Where(dm => dm.DeviceBrandGuid.Equals(brand.Guid)).ToListAsync();
             return brands;
         }
 

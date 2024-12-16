@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace fixflow.Model;
 
-public partial class TicketMalfunction
+public partial class Repair
 {
     public Guid Guid { get; set; }
 
-    public Guid TicketGuid { get; set; }
-
     public string Name { get; set; } = null!;
 
-    public virtual Ticket Ticket { get; set; } = null!;
+    public virtual ICollection<TicketRepair> TicketRepairs { get; set; } = new List<TicketRepair>();
 }

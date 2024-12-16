@@ -27,6 +27,8 @@ namespace fixflow_api
             builder.Services.AddScoped<TicketRepairService>();
             builder.Services.AddScoped<TicketService>();
             builder.Services.AddScoped<TicketStatusService>();
+            builder.Services.AddScoped<RepairService>();
+            builder.Services.AddScoped<DeviceTypeService>();
 
             builder.Services.AddDbContext<FixflowContext>(options => options.UseMySql(builder.Configuration.GetConnectionString("MyDbConnection"),
     new MySqlServerVersion(new Version(8, 0, 21))));
@@ -46,6 +48,8 @@ namespace fixflow_api
             }
 
             app.UseAuthorization();
+
+            app.Urls.Add("http://localhost:5108");
 
 
             app.MapControllers();

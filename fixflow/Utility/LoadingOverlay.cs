@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Media.Effects;
 
 namespace fixflow.Utility
 {
@@ -14,6 +15,7 @@ namespace fixflow.Utility
     {
         public static void Show(FrameworkElement container)
         {
+            //container.Effect = new BlurEffect { Radius = 15 };
             var bodyGrid = FindBodyGrid(container);
 
             if (bodyGrid == null)
@@ -39,6 +41,7 @@ namespace fixflow.Utility
 
         public static void Remove(FrameworkElement container)
         {
+            //container.Effect = null;
             var bodyGrid = FindBodyGrid(container);
 
             if (bodyGrid == null)

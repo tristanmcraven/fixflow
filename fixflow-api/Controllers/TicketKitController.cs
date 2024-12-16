@@ -14,6 +14,12 @@ namespace fixflow_api.Controllers
 
         public TicketKitController(TicketKitService ticketKitService) => _ticketKitService = ticketKitService;
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _ticketKitService.Get());
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketKitDto dto)
         {
@@ -28,6 +34,12 @@ namespace fixflow_api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var ticketKit = await _ticketKitService.Put(dto.TicketKitId, dto.Name);
             return ticketKit != null ? NoContent() : BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            return await _ticketKitService.Delete(id) ? NoContent() : BadRequest();
         }
     }
 }

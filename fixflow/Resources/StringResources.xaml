@@ -45,7 +45,6 @@
 
     <s:String x:Key="device">Устройство</s:String>
 
-    <s:String x:Key="file">Файл</s:String>
     
 
     <s:String x:Key="settings">Настройки</s:String>
@@ -57,6 +56,12 @@
     <s:String x:Key="general">Общие</s:String>
 
     <s:String x:Key="update_available">Доступно обновление</s:String>
+    <s:String x:Key="offline_mode">Оффлайн-режим</s:String>
+    <s:String x:Key="device_type">Тип устройства</s:String>
+    <s:String x:Key="add_device_type">Добавить новый тип устройства...</s:String>
+
+    <s:String x:Key="enter_type_name">Введите название типа устройства</s:String>
+    <s:String x:Key="type_exists">Такой тип устройства уже существует</s:String>
     
 
 </ResourceDictionary>

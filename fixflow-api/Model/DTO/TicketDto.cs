@@ -5,10 +5,13 @@ namespace fixflow_api.Model.DTO
     public class TicketDto
     {
         [Required]
-        public uint DeviceBrandId { get; set; }
+        public Guid DeviceBrandId { get; set; }
 
         [Required]
-        public uint DeviceModelId { get; set; }
+        public Guid DeviceModelId { get; set; }
+
+        [Required]
+        public Guid DeviceTypeId { get; set; }
 
         public string? ClientFullname { get; set; }
 
@@ -23,24 +26,29 @@ namespace fixflow_api.Model.DTO
 
         public class ChangeName
         {
-            public uint TicketId { get; set; }
+            public Guid TicketId { get; set; }
             public string Name { get; set; }
         }
 
         public class ChangePhone
         {
-            public uint TicketId { get; set; }
+            public Guid TicketId { get; set; }
             public string Phone { get; set; }
         }
         public class ChangeDeviceBrand
         {
-            public uint TicketId { get; set; }
-            public uint DeviceBrandId { get; set; }
+            public Guid TicketId { get; set; }
+            public Guid DeviceBrandId { get; set; }
         }
         public class ChangeDeviceModel
         {
-            public uint TicketId { get; set; }
-            public uint DeviceModelId { get; set; }
+            public Guid TicketId { get; set; }
+            public Guid DeviceModelId { get; set; }
+        }
+        public class ChangeDeviceType
+        {
+            public Guid TicketId { get; set; }
+            public Guid DeviceTypeId { get; set; }
         }
     }
 }

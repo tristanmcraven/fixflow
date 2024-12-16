@@ -1,4 +1,5 @@
 ﻿using fixflow_api.Model;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
 namespace fixflow_api.Services
@@ -12,9 +13,14 @@ namespace fixflow_api.Services
             _context = context;
         }
 
-        public async Task<TicketRepair> Post(uint ticketId, string repair, int? price)
+        public async Task<List<TicketRepair>> Get()
         {
-            var ticketRepair = new TicketRepair(ticketId, repair, price);
+            return await _context.TicketRepairs.ToListAsync();
+        }
+
+        public async Task<TicketRepair> Post(Guid ticketId, Guid repairId, uint price)
+        {
+            var ticketRepair = new TicketRepair(ticketId, repairId, price);
             _context.TicketRepairs.Add(ticketRepair);
             await _context.SaveChangesAsync();
             return ticketRepair;
