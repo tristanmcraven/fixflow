@@ -50,9 +50,11 @@ namespace fixflow_api.Services
                                        string? clientPhone,
                                        DateTime timestamp,
                                        string? note,
-                                       string? description)
+                                       string? description,
+                                       Guid? ticketId = null)
         {
-            var ticket = new Ticket(deviceBrandId, deviceModelId, deviceTypeId, clientName, clientPhone, timestamp, note, description);
+            Guid guid = ticketId ?? Guid.NewGuid();
+            var ticket = new Ticket(guid, deviceBrandId, deviceModelId, deviceTypeId, clientName, clientPhone, timestamp, note, description);
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
             return ticket;

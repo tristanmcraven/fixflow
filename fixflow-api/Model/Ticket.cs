@@ -41,9 +41,9 @@ public partial class Ticket
     {
     }
 
-    public Ticket(Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientFullname, string? clientPhoneNumber, DateTime timestamp, string? note, string? description)
+    public Ticket(Guid ticketId, Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientFullname, string? clientPhoneNumber, DateTime timestamp, string? note, string? description)
     {
-        Guid = Guid.NewGuid();
+        Guid = ticketId;
         DeviceBrandGuid = deviceBrandId;
         DeviceModelGuid = deviceModelId;
         DeviceTypeGuid = deviceTypeId;

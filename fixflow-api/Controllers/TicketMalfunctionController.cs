@@ -23,6 +23,13 @@ namespace fixflow_api.Controllers
             return Ok(await _service.Get());
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var ticketMalf = await _service.GetById(id);
+            return ticketMalf != null ? Ok(ticketMalf) : NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketMalfunctionDto dto)
         {

@@ -14,6 +14,11 @@ namespace fixflow_api.Services
             return await _context.TicketStatuses.ToListAsync();
         }
 
+        public async Task<TicketStatus> GetById(Guid id)
+        {
+            return await _context.TicketStatuses.FirstOrDefaultAsync(ts => ts.Guid.Equals(id));
+        }
+
         public async Task<List<TicketStatus>> GetByTicketId(Guid id)
         {
             return await _context.TicketStatuses.Where(ts => ts.TicketGuid.Equals(id)).ToListAsync();

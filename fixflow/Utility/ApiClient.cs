@@ -1,14 +1,7 @@
 ﻿using fixflow.Model;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
-using System.Xml.Linq;
 
 namespace fixflow.Utility
 {
@@ -47,6 +40,15 @@ namespace fixflow.Utility
 
             return response.IsSuccessStatusCode;
         }
+
+        //whatever goes next is total shit
+        //bc the client is a brainless degenerate
+        //who first asks for something
+        //then changes his mind (asks for offline mode)
+        //and i dont have time to do it the HUMAN way
+        //iw2d iw2kms frfr
+
+        //pls dont look >.<
 
         public static class DeviceBrand
         {
@@ -273,7 +275,14 @@ namespace fixflow.Utility
                 return await SendRequest<List<Model.TicketRepair>>($"ticket/{id}/repairs", HttpMethod.Get);
             }
 
-            public static async Task<Model.Ticket> Post(Guid deviceBrandId, Guid deviceModelId, Guid deviceTypeId, string? clientName, string? clientPhone, string? note, string? description)
+            public static async Task<Model.Ticket> Post(Guid deviceBrandId,
+                                                        Guid deviceModelId,
+                                                        Guid deviceTypeId,
+                                                        string? clientName,
+                                                        string? clientPhone,
+                                                        string? note,
+                                                        string? description,
+                                                        Guid? guid = null)
             {
                 if (App.OfflineMode)
                 {
@@ -297,7 +306,8 @@ namespace fixflow.Utility
                     ClientPhoneNumber = clientPhone,
                     Timestamp = DateTime.Now,
                     Note = note,
-                    Description = description
+                    Description = description,
+                    TicketId = guid
                 };
                 return await SendRequest<Model.Ticket>($"ticket", HttpMethod.Post, dto);
             }
@@ -308,7 +318,7 @@ namespace fixflow.Utility
                 {
                     var ticket = App.Backup.Tickets.FirstOrDefault(t => t.Guid.Equals(ticketId));
                     ticket.Note = note;
-                    var index = App.Backup.Tickets.FindIndex(t=> t.Guid.Equals(ticketId));
+                    var index = App.Backup.Tickets.FindIndex(t => t.Guid.Equals(ticketId));
                     App.Backup.Tickets[index] = ticket;
                     return ticket;
                 }
@@ -491,6 +501,15 @@ namespace fixflow.Utility
                 return await SendRequest<List<Model.TicketMalfunction>>("ticketmalfunction", HttpMethod.Get);
             }
 
+            public static async Task<Model.TicketMalfunction> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketMalfunctions.FirstOrDefault(tm => tm.Guid.Equals(id));
+                }
+                return await SendRequest<Model.TicketMalfunction>($"ticketmalfunction/{id}", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, string name)
             {
                 if (App.OfflineMode)
@@ -547,6 +566,11 @@ namespace fixflow.Utility
                 return await SendRequest<List<Model.TicketStatus>>("ticketstatus", HttpMethod.Get);
             }
 
+            public static async Task<Model.TicketStatus> GetById(Guid id)
+            {
+                return await SendRequest<Model.TicketStatus>($"ticketstatus/{id}", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, Guid statusId)
             {
                 if (App.OfflineMode)
@@ -572,6 +596,11 @@ namespace fixflow.Utility
                     return App.Backup.TicketRepairs;
                 }
                 return await SendRequest<List<Model.TicketRepair>>("ticketrepair", HttpMethod.Get);
+            }
+
+            public static async Task<Model.TicketRepair> GetById(Guid id)
+            {
+                return await SendRequest<Model.TicketRepair>($"ticketrepair/{id}", HttpMethod.Get);
             }
 
             public static async Task<bool> Post(Guid ticketId, Guid repairId, int price)
@@ -631,14 +660,16 @@ namespace fixflow.Utility
                 }
                 return await SendRequest<Model.Repair>($"repair/{name}", HttpMethod.Post);
             }
-                    
+
         }
 
         public static class Sync
         {
             public static async Task SyncData(Backup backup)
             {
-
+                await Delete(backup);
+                await Post(backup);
+                await Put(backup);
             }
 
             private static async Task Delete(Backup backup)
@@ -646,13 +677,45 @@ namespace fixflow.Utility
                 var dbTickets = await Ticket.Get();
                 var backupTicketIds = App.Backup.Tickets.Select(t => t.Guid).ToHashSet();
 
-                foreach (var dbTicket in  dbTickets)
+                foreach (var dbTicket in dbTickets)
                 {
                     if (!backupTicketIds.Contains(dbTicket.Guid))
                     {
                         await Ticket.Delete(dbTicket.Guid);
                     }
                 }
+
+                var dbTicketKits = await TicketKit.Get();
+                var backupTicketKitIds = App.Backup.TicketKits.Select(t => t.Guid).ToHashSet();
+                foreach (var dbTicketKit in dbTicketKits)
+                {
+                    if (!backupTicketKitIds.Contains(dbTicketKit.Guid))
+                    {
+                        await TicketKit.Delete(dbTicketKit.Guid);
+                    }
+                }
+
+                var dbTicketMalfs = await TicketMalfunction.Get();
+                var backupTicketMalfIds = App.Backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
+                foreach (var dbTicketMalf in dbTicketMalfs)
+                {
+                    if (!backupTicketMalfIds.Contains(dbTicketMalf.Guid))
+                    {
+                        await TicketMalfunction.Delete(dbTicketMalf.Guid);
+                    }
+                }
+
+                //var dbTicketRepairs = await TicketRepair.Get();
+                //var backupTicketRepairIds = App.Backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
+                //foreach (var dbTicketRepair in dbTicketRepairs)
+                //{
+                //    if (!backupTicketRepairIds.Contains(dbTicketRepair.Guid))
+                //    {
+                //        await TicketRepair.Delete
+                //    }
+                //}
+
+
             }
 
             private static async Task Post(Backup backup)
@@ -703,15 +766,98 @@ namespace fixflow.Utility
                     var existingTicket = await Ticket.GetById(ticket.Guid);
                     if (existingTicket == null)
                     {
-                        await Ticket.Post();
+                        await Ticket.Post(ticket.DeviceBrandGuid,
+                                          ticket.DeviceModelGuid,
+                                          ticket.DeviceTypeGuid,
+                                          ticket.ClientFullname,
+                                          ticket.ClientPhoneNumber,
+                                          ticket.Note,
+                                          null,
+                                          ticket.Guid);
                     }
                 }
 
                 var ticketKits = App.Backup.TicketKits;
                 foreach (var ticketKit in ticketKits)
                 {
-                    var existingTicketKit = await TicketKit.GetById
+                    var existingTicketKit = await TicketKit.GetById(ticketKit.Guid);
+                    if (existingTicketKit == null)
+                    {
+                        await TicketKit.Post(ticketKit.TicketGuid, ticketKit.Name);
+                    }
                 }
+
+                var ticketMalfs = App.Backup.TicketMalfunctions;
+                foreach (var ticketMalf in ticketMalfs)
+                {
+                    var existingTicketMalf = await TicketMalfunction.GetById(ticketMalf.Guid);
+                    if (existingTicketMalf == null)
+                    {
+                        await TicketMalfunction.Post(ticketMalf.TicketGuid, ticketMalf.Name);
+                    }
+                }
+
+                var ticketRepairs = App.Backup.TicketRepairs;
+                foreach (var ticketRepair in ticketRepairs)
+                {
+                    var existingTicketRepair = await TicketRepair.GetById(ticketRepair.Guid);
+                    if (existingTicketRepair == null)
+                    {
+                        await TicketRepair.Post(ticketRepair.TicketGuid, ticketRepair.RepairGuid, (int)ticketRepair.Price);
+                    }
+                }
+
+                var ticketStatuses = App.Backup.TicketStatuses;
+                foreach (var ticketStatus in ticketStatuses)
+                {
+                    var existingTicketStatus = await TicketStatus.GetById(ticketStatus.Guid);
+                    if (existingTicketStatus == null)
+                    {
+                        await TicketStatus.Post(ticketStatus.TicketGuid, ticketStatus.StatusGuid);
+                    }
+                }
+            }
+
+            private static async Task Put(Backup backup)
+            {
+                var dbTickets = await Ticket.Get();
+                var backupTickets = App.Backup.Tickets;
+                var ticketsToUpdate = backupTickets
+                    .Where(bt => dbTickets.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
+                    .ToList();
+
+                foreach (var ticket in ticketsToUpdate)
+                {
+                    await Ticket.Put(ticket.Guid, ticket.Note);
+                    await Ticket.ChangeDeviceBrand(ticket.Guid, ticket.DeviceBrandGuid);
+                    await Ticket.ChangeDeviceModel(ticket.Guid, ticket.DeviceModelGuid);
+                    await Ticket.ChangeDeviceType(ticket.Guid, ticket.DeviceTypeGuid);
+                    await Ticket.ChangeClientName(ticket.Guid, ticket.ClientFullname);
+                    await Ticket.ChangeClientPhone(ticket.Guid, ticket.ClientPhoneNumber);
+                }
+
+                var dbTicketKits = await TicketKit.Get();
+                var backupTicketKits = App.Backup.TicketKits;
+                var ticketsKitsToUpdate = backupTicketKits
+                    .Where(bt => dbTicketKits.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
+                    .ToList();
+
+                foreach (var ticketKit in ticketsKitsToUpdate)
+                {
+                    await TicketKit.Put(ticketKit.TicketGuid, ticketKit.Name);
+                }
+
+                var dbTicketMalfs = await TicketMalfunction.Get();
+                var backupTicketMalfs = App.Backup.TicketMalfunctions;
+                var ticketMalfsToUpdate = backupTicketMalfs
+                    .Where(bt => dbTicketMalfs.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
+                    .ToList();
+
+                foreach (var ticketMalf in ticketMalfsToUpdate)
+                {
+                    await TicketMalfunction.Put(ticketMalf.TicketGuid, ticketMalf.Name);
+                }
+
             }
         }
     }
