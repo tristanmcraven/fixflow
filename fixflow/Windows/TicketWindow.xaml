@@ -43,6 +43,13 @@
                     CornerRadius="10"
                     Padding="15 10"
                     Margin="-15 0 -15 15">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="15"
+                                      Direction="360"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality"/>
+                </Border.Effect>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">

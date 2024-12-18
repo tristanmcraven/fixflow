@@ -26,8 +26,14 @@
                        FontSize="16"
                        HorizontalAlignment="Center"
                        Margin="0 10"
-                       Foreground="{StaticResource MaterialDesign.Brush.Primary}"
-                       />
+                       Foreground="{StaticResource MaterialDesign.Brush.Primary}">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="10"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality" />
+                </TextBlock.Effect>
+            </TextBlock>
             <ListBox x:Name="settings_ListBox"
                      ScrollViewer.CanContentScroll="False"
                      Grid.Row="1"
@@ -82,7 +88,14 @@
                        VerticalAlignment="Center"
                        Margin="0 10 0 20"
                        FontSize="16"
-                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}"/>
+                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="10"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality" />
+                </TextBlock.Effect>
+            </TextBlock>
             <Frame x:Name="Frame" NavigationUIVisibility="Hidden"
                    Grid.Row="1"/>
         </Grid>

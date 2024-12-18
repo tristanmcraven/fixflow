@@ -179,11 +179,11 @@ namespace fixflow.Windows
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SettingsManager.SaveWindowProperties(this);
             if (_noteChanged)
             {
                 await ApiClient.Ticket.Put(_ticket.Guid, ticketNote_TextBox.Text);
             }
+            SettingsManager.SaveWindowProperties(this);
         }
 
         private void editClient_Button_Click(object sender, RoutedEventArgs e)

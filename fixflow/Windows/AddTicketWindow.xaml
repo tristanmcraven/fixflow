@@ -73,6 +73,13 @@
             <Border Background="{DynamicResource MaterialDesign.Brush.Secondary}"
                     CornerRadius="10"
                     Margin="25 15">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="15"
+                                      Direction="360"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality" />
+                </Border.Effect>
                 <TextBlock Text="Добавление нового тикета"
                            HorizontalAlignment="Center"
                            FontFamily="{StaticResource medium}"
