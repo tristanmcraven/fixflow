@@ -1,11 +1,6 @@
 ﻿using fixflow.Model;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace fixflow.Utility
 {
@@ -15,23 +10,27 @@ namespace fixflow.Utility
 
         public static async Task<Backup> CreateBackup()
         {
-            var backup = new Backup
+            if (App.OfflineMode)
             {
-                DeviceBrands = await ApiClient.DeviceBrand.Get(),
-                DeviceModels = await ApiClient.DeviceModel.Get(),
-                DeviceTypes = await ApiClient.DeviceType.Get(),
-                Repairs = await ApiClient.Repair.Get(),
-                Statuses = await ApiClient.Status.Get(),
-                Tickets = await ApiClient.Ticket.Get(),
-                TicketKits = await ApiClient.TicketKit.Get(),
-                TicketMalfunctions = await ApiClient.TicketMalfunction.Get(),
-                TicketRepairs = await ApiClient.TicketRepair.Get(),
-                TicketStatuses = await ApiClient.TicketStatus.Get(),
-                Timestamp = DateTime.Now
-            };
-            var json = JsonConvert.SerializeObject(backup, Formatting.Indented);
-            File.WriteAllText(Path, json);
-            return backup;
+                var backup = new Backup
+                {
+                    DeviceBrands = await ApiClient.DeviceBrand.Get(),
+                    DeviceModels = await ApiClient.DeviceModel.Get(),
+                    DeviceTypes = await ApiClient.DeviceType.Get(),
+                    Repairs = await ApiClient.Repair.Get(),
+                    Statuses = await ApiClient.Status.Get(),
+                    Tickets = await ApiClient.Ticket.Get(),
+                    TicketKits = await ApiClient.TicketKit.Get(),
+                    TicketMalfunctions = await ApiClient.TicketMalfunction.Get(),
+                    TicketRepairs = await ApiClient.TicketRepair.Get(),
+                    TicketStatuses = await ApiClient.TicketStatus.Get(),
+                    Timestamp = DateTime.Now
+                };
+                var json = JsonConvert.SerializeObject(backup, Formatting.Indented);
+                File.WriteAllText(Path, json);
+                return backup;
+            }
+            return null;
         }
 
         public static void SetBackup()

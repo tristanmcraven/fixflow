@@ -128,7 +128,8 @@ namespace fixflow.Windows
                 if (e.ChangedButton == MouseButton.Left)
                 {
                     Guid ticketId = (Guid)rowView["Guid"];
-                    var tw = new TicketWindow(ticketId)
+                    uint id = (uint)rowView["Номер"];
+                    var tw = new TicketWindow(ticketId, (int)id)
                     {
                         Owner = this
                     };
@@ -179,6 +180,10 @@ namespace fixflow.Windows
             {
                 var timestamp = App.Backup.Timestamp;
                 lastSyncTime_TextBlock.Text = $"(последняя синхронизация: {timestamp:dd}.{timestamp:MM}.{timestamp:yyyy} {timestamp:HH}:{timestamp:mm})";
+            }
+            else
+            {
+                //await ApiClient.Sync.SyncData(App.Backup);
             }
             Window_Activated(null, null);
             WindowManager.SetProperties(this);

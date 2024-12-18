@@ -675,7 +675,7 @@ namespace fixflow.Utility
             private static async Task Delete(Backup backup)
             {
                 var dbTickets = await Ticket.Get();
-                var backupTicketIds = App.Backup.Tickets.Select(t => t.Guid).ToHashSet();
+                var backupTicketIds = backup.Tickets.Select(t => t.Guid).ToHashSet();
 
                 foreach (var dbTicket in dbTickets)
                 {
@@ -686,7 +686,7 @@ namespace fixflow.Utility
                 }
 
                 var dbTicketKits = await TicketKit.Get();
-                var backupTicketKitIds = App.Backup.TicketKits.Select(t => t.Guid).ToHashSet();
+                var backupTicketKitIds = backup.TicketKits.Select(t => t.Guid).ToHashSet();
                 foreach (var dbTicketKit in dbTicketKits)
                 {
                     if (!backupTicketKitIds.Contains(dbTicketKit.Guid))
@@ -696,7 +696,7 @@ namespace fixflow.Utility
                 }
 
                 var dbTicketMalfs = await TicketMalfunction.Get();
-                var backupTicketMalfIds = App.Backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
+                var backupTicketMalfIds = backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
                 foreach (var dbTicketMalf in dbTicketMalfs)
                 {
                     if (!backupTicketMalfIds.Contains(dbTicketMalf.Guid))
@@ -706,7 +706,7 @@ namespace fixflow.Utility
                 }
 
                 //var dbTicketRepairs = await TicketRepair.Get();
-                //var backupTicketRepairIds = App.Backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
+                //var backupTicketRepairIds = backup.TicketMalfunctions.Select(t => t.Guid).ToHashSet();
                 //foreach (var dbTicketRepair in dbTicketRepairs)
                 //{
                 //    if (!backupTicketRepairIds.Contains(dbTicketRepair.Guid))
@@ -720,7 +720,7 @@ namespace fixflow.Utility
 
             private static async Task Post(Backup backup)
             {
-                var brands = App.Backup.DeviceBrands;
+                var brands = backup.DeviceBrands;
                 foreach (var brand in brands)
                 {
                     var existingBrand = await DeviceBrand.GetByName(brand.Name);
@@ -730,7 +730,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var models = App.Backup.DeviceModels;
+                var models = backup.DeviceModels;
                 foreach (var model in models)
                 {
                     var existingModel = await DeviceModel.GetByName(model.Name);
@@ -740,7 +740,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var types = App.Backup.DeviceTypes;
+                var types = backup.DeviceTypes;
                 foreach (var type in types)
                 {
                     var existingBrand = await DeviceType.GetByName(type.Name);
@@ -750,7 +750,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var repairs = App.Backup.Repairs;
+                var repairs = backup.Repairs;
                 foreach (var repair in repairs)
                 {
                     var existingRepair = await Repair.GetByName(repair.Name);
@@ -760,7 +760,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var tickets = App.Backup.Tickets;
+                var tickets = backup.Tickets;
                 foreach (var ticket in tickets)
                 {
                     var existingTicket = await Ticket.GetById(ticket.Guid);
@@ -777,7 +777,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var ticketKits = App.Backup.TicketKits;
+                var ticketKits = backup.TicketKits;
                 foreach (var ticketKit in ticketKits)
                 {
                     var existingTicketKit = await TicketKit.GetById(ticketKit.Guid);
@@ -787,7 +787,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var ticketMalfs = App.Backup.TicketMalfunctions;
+                var ticketMalfs = backup.TicketMalfunctions;
                 foreach (var ticketMalf in ticketMalfs)
                 {
                     var existingTicketMalf = await TicketMalfunction.GetById(ticketMalf.Guid);
@@ -797,7 +797,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var ticketRepairs = App.Backup.TicketRepairs;
+                var ticketRepairs = backup.TicketRepairs;
                 foreach (var ticketRepair in ticketRepairs)
                 {
                     var existingTicketRepair = await TicketRepair.GetById(ticketRepair.Guid);
@@ -807,7 +807,7 @@ namespace fixflow.Utility
                     }
                 }
 
-                var ticketStatuses = App.Backup.TicketStatuses;
+                var ticketStatuses = backup.TicketStatuses;
                 foreach (var ticketStatus in ticketStatuses)
                 {
                     var existingTicketStatus = await TicketStatus.GetById(ticketStatus.Guid);
@@ -821,7 +821,7 @@ namespace fixflow.Utility
             private static async Task Put(Backup backup)
             {
                 var dbTickets = await Ticket.Get();
-                var backupTickets = App.Backup.Tickets;
+                var backupTickets = backup.Tickets;
                 var ticketsToUpdate = backupTickets
                     .Where(bt => dbTickets.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
                     .ToList();
@@ -837,7 +837,7 @@ namespace fixflow.Utility
                 }
 
                 var dbTicketKits = await TicketKit.Get();
-                var backupTicketKits = App.Backup.TicketKits;
+                var backupTicketKits = backup.TicketKits;
                 var ticketsKitsToUpdate = backupTicketKits
                     .Where(bt => dbTicketKits.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
                     .ToList();
@@ -848,7 +848,7 @@ namespace fixflow.Utility
                 }
 
                 var dbTicketMalfs = await TicketMalfunction.Get();
-                var backupTicketMalfs = App.Backup.TicketMalfunctions;
+                var backupTicketMalfs = backup.TicketMalfunctions;
                 var ticketMalfsToUpdate = backupTicketMalfs
                     .Where(bt => dbTicketMalfs.Any(db => db.Guid == bt.Guid && !db.Equals(bt)))
                     .ToList();

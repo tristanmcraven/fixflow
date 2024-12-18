@@ -40,9 +40,15 @@ namespace fixflow
 
             UpdateSettings();
             UpdateApp();
+
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
+
+            await BackupManager.CreateBackup();
+
+            BackupManager.SetBackup();
+
             //CheckConnection();
-            BackupManager.CreateBackup();
+            
 
         }
 

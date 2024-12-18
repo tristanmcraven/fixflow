@@ -373,7 +373,7 @@ namespace fixflow.Windows
 
         private void clientPhoneNumber_TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(clientPhoneNumber_TextBox.Text) && e.Text.Equals("8"))
+            if ((String.IsNullOrWhiteSpace(clientPhoneNumber_TextBox.Text) && e.Text.Equals("8")) || !Helper.IsNumeric(e.Text))
             {
                 e.Handled = true;
             }

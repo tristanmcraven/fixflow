@@ -26,6 +26,7 @@ namespace fixflow.Windows
     /// </summary>
     public partial class TicketWindow : Window
     {
+        private int _number;
         private Guid _ticketId;
         private Ticket _ticket;
         private TicketKit _ticketKit;
@@ -35,10 +36,11 @@ namespace fixflow.Windows
 
         private bool _noteChanged = false;
         
-        public TicketWindow(Guid ticketId)
+        public TicketWindow(Guid ticketId, int number)
         {
             InitializeComponent();
             _ticketId = ticketId;
+            _number = number;
         }
 
         private void addStatus_Button_Click(object sender, RoutedEventArgs e)
@@ -89,7 +91,7 @@ namespace fixflow.Windows
         {
             DataContext = _ticket;
 
-            ticketNumber_TextBlock.Text = _ticket.Guid.ToString();
+            ticketNumber_TextBlock.Text = _number.ToString();
             ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
   
              
