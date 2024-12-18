@@ -119,7 +119,7 @@
             <Grid Grid.Row="2"
                   Height="28"
                   x:Name="lower_Grid"
-                  Visibility="Collapsed">
+                  Visibility="Visible">
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="FontFamily"
@@ -184,7 +184,9 @@
                             x:Name="offlineMode_StackPanel"
                             Visibility="Visible"
                             HorizontalAlignment="Right">
-                    <TextBlock Text="{StaticResource offline_mode}" />
+                    <TextBlock Text="{StaticResource offline_mode}"
+                               Margin="0 0 5 0"/>
+                    <TextBlock x:Name="lastSyncTime_TextBlock" />
                 </StackPanel>
             </Grid>
         </Grid>

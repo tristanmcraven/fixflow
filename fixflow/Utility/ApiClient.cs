@@ -425,6 +425,15 @@ namespace fixflow.Utility
                 return await SendRequest<List<Model.TicketKit>>($"ticketkit", HttpMethod.Get);
             }
 
+            public static async Task<Model.TicketKit?> GetById(Guid id)
+            {
+                if (App.OfflineMode)
+                {
+                    return App.Backup.TicketKits.FirstOrDefault(tk => tk.Guid.Equals(id));
+                }
+                return await SendRequest<Model.TicketKit>($"ticketkit/{id}", HttpMethod.Get);
+            }
+
             public static async Task<bool> Post(Guid ticketId, string name)
             {
                 if (App.OfflineMode)
@@ -623,6 +632,87 @@ namespace fixflow.Utility
                 return await SendRequest<Model.Repair>($"repair/{name}", HttpMethod.Post);
             }
                     
+        }
+
+        public static class Sync
+        {
+            public static async Task SyncData(Backup backup)
+            {
+
+            }
+
+            private static async Task Delete(Backup backup)
+            {
+                var dbTickets = await Ticket.Get();
+                var backupTicketIds = App.Backup.Tickets.Select(t => t.Guid).ToHashSet();
+
+                foreach (var dbTicket in  dbTickets)
+                {
+                    if (!backupTicketIds.Contains(dbTicket.Guid))
+                    {
+                        await Ticket.Delete(dbTicket.Guid);
+                    }
+                }
+            }
+
+            private static async Task Post(Backup backup)
+            {
+                var brands = App.Backup.DeviceBrands;
+                foreach (var brand in brands)
+                {
+                    var existingBrand = await DeviceBrand.GetByName(brand.Name);
+                    if (existingBrand == null)
+                    {
+                        await DeviceBrand.Post(brand.Name);
+                    }
+                }
+
+                var models = App.Backup.DeviceModels;
+                foreach (var model in models)
+                {
+                    var existingModel = await DeviceModel.GetByName(model.Name);
+                    if (existingModel == null)
+                    {
+                        await DeviceModel.Post(model.Guid, model.Name);
+                    }
+                }
+
+                var types = App.Backup.DeviceTypes;
+                foreach (var type in types)
+                {
+                    var existingBrand = await DeviceType.GetByName(type.Name);
+                    if (existingBrand == null)
+                    {
+                        await DeviceType.Post(type.Name);
+                    }
+                }
+
+                var repairs = App.Backup.Repairs;
+                foreach (var repair in repairs)
+                {
+                    var existingRepair = await Repair.GetByName(repair.Name);
+                    if (existingRepair == null)
+                    {
+                        await Repair.Post(repair.Name);
+                    }
+                }
+
+                var tickets = App.Backup.Tickets;
+                foreach (var ticket in tickets)
+                {
+                    var existingTicket = await Ticket.GetById(ticket.Guid);
+                    if (existingTicket == null)
+                    {
+                        await Ticket.Post();
+                    }
+                }
+
+                var ticketKits = App.Backup.TicketKits;
+                foreach (var ticketKit in ticketKits)
+                {
+                    var existingTicketKit = await TicketKit.GetById
+                }
+            }
         }
     }
 }

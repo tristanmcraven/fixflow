@@ -26,7 +26,8 @@ namespace fixflow.Utility
                 TicketKits = await ApiClient.TicketKit.Get(),
                 TicketMalfunctions = await ApiClient.TicketMalfunction.Get(),
                 TicketRepairs = await ApiClient.TicketRepair.Get(),
-                TicketStatuses = await ApiClient.TicketStatus.Get()
+                TicketStatuses = await ApiClient.TicketStatus.Get(),
+                Timestamp = DateTime.Now
             };
             var json = JsonConvert.SerializeObject(backup, Formatting.Indented);
             File.WriteAllText(Path, json);

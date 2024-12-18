@@ -42,7 +42,8 @@ namespace fixflow
             UpdateApp();
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
             //CheckConnection();
-            //BackupManager.CreateBackup();
+            BackupManager.CreateBackup();
+
         }
 
         public async void UpdateApp()
@@ -68,6 +69,7 @@ namespace fixflow
                 mw.lower_Grid.Visibility = Visibility.Visible;
                 mw.update_StackPanel.Visibility = Visibility.Visible;
                 mw.newVersion_TextBlock.Text = $"({lastVersion})";
+               
             }
         }
 

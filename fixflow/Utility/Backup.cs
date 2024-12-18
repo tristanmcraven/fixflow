@@ -18,7 +18,7 @@ namespace fixflow.Model
         public List<TicketMalfunction> TicketMalfunctions = new();
         public List<TicketRepair> TicketRepairs = new();
         public List<TicketStatus> TicketStatuses = new();
-        public DateTime TimeStamp = new();
+        public DateTime Timestamp { get; set; }
 
         public Backup() { }
 
@@ -43,7 +43,7 @@ namespace fixflow.Model
             TicketMalfunctions = ticketMalfunctions;
             TicketRepairs = ticketRepairs;
             TicketStatuses = ticketStatuses;
-            TimeStamp = DateTime.Now;
+            Timestamp = DateTime.Now;
         }
     }
 }

@@ -175,6 +175,11 @@ namespace fixflow.Windows
             await App.CheckConnection();
             _let = true;
             LoadingOverlay.Remove(this);
+            if (App.OfflineMode)
+            {
+                var timestamp = App.Backup.Timestamp;
+                lastSyncTime_TextBlock.Text = $"(последняя синхронизация: {timestamp:dd}.{timestamp:MM}.{timestamp:yyyy} {timestamp:HH}:{timestamp:mm})";
+            }
             Window_Activated(null, null);
             WindowManager.SetProperties(this);
         }
