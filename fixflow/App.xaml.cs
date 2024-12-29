@@ -44,13 +44,11 @@ namespace fixflow
 
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
 
-            await BackupManager.CreateBackup();
+            //backup logic is in mainwindow.xaml.cs;
 
-            BackupManager.SetBackup();
-
+            //await BackupManager.CreateBackup();
+            //BackupManager.SetBackup();
             //CheckConnection();
-            
-
         }
 
         public async void UpdateApp()
@@ -136,6 +134,7 @@ namespace fixflow
                 App.OfflineMode = true;
                 BackupManager.SetBackup();
             }
+            
         }
 
         private static async Task<string?> GetLatestRelease()

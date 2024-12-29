@@ -45,5 +45,14 @@ namespace fixflow.Utility
         {
             File.WriteAllText(Path, JsonConvert.SerializeObject(backup, Formatting.Indented));
         }
+
+        public static Backup GetExistingBackup()
+        {
+            if (File.Exists(Path))
+            {
+                return JsonConvert.DeserializeObject<Backup>(File.ReadAllText(Path));
+            }
+            return null;
+        }
     }
 }

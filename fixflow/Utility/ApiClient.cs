@@ -1,6 +1,7 @@
 ﻿using fixflow.Model;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace fixflow.Utility
@@ -12,7 +13,6 @@ namespace fixflow.Utility
 
         private static async Task<T?> SendRequest<T>(string url, HttpMethod httpMethod, object? body = null)
         {
-
             using var request = new HttpRequestMessage(httpMethod, apiPath + url);
             if (body != null)
             {
