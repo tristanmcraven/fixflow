@@ -26,6 +26,7 @@
     <s:String x:Key="smth_went_wrong">Что-то пошло не так</s:String>
     <s:String x:Key="loading">Загрузка...</s:String>
     <s:String x:Key="brand">Бренд</s:String>
+    <s:String x:Key="model">Модель</s:String>
 
     <s:String x:Key="client">Клиент</s:String>
 

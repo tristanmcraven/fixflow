@@ -59,6 +59,99 @@
                            FontFamily="{StaticResource regular}"
                            Foreground="#bbbbbb"/>
             </Grid>
+            <Grid Grid.Row="1"
+                  Margin="180 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox x:Name="search_TextBox" />
+                    
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="1">
+                        <Button x:Name="search_Button"
+                                Content="ПОИСК"
+                                Click="search_Button_Click" />
+                        <Button x:Name="advancedSearch_Button"
+                                Content="РАСШИРЕННЫЙ ПОИСК"
+                                Click="advancedSearch_Button_Click" />
+                    </StackPanel>
+
+                    <Grid x:Name="advancedSearch_Grid"
+                          Grid.ColumnSpan="2"
+                          Grid.Row="1">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox x:Name="brand_ComboBox"
+                                  md:HintAssist.Hint="{StaticResource brand}" />
+
+                        <ComboBox x:Name="model_ComboBox"
+                                  md:HintAssist.Hint="{StaticResource model}"
+                                  Grid.Column="1"/>
+
+                        <ComboBox x:Name="type_ComboBox"
+                                  md:HintAssist.Hint="{StaticResource device_type}"
+                                  Grid.Column="2" />
+
+                        <ComboBox x:Name="status_ComboBox"
+                                  md:HintAssist.Hint="{StaticResource status}"
+                                  Grid.Column="3" />
+
+                        <TextBox x:Name="clientName_TextBox"
+                                 md:HintAssist.Hint="{StaticResource client_name}"
+                                 Grid.Row="1"/>
+
+                        <TextBox x:Name="clientPhone_TextBox"
+                                 md:HintAssist.Hint="{StaticResource phone_number}"
+                                 Grid.Row="1"
+                                 Grid.Column="1" />
+
+                        <DatePicker x:Name="startDate_DatePicker"
+                                    md:HintAssist.Hint="Период с:"
+                                    Grid.Row="1"
+                                    Grid.Column="2" />
+
+                        <DatePicker x:Name="endDate_DatePicker"
+                                    md:HintAssist.Hint="Период до:"
+                                    Grid.Row="1"
+                                    Grid.Column="3" />
+
+                    </Grid>
+                </Grid>
+                
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                              CanContentScroll="False"
+                              Grid.Row="1">
+                    <StackPanel x:Name="tickets_StackPanel">
+                        
+                    </StackPanel>
+                </ScrollViewer>
+                
+            </Grid>
             <DataGrid Grid.Row="1"
                       x:Name="tickets_DataGrid"
                       CanUserAddRows="False"

@@ -95,7 +95,7 @@ namespace fixflow.Windows
 
             if (tickets.Count > 0)
             {
-                tickets_DataGrid.Visibility = Visibility.Visible;
+                tickets_DataGrid.Visibility = Visibility.Collapsed;
                 noTickets_Grid.Visibility = Visibility.Collapsed;
             }
             else if (tickets.Count == 0) 
@@ -249,5 +249,14 @@ namespace fixflow.Windows
             Window_Activated(null, null);
         }
 
+        private void search_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void advancedSearch_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
