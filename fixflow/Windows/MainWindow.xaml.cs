@@ -256,7 +256,9 @@ namespace fixflow.Windows
 
         private void advancedSearch_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            var grid = advancedSearch_Grid;
+            if (grid.Visibility == Visibility.Collapsed) grid.Visibility = Visibility.Visible;
+            else grid.Visibility = Visibility.Collapsed;
         }
     }
 }
