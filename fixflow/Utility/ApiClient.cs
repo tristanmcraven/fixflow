@@ -571,7 +571,7 @@ namespace fixflow.Utility
                 return await SendRequest<Model.TicketStatus>($"ticketstatus/{id}", HttpMethod.Get);
             }
 
-            public static async Task<bool> Post(Guid ticketId, Guid statusId)
+            public static async Task<bool> Post(Guid ticketId, Guid statusId, Guid? id = null)
             {
                 if (App.OfflineMode)
                 {
@@ -581,7 +581,8 @@ namespace fixflow.Utility
                 var dto = new
                 {
                     TicketId = ticketId,
-                    StatusId = statusId
+                    StatusId = statusId,
+                    Guid = id
                 };
                 return await SendRequest($"ticketstatus", HttpMethod.Post, dto);
             }

@@ -19,7 +19,8 @@
                     Text="{Binding Name}"
                    VerticalAlignment="Center"
                    FontFamily="{StaticResource regular}"
-                   Margin="5"/>
+                   Margin="5"
+                   TextWrapping="Wrap"/>
         <TextBox x:Name="kitName_TextBox"
                  Visibility="Collapsed"
                  Padding="5"

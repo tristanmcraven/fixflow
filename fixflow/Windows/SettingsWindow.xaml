@@ -34,6 +34,12 @@
                                       RenderingBias="Quality" />
                 </TextBlock.Effect>
             </TextBlock>
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="10 0 10 3"
+                    CornerRadius="10"/>
+            
             <ListBox x:Name="settings_ListBox"
                      ScrollViewer.CanContentScroll="False"
                      Grid.Row="1"
@@ -96,6 +102,11 @@
                                       RenderingBias="Quality" />
                 </TextBlock.Effect>
             </TextBlock>
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 10 13"
+                    CornerRadius="10" />
             <Frame x:Name="Frame" NavigationUIVisibility="Hidden"
                    Grid.Row="1"/>
         </Grid>

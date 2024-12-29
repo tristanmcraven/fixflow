@@ -10,7 +10,7 @@ namespace fixflow.Utility
 
         public static async Task<Backup> CreateBackup()
         {
-            if (App.OfflineMode)
+            if (!App.OfflineMode)
             {
                 var backup = new Backup
                 {

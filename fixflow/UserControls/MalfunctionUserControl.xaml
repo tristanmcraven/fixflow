@@ -19,13 +19,15 @@
                     Text="{Binding Name}"
                    VerticalAlignment="Center"
                    FontFamily="{StaticResource regular}"
-                   Margin="5"/>
+                   Margin="5"
+                   TextWrapping="Wrap" />
         <TextBox x:Name="malfName_TextBox"
                  Visibility="Collapsed"
                  Padding="5"
                  VerticalContentAlignment="Center"
                  FontSize="16"
-                 KeyUp="malfName_TextBox_KeyUp"/>
+                 KeyUp="malfName_TextBox_KeyUp"
+                 TextWrapping="Wrap"/>
         <StackPanel Orientation="Horizontal"
                     Grid.Column="1"
                     Margin="5 0 0 0">

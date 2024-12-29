@@ -21,9 +21,9 @@ public partial class TicketStatus
     {
     }
 
-    public TicketStatus(Guid ticketId, Guid statusId, DateTime? timestamp)
+    public TicketStatus(Guid ticketId, Guid statusId, DateTime? timestamp, Guid id)
     {
-        Guid = Guid.NewGuid();
+        Guid = id;
         TicketGuid = ticketId;
         StatusGuid = statusId;
         Timestamp = timestamp;

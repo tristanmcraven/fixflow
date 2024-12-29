@@ -178,6 +178,8 @@ namespace fixflow.Windows
             LoadingOverlay.Remove(this);
             if (App.OfflineMode)
             {
+                lower_Grid.Visibility = Visibility.Visible;
+                offlineMode_StackPanel.Visibility = Visibility.Visible;
                 var timestamp = App.Backup.Timestamp;
                 lastSyncTime_TextBlock.Text = $"(последняя синхронизация: {timestamp:dd}.{timestamp:MM}.{timestamp:yyyy} {timestamp:HH}:{timestamp:mm})";
             }

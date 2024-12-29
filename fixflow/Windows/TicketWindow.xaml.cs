@@ -92,7 +92,7 @@ namespace fixflow.Windows
             DataContext = _ticket;
 
             ticketNumber_TextBlock.Text = _number.ToString();
-            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
+            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("ddd", new CultureInfo("ru-RU"))})";
   
              
             //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;

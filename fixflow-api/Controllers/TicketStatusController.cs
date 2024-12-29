@@ -31,7 +31,7 @@ namespace fixflow_api.Controllers
         public async Task<IActionResult> Post(TicketStatusDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var ticket = await _ticketStatusService.Post(dto.TicketId, dto.StatusId);
+            var ticket = await _ticketStatusService.Post(dto.TicketId, dto.StatusId, id: dto.Guid);
             return ticket != null ? Created() : BadRequest();
         }
     }

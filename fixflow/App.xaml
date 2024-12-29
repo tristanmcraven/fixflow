@@ -50,6 +50,7 @@
             
 
             <Color x:Key="blue_update">#105DE3</Color>
+            <SolidColorBrush x:Key="blue_update_scb">#105DE3</SolidColorBrush>
 
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>

@@ -10,6 +10,7 @@ using System.Net;
 using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 
 namespace fixflow
 {
@@ -67,7 +68,7 @@ namespace fixflow
 
         public async void CheckForNewVersion()
         {
-            await Task.Delay(4000);
+            await Task.Delay(7000);
             var lastVersion = (await GetLatestRelease());
             if (!GetAppVersion().Equals(lastVersion))
             {
@@ -75,7 +76,38 @@ namespace fixflow
                 mw.lower_Grid.Visibility = Visibility.Visible;
                 mw.update_StackPanel.Visibility = Visibility.Visible;
                 mw.newVersion_TextBlock.Text = $"({lastVersion})";
-               
+
+                if (mw.offlineMode_StackPanel.Visibility == Visibility.Visible)
+                {
+                    mw.update_StackPanel.Background = new LinearGradientBrush
+                    {
+                        StartPoint = new Point(0, 0.5),
+                        EndPoint = new Point(1, 0.5),
+                        GradientStops =
+                        {
+                            new GradientStop
+                            {
+                                Color = Rm.GetColor("blue_update"),
+                                Offset = 0
+                            },
+                            new GradientStop
+                            {
+                                Color = Rm.GetColor("blue_update"),
+                                Offset = 0.465
+                            },
+                            new GradientStop
+                            {
+                                Color = Colors.Transparent,
+                                Offset = 0.565
+                            },
+                            new GradientStop
+                            {
+                                Color = Colors.Transparent,
+                                Offset = 1
+                            }
+                        }
+                    };
+                }
             }
         }
 
