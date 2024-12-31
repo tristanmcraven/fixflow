@@ -35,6 +35,7 @@ namespace fixflow
             
         }
 
+        //backup logic is in mainwindow.xaml.cs;
         private async void Application_Startup(object sender, StartupEventArgs e)
         {
             //base.OnStartup(e);
@@ -44,7 +45,7 @@ namespace fixflow
 
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
 
-            //backup logic is in mainwindow.xaml.cs;
+            
 
             //await BackupManager.CreateBackup();
             //BackupManager.SetBackup();
@@ -175,10 +176,9 @@ namespace fixflow
             return $"v{version}";
         }
 
-        private async void Application_Exit(object sender, ExitEventArgs e)
+        private void Application_Exit(object sender, ExitEventArgs e)
         {
-            if (App.OfflineMode) BackupManager.SaveBackup(Backup);
-            else BackupManager.CreateBackup().GetAwaiter().GetResult();
+
         }
     }
 

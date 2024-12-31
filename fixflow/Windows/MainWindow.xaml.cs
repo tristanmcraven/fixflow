@@ -1,4 +1,5 @@
 ﻿using fixflow.Model;
+using fixflow.UserControls;
 using fixflow.Utility;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace fixflow.Windows
     public partial class MainWindow : Window
     {
         private bool _let = false;
+        private bool _allowedToClose = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -52,57 +54,69 @@ namespace fixflow.Windows
 
         private void UpdateTickets(List<Ticket> tickets)
         {
-            tickets_DataGrid.ItemsSource = null;
-
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Номер", typeof(uint));
-            dataTable.Columns.Add("Дата принятия", typeof(string));
-            dataTable.Columns.Add("Марка", typeof(string));
-            dataTable.Columns.Add("Модель", typeof(string));
-            dataTable.Columns.Add("Имя клиента", typeof(string));
-            dataTable.Columns.Add("Номер клиента", typeof(string));
-            dataTable.Columns.Add("Guid", typeof(Guid));
+            tickets_StackPanel.Children.Clear();
 
             int numericId = tickets.Count;
 
             foreach (var ticket in tickets)
             {
-                var timestamp = ticket.Timestamp;
-
-                dataTable.Rows.Add(
-                    numericId--, 
-                    $"{timestamp:dd}/{timestamp:MM}/{timestamp:yyyy}",
-                    ticket.DeviceBrand.Name,
-                    ticket.DeviceModel.Name,
-                    ticket.ClientFullname,
-                    $"+7{ticket.ClientPhoneNumber}"
-                    , ticket.Guid
-                );
-            }
-
-            tickets_DataGrid.ItemsSource = dataTable.DefaultView;
-
-            if (tickets_DataGrid.Columns.Count > 0)
-            {
-                var guidColumn = tickets_DataGrid.Columns
-                    .FirstOrDefault(c => c.Header.ToString() == "Guid");
-
-                if (guidColumn != null)
-                {
-                    guidColumn.Visibility = Visibility.Collapsed;
-                }
+                var status = ticket.TicketStatuses.OrderByDescending(x => x.Timestamp).First().Status;
+                tickets_StackPanel.Children.Add(new TicketUserControl(numericId--, ticket, status));
             }
 
             if (tickets.Count > 0)
             {
-                tickets_DataGrid.Visibility = Visibility.Collapsed;
+                //tickets_DataGrid.Visibility = Visibility.Collapsed;
+                tickets_StackPanel.Visibility = Visibility.Visible;
                 noTickets_Grid.Visibility = Visibility.Collapsed;
             }
-            else if (tickets.Count == 0) 
-            {
-                tickets_DataGrid.Visibility = Visibility.Collapsed;
-                noTickets_Grid.Visibility = Visibility.Visible;
-            }
+            //tickets_DataGrid.ItemsSource = null;
+
+            //DataTable dataTable = new DataTable();
+            //dataTable.Columns.Add("Номер", typeof(uint));
+            //dataTable.Columns.Add("Дата принятия", typeof(string));
+            //dataTable.Columns.Add("Марка", typeof(string));
+            //dataTable.Columns.Add("Модель", typeof(string));
+            //dataTable.Columns.Add("Имя клиента", typeof(string));
+            //dataTable.Columns.Add("Номер клиента", typeof(string));
+            //dataTable.Columns.Add("Guid", typeof(Guid));
+
+            //int numericId = tickets.Count;
+
+            //foreach (var ticket in tickets)
+            //{
+            //    var timestamp = ticket.Timestamp;
+
+            //    dataTable.Rows.Add(
+            //        numericId--, 
+            //        $"{timestamp:dd}/{timestamp:MM}/{timestamp:yyyy}",
+            //        ticket.DeviceBrand.Name,
+            //        ticket.DeviceModel.Name,
+            //        ticket.ClientFullname,
+            //        $"+7{ticket.ClientPhoneNumber}"
+            //        , ticket.Guid
+            //    );
+            //}
+
+            //tickets_DataGrid.ItemsSource = dataTable.DefaultView;
+
+            //if (tickets_DataGrid.Columns.Count > 0)
+            //{
+            //    var guidColumn = tickets_DataGrid.Columns
+            //        .FirstOrDefault(c => c.Header.ToString() == "Guid");
+
+            //    if (guidColumn != null)
+            //    {
+            //        guidColumn.Visibility = Visibility.Collapsed;
+            //    }
+            //}
+
+
+            //else if (tickets.Count == 0) 
+            //{
+            //    tickets_DataGrid.Visibility = Visibility.Collapsed;
+            //    noTickets_Grid.Visibility = Visibility.Visible;
+            //}
         }
 
 
@@ -115,6 +129,12 @@ namespace fixflow.Windows
             {
                 ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandGuid);
                 ticket.DeviceModel = await ApiClient.DeviceModel.GetById(ticket.DeviceModelGuid);
+                ticket.DeviceType = await ApiClient.DeviceType.GetById(ticket.DeviceTypeGuid);
+                ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(ticket.Guid);
+                foreach (var ticketStatus in ticket.TicketStatuses)
+                {
+                    ticketStatus.Status = await ApiClient.Status.GetById(ticketStatus.StatusGuid);
+                }
                 formattedTickets.Add(ticket);
             }
 
@@ -172,6 +192,7 @@ namespace fixflow.Windows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // pizda))))))
+
             LoadingOverlay.Show(this);
             await App.CheckConnection();
             _let = true;
@@ -192,9 +213,23 @@ namespace fixflow.Windows
             WindowManager.SetProperties(this);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            e.Cancel = true;
+            if (App.OfflineMode)
+            {
+                BackupManager.SaveBackup(App.Backup);
+            }
+            else
+            {
+                Debug.WriteLine("Starting backup");
+                var zxc = await BackupManager.CreateBackup();
+                Debug.WriteLine("Backup Complete");
+            }
+
             SettingsManager.SaveWindowProperties(this);
+
+            e.Cancel = false;
         }
 
         private void tickets_DataGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)

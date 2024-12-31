@@ -63,6 +63,10 @@
 
     <s:String x:Key="enter_type_name">Введите название типа устройства</s:String>
     <s:String x:Key="type_exists">Такой тип устройства уже существует</s:String>
+
+    <s:String x:Key="number">Номер</s:String>
+    <s:String x:Key="type">Тип</s:String>
+    <s:String x:Key="acception_date">Дата принятия</s:String>
     
 
 </ResourceDictionary>

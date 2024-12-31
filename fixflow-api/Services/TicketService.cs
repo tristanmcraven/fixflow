@@ -153,5 +153,15 @@ namespace fixflow_api.Services
             }
             return false;
         }
+
+        //public async Task<List<Ticket>> Search(string q)
+        //{
+        //    var tickets = _context.Tickets.ToList();
+        //    var ticketsToReturn = new List<Ticket>();
+        //    foreach (var ticket in tickets)
+        //    {
+        //        var type = 
+        //    }
+        //}
     }
 }

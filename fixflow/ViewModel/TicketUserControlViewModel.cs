@@ -9,12 +9,14 @@ namespace fixflow.ViewModel
 {
     class TicketUserControlViewModel
     {
+        public int NumericId { get; set; }
         public Ticket Ticket { get; set; }
 
         public Status Status { get; set; }
 
-        public TicketUserControlViewModel(Ticket ticket, Status ticketstatus)
+        public TicketUserControlViewModel(int numericId, Ticket ticket, Status ticketstatus)
         {
+            NumericId = numericId;
             Ticket = ticket;
             Status = ticketstatus;
         }
