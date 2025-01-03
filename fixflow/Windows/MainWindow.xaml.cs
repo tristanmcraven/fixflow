@@ -47,7 +47,7 @@ namespace fixflow.Windows
             if (_let)
             {
                 LoadingOverlay.Show(this);
-                UpdateTickets(await GetFormattedTickets());
+                UpdateTickets(await GetFormattedTickets(await GetAllTickets()));
                 LoadingOverlay.Remove(this);
             }
         }
@@ -120,9 +120,8 @@ namespace fixflow.Windows
         }
 
 
-        private async Task<List<Ticket>> GetFormattedTickets()
+        private async Task<List<Ticket>> GetFormattedTickets(List<Ticket> tickets)
         {
-            var tickets = await ApiClient.Ticket.Get();
             var formattedTickets = new List<Ticket>();
 
             foreach (var ticket in tickets)
@@ -139,6 +138,11 @@ namespace fixflow.Windows
             }
 
             return formattedTickets.OrderByDescending(t => t.Timestamp).ToList();
+        }
+
+        private async Task<List<Ticket>> GetAllTickets()
+        {
+            return await ApiClient.Ticket.Get();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -284,13 +288,27 @@ namespace fixflow.Windows
             Window_Activated(null, null);
         }
 
-        private void search_Button_Click(object sender, RoutedEventArgs e)
+        private async void search_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            tickets_StackPanel.Children.Clear();
+            if (advancedSearch_Grid.Visibility == Visibility.Collapsed && String.IsNullOrWhiteSpace(search_TextBox.Text))
+            {
+                UpdateTickets(await GetFormattedTickets(await GetAllTickets()));
+                return;
+            }
+            if (advancedSearch_Grid.Visibility == Visibility.Collapsed)
+            {
+                UpdateTickets(await GetFormattedTickets(await ApiClient.Ticket.Search(search_TextBox.Text)));
+            }
         }
 
         private void advancedSearch_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (App.OfflineMode)
+            {
+                MessageBox.Show("Недоступно в оффлайн-режиме", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             var grid = advancedSearch_Grid;
             if (grid.Visibility == Visibility.Collapsed) grid.Visibility = Visibility.Visible;
             else grid.Visibility = Visibility.Collapsed;

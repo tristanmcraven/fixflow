@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Windows.Perception.Spatial.Preview;
 
 namespace fixflow.Utility
 {
@@ -421,6 +422,61 @@ namespace fixflow.Utility
                     return true;
                 }
                 return await SendRequest($"ticket/{id}", HttpMethod.Delete);
+            }
+
+            public static async Task<List<Model.Ticket>> Search(string q)
+            {
+                if (App.OfflineMode)
+                {
+                    // finish this (fetching devicebrands and models)
+                    return App.Backup.Tickets.Where(x => 
+                    x.ClientFullname.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                    x.ClientPhoneNumber.Contains(q))
+                        .ToList();
+                }
+                return await SendRequest<List<Model.Ticket>>($"ticket/search?q={q}", HttpMethod.Get);
+            }
+
+            public static async Task<List<Model.Ticket>> Filter(
+                Guid? deviceBrandGuid,
+                Guid? deviceModelGuid,
+                Guid? deviceTypeGuid,
+                Guid? statusGuid,
+                string? clientName,
+                string? clientPhone,
+                DateTime? startDate,
+                DateTime? endDate)
+            {
+                var baseUrl = $"ticket/filter?";
+                var queryParams = new List<string>();
+
+                if (deviceBrandGuid.HasValue)
+                    queryParams.Add($"deviceBrandGuid={deviceBrandGuid.Value}");
+
+                if (deviceModelGuid.HasValue)
+                    queryParams.Add($"deviceModelGuid={deviceModelGuid.Value}");
+
+                if (deviceTypeGuid.HasValue)
+                    queryParams.Add($"deviceTypeGuid={deviceTypeGuid.Value}");
+
+                if (statusGuid.HasValue)
+                    queryParams.Add($"statusGuid={statusGuid.Value}");
+
+                if (!String.IsNullOrWhiteSpace(clientName))
+                    queryParams.Add($"clientName={clientName}");
+
+                if (!String.IsNullOrEmpty(clientPhone))
+                    queryParams.Add($"clientPhone={clientPhone}");
+
+                if (startDate.HasValue)
+                    queryParams.Add($"startDate={startDate.Value}");
+
+                if (endDate.HasValue)
+                    queryParams.Add($"endDate={endDate.Value}");
+
+                var finalUrl = baseUrl + String.Join('&', queryParams);
+
+                return await SendRequest<List<Model.Ticket>>(finalUrl, HttpMethod.Get);
             }
         }
 

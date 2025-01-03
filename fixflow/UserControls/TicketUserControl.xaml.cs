@@ -33,7 +33,8 @@ namespace fixflow.UserControls
         {
             InitializeComponent();
             this.DataContext = new TicketUserControlViewModel(numericId, ticket, ticketstatus);
-            _ticket = ticket; _status = ticketstatus;
+            _ticket = ticket; 
+            _status = ticketstatus;
             SetTransparentBackground();
         }
 
