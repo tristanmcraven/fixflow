@@ -1,5 +1,7 @@
 ﻿using fixflow_api.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.VisualBasic;
 
 namespace fixflow_api.Services
 {
@@ -152,6 +154,72 @@ namespace fixflow_api.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<Ticket>> Search(string q)
+        {
+            if (string.IsNullOrEmpty(q))
+                return new List<Ticket>();
+
+            var keywords = q.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            var query = _context.Tickets.AsQueryable();
+
+            foreach (var keyword in keywords)
+            {
+                query = query.Where(t =>
+                EF.Functions.Like(t.DeviceBrand.Name, $"%{keyword}%") ||
+                EF.Functions.Like(t.DeviceModel.Name, $"%{keyword}%") ||
+                EF.Functions.Like(t.DeviceType.Name, $"%{keyword}%") ||
+                EF.Functions.Like(t.ClientFullname, $"%{keyword}%") ||
+                EF.Functions.Like(t.ClientPhoneNumber, $"%{keyword}%") ||
+                EF.Functions.Like(t.Note, $"%{keyword}%")
+                );
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<Ticket>> Filter(
+            Guid? deviceBrandGuid,
+            Guid? deviceModelGuid,
+            Guid? deviceTypeGuid,
+            Guid? statusGuid,
+            string clientName,
+            string clientPhone,
+            DateTime? startDate,
+            DateTime? endDate)
+        {
+            var q = _context.Tickets.AsQueryable();
+
+            if (deviceBrandGuid.HasValue)
+                q = q.Where(x => x.DeviceBrandGuid == deviceBrandGuid);
+
+            if (deviceModelGuid.HasValue)
+                q = q.Where(x => x.DeviceModelGuid == deviceModelGuid);
+
+            if (deviceTypeGuid.HasValue)
+                q = q.Where(x => x.DeviceTypeGuid == deviceTypeGuid);
+
+            if (statusGuid.HasValue)
+                q = q.Where(x => x.TicketStatuses.OrderByDescending(y => y.Timestamp).First().StatusGuid == statusGuid);
+
+            if (!String.IsNullOrWhiteSpace(clientName))
+                q = q.Where(x => x.ClientFullname.Contains(clientName, StringComparison.OrdinalIgnoreCase));
+
+            if (!String.IsNullOrWhiteSpace(clientPhone))
+            {
+                clientPhone = clientPhone.Replace("+7", "");
+                q = q.Where(x => x.ClientPhoneNumber.Contains(clientPhone));
+            }
+
+            if (startDate.HasValue)
+                q = q.Where(x => x.Timestamp >= startDate.Value);
+
+            if (endDate.HasValue)
+                q = q.Where(x => x.Timestamp <= endDate.Value);
+
+            return await q.ToListAsync();
         }
 
         //public async Task<List<Ticket>> Search(string q)
