@@ -205,7 +205,7 @@ namespace fixflow_api.Services
                 q = q.Where(x => x.TicketStatuses.OrderByDescending(y => y.Timestamp).First().StatusGuid == statusGuid);
 
             if (!String.IsNullOrWhiteSpace(clientName))
-                q = q.Where(x => x.ClientFullname.Contains(clientName, StringComparison.OrdinalIgnoreCase));
+                q = q.Where(x => x.ClientFullname.Contains(clientName));
 
             if (!String.IsNullOrWhiteSpace(clientPhone))
             {

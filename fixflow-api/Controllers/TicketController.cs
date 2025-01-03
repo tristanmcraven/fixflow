@@ -140,7 +140,7 @@ namespace fixflow_api.Controllers
             )
         {
             var tickets = await _ticketService.Filter(deviceBrandGuid, deviceModelGuid, deviceTypeGuid, statusGuid, clientName, clientPhone, startDate, endDate);
-            return !tickets.Any() ? Ok(tickets) : NotFound();
+            return tickets.Any() ? Ok(tickets) : NotFound();
         }
     }
 }

@@ -124,6 +124,9 @@ namespace fixflow.Windows
         {
             var formattedTickets = new List<Ticket>();
 
+            if (tickets == null)
+                return formattedTickets;
+
             foreach (var ticket in tickets)
             {
                 ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandGuid);
@@ -215,6 +218,29 @@ namespace fixflow.Windows
             }
             Window_Activated(null, null);
             WindowManager.SetProperties(this);
+
+            brand_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var brand in await ApiClient.DeviceBrand.Get())
+                brand_ComboBox.Items.Add(brand.Name);
+            brand_ComboBox.SelectedIndex = 0;
+
+            model_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var model in await ApiClient.DeviceModel.Get())
+                model_ComboBox.Items.Add(model.Name);
+            model_ComboBox.SelectedIndex = 0;
+
+            type_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var type in await ApiClient.DeviceType.Get())
+                type_ComboBox.Items.Add(type.Name);
+            type_ComboBox.SelectedIndex = 0;
+
+            status_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var status in await ApiClient.Status.Get())
+                status_ComboBox.Items.Add(status.Name);
+            status_ComboBox.SelectedIndex = 0;
+
+
+            
         }
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -299,6 +325,41 @@ namespace fixflow.Windows
             if (advancedSearch_Grid.Visibility == Visibility.Collapsed)
             {
                 UpdateTickets(await GetFormattedTickets(await ApiClient.Ticket.Search(search_TextBox.Text)));
+                return;
+            }
+            if (advancedSearch_Grid.Visibility == Visibility.Visible)
+            {
+                Guid? deviceBrandGuid = null;
+                Guid? deviceModelGuid = null;
+                Guid? deviceTypeGuid = null;
+                Guid? statusGuid = null;
+                string? clientName = clientName_TextBox.Text;
+                string? clientPhone = clientPhone_TextBox.Text;
+                DateTime? startDate = startDate_DatePicker.SelectedDate;
+                DateTime? endDate = endDate_DatePicker.SelectedDate;
+
+                if (brand_ComboBox.SelectedIndex != 0)
+                    deviceBrandGuid = (await ApiClient.DeviceBrand.GetByName(brand_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (model_ComboBox.SelectedIndex != 0)
+                    deviceModelGuid = (await ApiClient.DeviceModel.GetByName(model_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (type_ComboBox.SelectedIndex != 0)
+                    deviceTypeGuid = (await ApiClient.DeviceType.GetByName(type_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (status_ComboBox.SelectedIndex != 0)
+                    statusGuid = (await ApiClient.Status.GetByName(status_ComboBox.SelectedItem.ToString())).Guid;
+
+                UpdateTickets(await GetFormattedTickets(await ApiClient.Ticket.Filter(
+                    deviceBrandGuid,
+                    deviceModelGuid,
+                    deviceTypeGuid,
+                    statusGuid,
+                    clientName,
+                    clientPhone,
+                    startDate,
+                    endDate)));
+                return;
             }
         }
 

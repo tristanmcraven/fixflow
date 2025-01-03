@@ -176,12 +176,14 @@
                         <DatePicker x:Name="startDate_DatePicker"
                                     md:HintAssist.Hint="Период с:"
                                     Grid.Row="1"
-                                    Grid.Column="2" />
+                                    Grid.Column="2"
+                                    Language="en-GB"/>
 
                         <DatePicker x:Name="endDate_DatePicker"
                                     md:HintAssist.Hint="Период до:"
                                     Grid.Row="1"
-                                    Grid.Column="3" />
+                                    Grid.Column="3"
+                                    Language="en-GB"/>
 
                     </Grid>
                 </Grid>

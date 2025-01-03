@@ -125,6 +125,8 @@ namespace fixflow.Utility
                 return await SendRequest<Model.DeviceModel>($"devicemodel/{id}", HttpMethod.Get);
             }
 
+            // !!! POTENTIAL PIZDA
+            // If there are somehow multiple models with same name, expect the unexpected =)
             public static async Task<Model.DeviceModel> GetByName(string name)
             {
                 if (App.OfflineMode)
