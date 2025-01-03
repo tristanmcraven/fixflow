@@ -49,6 +49,32 @@
                                VerticalAlignment="Top" />
                 </CheckBox.Content>
             </CheckBox>
+            <TextBlock Text="{StaticResource design}" />
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 10 13"
+                    CornerRadius="10" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{StaticResource theme}" />
+                <ComboBox x:Name="theme_ComboBox"
+                          Width="130"
+                          SelectionChanged="theme_ComboBox_SelectionChanged">
+                    <ComboBoxItem Content="{StaticResource system}" />
+                    <ComboBoxItem Content="{StaticResource light}" />
+                    <ComboBoxItem Content="{StaticResource dark}" />
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{StaticResource language}" />
+                <ComboBox x:Name="language_ComboBox"
+                          Width="130"
+                          SelectionChanged="language_ComboBox_SelectionChanged">
+                    <ComboBoxItem Content="{StaticResource system}" />
+                    <ComboBoxItem Content="{StaticResource russian}" />
+                    <ComboBoxItem Content="{StaticResource english}" />
+                </ComboBox>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

@@ -1,6 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using fixflow.Model;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System.Drawing;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
+
 
 namespace fixflow.Utility
 {
@@ -80,6 +86,37 @@ namespace fixflow.Utility
             return (size, location);
         }
 
+        public static void UpdateAppTheme(AppTheme id)
+        {
+            var paletteHelper = new PaletteHelper();
+            IThemeManager theme = paletteHelper.GetThemeManager();
+            if (id == AppTheme.System)
+                id = GetSystemTheme();
+            switch (id)
+            {
+                case AppTheme.Light:
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, Colors.Red, Colors.Yellow));
+                    break;
+                case AppTheme.Dark:
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, Colors.Red, Colors.Yellow));
+                    break;
+            }
+        }
+
+        private static AppTheme GetSystemTheme()
+        {
+            const string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string valueName = "AppsUseLightTheme";
+
+            using (var key = Registry.CurrentUser.OpenSubKey(keyPath))
+            {
+                if (key?.GetValue(valueName) is int value)
+                    return value == 1 ? AppTheme.Light : AppTheme.Dark;
+            }
+
+            return AppTheme.Dark;
+        }
+
         private static Settings CreateDefaultSettings()
         {
             return new Settings
@@ -89,7 +126,9 @@ namespace fixflow.Utility
                 RememberWindowSize = true,
                 RememberWindowLocation = true,
                 WindowSizes = new Dictionary<string, WindowSize>(),
-                WindowLocations = new Dictionary<string, WindowLocation>()
+                WindowLocations = new Dictionary<string, WindowLocation>(),
+                AppTheme = 0,
+                AppLanguage = 0
             };
         }
 
@@ -103,6 +142,9 @@ namespace fixflow.Utility
 
             settings.WindowSizes ??= new Dictionary<string, WindowSize>();
             settings.WindowLocations ??= new Dictionary<string, WindowLocation>();
+
+            settings.AppTheme ??= 0;
+            settings.AppLanguage ??= 0;
 
             return settings;
         }

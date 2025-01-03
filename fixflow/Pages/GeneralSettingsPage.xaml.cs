@@ -51,6 +51,21 @@ namespace fixflow.Pages
         {
             rememberWindowSize_CheckBox.IsChecked = App.Settings.RememberWindowSize;
             rememberWindowLocation_CheckBox.IsChecked = App.Settings.RememberWindowLocation;
+            theme_ComboBox.SelectedIndex = (int)App.Settings.AppTheme;
+            language_ComboBox.SelectedIndex = (int)App.Settings.AppLanguage;
+        }
+
+        private void theme_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = (AppTheme)theme_ComboBox.SelectedIndex;
+            SettingsManager.UpdateSetting("AppTheme", index);
+            SettingsManager.UpdateAppTheme(index);
+        }
+
+        private void language_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var index = (AppTheme)language_ComboBox.SelectedIndex;
+            //SettingsManager.UpdateSetting("AppLanguage", index);
         }
     }
 }
