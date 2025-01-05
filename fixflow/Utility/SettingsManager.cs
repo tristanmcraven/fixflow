@@ -131,36 +131,6 @@ namespace fixflow.Utility
                     break;
             }
             md.Add(dict);
-            ForceUIUpdate();
-        }
-
-        private static void ForceUIUpdate()
-        {
-            foreach (var window in Application.Current.Windows)
-            {
-                UpdateBindingTargets((Window)window);
-            }
-        }
-
-        private static void UpdateBindingTargets(DependencyObject depObj)
-        {
-            // Recursively update the bindings of all child elements
-            foreach (var child in LogicalTreeHelper.GetChildren(depObj))
-            {
-                if (child is FrameworkElement fe)
-                {
-                    fe.UpdateLayout(); // Forces the layout to update
-                    fe.InvalidateVisual(); // Forces the element to re-render
-                    fe.GetBindingExpression(FrameworkElement.DataContextProperty)?.UpdateTarget(); // Update binding for DataContext
-                    fe.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget(); // Update specific bindings (if any)
-                }
-
-                // If the child is another container, recurse into it
-                if (child is DependencyObject depChild)
-                {
-                    UpdateBindingTargets(depChild);
-                }
-            }
         }
 
         private static AppTheme GetSystemTheme()
