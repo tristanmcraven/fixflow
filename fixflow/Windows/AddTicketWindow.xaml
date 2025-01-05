@@ -107,10 +107,10 @@
                 <StackPanel Orientation="Vertical" x:Name="whole_StackPanel">
                     <StackPanel x:Name="first_StackPanel">
                         <TextBox x:Name="clientName_TextBox"
-                                 md:HintAssist.Hint="{StaticResource client_name}" />
+                                 md:HintAssist.Hint="{DynamicResource client_name}" />
 
                         <TextBox x:Name="clientPhoneNumber_TextBox"
-                                 md:HintAssist.Hint="{StaticResource phone_number}"
+                                 md:HintAssist.Hint="{DynamicResource phone_number}"
                                  MaxLength="10"
                                  md:TextFieldAssist.PrefixText="+7"
                                  PreviewTextInput="clientPhoneNumber_TextBox_PreviewTextInput" />
@@ -145,7 +145,7 @@
                                             Click="rejectNewDeviceType_Button_Click" />
                                 </Grid>
                                 <Button x:Name="addDeviceType_Button"
-                                        Content="{StaticResource add_device_type}"
+                                        Content="{DynamicResource add_device_type}"
                                         Click="addDeviceType_Button_Click" />
                             </StackPanel>
                         </GroupBox>
@@ -180,7 +180,7 @@
                                             Click="rejectNewBrand_Button_Click" />
                                 </Grid>
                                 <Button x:Name="addBrand_Button"
-                                        Content="{StaticResource add_brand}"
+                                        Content="{DynamicResource add_brand}"
                                         Click="addBrand_Button_Click" />
                             </StackPanel>
                         </GroupBox>
@@ -214,7 +214,7 @@
                                             Click="rejectNewModel_Button_Click" />
                                 </Grid>
                                 <Button x:Name="addModel_Button"
-                                        Content="{StaticResource add_model}"
+                                        Content="{DynamicResource add_model}"
                                         Click="addModel_Button_Click" />
                             </StackPanel>
 
@@ -228,7 +228,7 @@
                             <StackPanel Orientation="Vertical"
                                         x:Name="malfunctions_StackPanel" />
                             <Button x:Name="addMalfunction_Button"
-                                    Content="{StaticResource add_malfunction}"
+                                    Content="{DynamicResource add_malfunction}"
                                     Click="addMalfunction_Button_Click" />
                         </StackPanel>
                     </GroupBox>
@@ -238,7 +238,7 @@
                             <StackPanel Orientation="Vertical"
                                         x:Name="kit_StackPanel" />
                             <Button x:Name="addKit_Button"
-                                    Content="{StaticResource add_kit}"
+                                    Content="{DynamicResource add_kit}"
                                     Click="addKit_Button_Click" />
                         </StackPanel>
                     </GroupBox>
@@ -246,9 +246,9 @@
                     <TextBox x:Name="ticketNote_TextBox"
                              Height="75"
                              AcceptsReturn="True"
-                             md:HintAssist.Hint="{StaticResource ticket_note}" />
+                             md:HintAssist.Hint="{DynamicResource ticket_note}" />
 
-                    <TextBlock Text="{StaticResource status}"
+                    <TextBlock Text="{DynamicResource status}"
                                Margin="2 0 0 5"
                                FontFamily="{StaticResource regular}" />
                     <ComboBox x:Name="status_ComboBox" />
@@ -264,7 +264,7 @@
                 BorderBrush="Black"
                 Background="{StaticResource MaterialDesign_GrayBackground}">
             <Button x:Name="addTicket_Button"
-                    Content="{StaticResource add_ticket}"
+                    Content="{DynamicResource add_ticket}"
                     Click="addTicket_Button_Click"
                     Grid.Row="1"
                     Style="{StaticResource MaterialDesignRaisedButton}"

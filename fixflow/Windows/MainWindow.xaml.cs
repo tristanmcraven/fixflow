@@ -415,5 +415,17 @@ namespace fixflow.Windows
                 }
             }
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var m = this.ActualWidth / 2 - 520;
+            var margin = new Thickness(m, 0, m, 0);
+            main_Grid.Margin = margin;
+        }
+
+        private void quit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

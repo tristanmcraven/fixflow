@@ -33,7 +33,7 @@
                           md:HintAssist.Hint="Статус"/>
             </StackPanel>
             <Button x:Name="addStatus_Button"
-                    Content="{StaticResource add}"
+                    Content="{DynamicResource add}"
                     Click="addStatus_Button_Click"
                     Grid.Row="1"/>
         </Grid>

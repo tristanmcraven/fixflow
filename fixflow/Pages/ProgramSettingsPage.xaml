@@ -25,7 +25,7 @@
                       Checked="autoUpdate_CheckBox_Checked"
                       Unchecked="autoUpdate_CheckBox_Unchecked">
                 <CheckBox.Content>
-                    <TextBlock Text="{StaticResource enable_automatic_updates}"
+                    <TextBlock Text="{DynamicResource enable_automatic_updates}"
                                Padding="0"
                                Margin="5 0 0 0"
                                FontSize="14"
@@ -40,7 +40,7 @@
                       md:CheckBoxAssist.CheckBoxSize="20"
                       Margin="20 3 0 0">
                 <CheckBox.Content>
-                    <TextBlock Text="{StaticResource check_for_updates}"
+                    <TextBlock Text="{DynamicResource check_for_updates}"
                                Padding="0"
                                Margin="3 0 0 0"
                                FontSize="13"

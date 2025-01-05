@@ -75,7 +75,7 @@
 
                 <GroupBox Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource client}"
+                        <TextBlock Text="{DynamicResource client}"
                                    HorizontalAlignment="Left"/>
                     </GroupBox.Header>
                     <Grid>
@@ -109,7 +109,7 @@
 
                         <GroupBox Grid.Row="1">
                             <GroupBox.Header>
-                                <TextBlock Text="{StaticResource device}"/>
+                                <TextBlock Text="{DynamicResource device}"/>
                             </GroupBox.Header>
                             <StackPanel Orientation="Vertical">
 
@@ -192,7 +192,7 @@
                           Margin="0 0 15 0">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{StaticResource kit}" />
+                            <TextBlock Text="{DynamicResource kit}" />
                             <Button x:Name="addKit_Button"
                                     Style="{StaticResource add_button_small}"
                                     Margin="5 0 0 0"
@@ -220,7 +220,7 @@
                          TextChanged="ticketNote_TextBox_TextChanged"
                          AcceptsReturn="True"
                          TextWrapping="Wrap"
-                         md:HintAssist.Hint="{StaticResource ticket_note}"
+                         md:HintAssist.Hint="{DynamicResource ticket_note}"
                          Margin="0 10 0 0"
                          Grid.Column="2" />
 
@@ -237,7 +237,7 @@
                           Margin="0 0 15 0">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{StaticResource declared_malfucntions}"/>
+                            <TextBlock Text="{DynamicResource declared_malfucntions}"/>
                             <Button x:Name="addMalf_Buton"
                                     Style="{StaticResource add_button_small}"
                                     Margin="5 0 0 0"
@@ -263,7 +263,7 @@
                 <GroupBox Grid.Column="1"
                           Margin="0 0 15 0">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource repairs_done}"/>
+                        <TextBlock Text="{DynamicResource repairs_done}"/>
                     </GroupBox.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -308,7 +308,7 @@
 
                 <GroupBox Grid.Column="2">
                     <GroupBox.Header>
-                        <TextBlock Text="{StaticResource status_history}"/>
+                        <TextBlock Text="{DynamicResource status_history}"/>
                     </GroupBox.Header>
                     <Grid>
                         <DataGrid x:Name="statuses_DataGrid"

@@ -21,7 +21,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{StaticResource settings}"
+            <TextBlock Text="{DynamicResource settings}"
                        FontFamily="{StaticResource medium}"
                        FontSize="16"
                        HorizontalAlignment="Center"
@@ -53,7 +53,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="/Assets/Images/settings.png"
                                Height="35" />
-                        <TextBlock Text="{StaticResource general}"
+                        <TextBlock Text="{DynamicResource general}"
                                    Grid.Column="1"
                                    Tag="settingName"
                                    VerticalAlignment="Center"
@@ -69,7 +69,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="/Assets/Images/program.png"
                                Height="35"/>
-                        <TextBlock Text="{StaticResource program}"
+                        <TextBlock Text="{DynamicResource program}"
                                    Grid.Column="1"
                                    Tag="settingName"
                                    VerticalAlignment="Center"

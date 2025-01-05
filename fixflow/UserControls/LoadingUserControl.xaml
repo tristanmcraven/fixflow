@@ -23,7 +23,7 @@
                     Margin="0 0 0 35"
                           />
 
-            <TextBlock Text="{StaticResource loading}"
+            <TextBlock Text="{DynamicResource loading}"
                        Foreground="White"
                        HorizontalAlignment="Center"
                        FontSize="28"/>

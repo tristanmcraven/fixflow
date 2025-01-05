@@ -17,17 +17,17 @@
             <StackPanel Orientation="Vertical"
                         VerticalAlignment="Center">
                 
-                <TextBlock Text="{StaticResource brand}"/>
+                <TextBlock Text="{DynamicResource brand}"/>
                 <ComboBox x:Name="brands_ComboBox"
                           IsEnabled="False"/>
 
-                <TextBlock Text="{StaticResource enter_model}"/>
+                <TextBlock Text="{DynamicResource enter_model}"/>
                 <TextBox x:Name="model_TextBox"/>
 
             </StackPanel>
 
             <Button x:Name="addModel_Button"
-                    Content="{StaticResource add}"
+                    Content="{DynamicResource add}"
                     Click="addModel_Button_Click"
                     Grid.Row="1"/>
 

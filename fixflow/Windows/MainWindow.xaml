@@ -14,7 +14,9 @@
         Style="{StaticResource MaterialDesignWindow}"
         Loaded="Window_Loaded"
         Closing="Window_Closing"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"    >
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        SizeChanged="Window_SizeChanged"
+        MinWidth="1080">
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
@@ -36,7 +38,9 @@
                               Height="30"
                               Background="Gray"/>
                     <MenuItem Header="Выход"
-                              Height="30"/>
+                              Height="30"
+                              x:Name="quit_Button"
+                              Click="quit_Button_Click"/>
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="1"
@@ -60,7 +64,8 @@
                            Foreground="#bbbbbb"/>
             </Grid>
             <Grid Grid.Row="1"
-                  Margin="180 0">
+                  Margin="180 0"
+                  x:Name="main_Grid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -82,7 +87,7 @@
                     <TextBox x:Name="search_TextBox"
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              VerticalContentAlignment="Center"
-                             md:HintAssist.Hint="Поиск"
+                             md:HintAssist.Hint="{DynamicResource search}"
                              md:HintAssist.FloatingScale="0.70"
                              Padding="20 10"
                              Margin="0 0 10 0"/>
@@ -97,7 +102,7 @@
                             </Style>
                         </StackPanel.Resources>
                         <Button x:Name="search_Button"
-                                Content="ПОИСК"
+                                Content="{DynamicResource search}"
                                 Click="search_Button_Click"
                                 Foreground="White"
                                 Margin="0 0 5 0"/>
@@ -176,27 +181,27 @@
                         </Grid.ColumnDefinitions>
 
                         <ComboBox x:Name="brand_ComboBox"
-                                  md:HintAssist.Hint="{StaticResource brand}"
+                                  md:HintAssist.Hint="{DynamicResource brand}"
                                   SelectionChanged="brand_ComboBox_SelectionChanged"/>
 
                         <ComboBox x:Name="model_ComboBox"
-                                  md:HintAssist.Hint="{StaticResource model}"
+                                  md:HintAssist.Hint="{DynamicResource model}"
                                   Grid.Column="1"/>
 
                         <ComboBox x:Name="type_ComboBox"
-                                  md:HintAssist.Hint="{StaticResource device_type}"
+                                  md:HintAssist.Hint="{DynamicResource device_type}"
                                   Grid.Column="2" />
 
                         <ComboBox x:Name="status_ComboBox"
-                                  md:HintAssist.Hint="{StaticResource status}"
+                                  md:HintAssist.Hint="{DynamicResource status}"
                                   Grid.Column="3" />
 
                         <TextBox x:Name="clientName_TextBox"
-                                 md:HintAssist.Hint="{StaticResource client_name}"
+                                 md:HintAssist.Hint="{DynamicResource client_name}"
                                  Grid.Row="1"/>
 
                         <TextBox x:Name="clientPhone_TextBox"
-                                 md:HintAssist.Hint="{StaticResource phone_number}"
+                                 md:HintAssist.Hint="{DynamicResource phone_number}"
                                  Grid.Row="1"
                                  Grid.Column="1" />
 
@@ -237,7 +242,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1.4*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="{DynamicResource number}" />
                     <TextBlock Text="{DynamicResource type}"
@@ -253,8 +258,9 @@
                     <TextBlock Text="{DynamicResource acception_date}"
                                Grid.Column="6" />
                     <TextBlock Text="{DynamicResource status}"
-                               Grid.Column="7" />
-                    <!--<TextBlock Text="{StaticResource Type}"-->
+                               Grid.Column="7"
+                               Margin="0 5 25 5"/>
+                    <!--<TextBlock Text="{DynamicResource Type}"-->
                 </Grid>
                 
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden"
@@ -365,7 +371,7 @@
                                         Value="15" />
                             </Style>
                         </StackPanel.Resources>
-                        <TextBlock Text="{StaticResource update_available}" />
+                        <TextBlock Text="{DynamicResource update_available}" />
                         <TextBlock x:Name="newVersion_TextBlock"
                                    Margin="5 0 0 0"
                                    TextDecorations="Underline"
@@ -397,7 +403,7 @@
                                 Margin="0 0 10 0"
                                 Visibility="Visible"
                                 HorizontalAlignment="Right">
-                        <TextBlock Text="{StaticResource offline_mode}"
+                        <TextBlock Text="{DynamicResource offline_mode}"
                                    Margin="0 0 5 0"
                                    FontSize="15"/>
                         <TextBlock x:Name="lastSyncTime_TextBlock"

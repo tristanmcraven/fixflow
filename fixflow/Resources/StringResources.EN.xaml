@@ -76,4 +76,5 @@
     <s:String x:Key="language">Language</s:String>
     <s:String x:Key="russian">Russian</s:String>
     <s:String x:Key="english">English</s:String>
+    <s:String x:Key="search">Search</s:String>
 </ResourceDictionary>
