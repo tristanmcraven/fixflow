@@ -373,6 +373,47 @@ namespace fixflow.Windows
             var grid = advancedSearch_Grid;
             if (grid.Visibility == Visibility.Collapsed) grid.Visibility = Visibility.Visible;
             else grid.Visibility = Visibility.Collapsed;
+            // ))
+            if (zxc.IsChecked == true && zxc1.IsChecked == true)
+            {
+                zxc.IsChecked = false;
+                zxc1.IsChecked = false;
+            }
+            else
+            {
+                zxc.IsChecked = true;
+                zxc1.IsChecked = true;
+            }
+        }
+
+        private async void brand_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = (ComboBox)sender;
+            if (cb.SelectedIndex == 0)
+            {
+                model_ComboBox.SelectedIndex = 0;
+                model_ComboBox.IsEnabled = false;
+            }
+            else
+            {
+                var item = cb.SelectedItem as string;
+                if (item != null)
+                {
+                    model_ComboBox.Items.Clear();
+
+                    var models = await ApiClient.DeviceBrand.GetModelsByName(item);
+                    model_ComboBox.Items.Add("< Не выбрано >");
+                    if (models != null)
+                    {
+                        foreach (var model in models)
+                        {
+                            model_ComboBox.Items.Add(model.Name);
+                        }
+                    }
+                    model_ComboBox.SelectedIndex = 0;
+                    model_ComboBox.IsEnabled = model_ComboBox.Items.Count > 1;
+                }
+            }
         }
     }
 }

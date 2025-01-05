@@ -1,10 +1,14 @@
 ﻿using fixflow.Model;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 
@@ -95,11 +99,67 @@ namespace fixflow.Utility
             switch (id)
             {
                 case AppTheme.Light:
-                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, Colors.Red, Colors.Yellow));
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.Yellow]));
                     break;
                 case AppTheme.Dark:
-                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, Colors.Red, Colors.Yellow));
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.Yellow]));
                     break;
+            }
+        }
+
+        public static void UpdateLangugage(string langCode)
+        {
+            var updLangCode = langCode;
+            if (langCode == "system") updLangCode = "en-US";
+
+            var md = Application.Current.Resources.MergedDictionaries;
+
+            //var oldLang = md.FirstOrDefault(d => d.Source != null && d.Source.OriginalString.Contains("StringResources"));
+            //md.Remove(oldLang);
+
+            while (md.Count > 2)
+                md.RemoveAt(2);
+
+            var dict = new ResourceDictionary();
+            switch (langCode)
+            {
+                case "ru-RU":
+                    dict.Source = new Uri($"/Resources/StringResources.xaml", UriKind.Relative);
+                    break;
+                default:
+                    dict.Source = new Uri($"/Resources/StringResources.EN.xaml", UriKind.Relative);
+                    break;
+            }
+            md.Add(dict);
+            ForceUIUpdate();
+        }
+
+        private static void ForceUIUpdate()
+        {
+            foreach (var window in Application.Current.Windows)
+            {
+                UpdateBindingTargets((Window)window);
+            }
+        }
+
+        private static void UpdateBindingTargets(DependencyObject depObj)
+        {
+            // Recursively update the bindings of all child elements
+            foreach (var child in LogicalTreeHelper.GetChildren(depObj))
+            {
+                if (child is FrameworkElement fe)
+                {
+                    fe.UpdateLayout(); // Forces the layout to update
+                    fe.InvalidateVisual(); // Forces the element to re-render
+                    fe.GetBindingExpression(FrameworkElement.DataContextProperty)?.UpdateTarget(); // Update binding for DataContext
+                    fe.GetBindingExpression(TextBlock.TextProperty)?.UpdateTarget(); // Update specific bindings (if any)
+                }
+
+                // If the child is another container, recurse into it
+                if (child is DependencyObject depChild)
+                {
+                    UpdateBindingTargets(depChild);
+                }
             }
         }
 
@@ -117,6 +177,11 @@ namespace fixflow.Utility
             return AppTheme.Dark;
         }
 
+        private static string GetSystemLanguage()
+        {
+            return CultureInfo.CurrentUICulture.Name;
+        }
+
         private static Settings CreateDefaultSettings()
         {
             return new Settings
@@ -128,7 +193,7 @@ namespace fixflow.Utility
                 WindowSizes = new Dictionary<string, WindowSize>(),
                 WindowLocations = new Dictionary<string, WindowLocation>(),
                 AppTheme = 0,
-                AppLanguage = 0
+                AppLanguage = "en-US"
             };
         }
 
@@ -144,7 +209,7 @@ namespace fixflow.Utility
             settings.WindowLocations ??= new Dictionary<string, WindowLocation>();
 
             settings.AppTheme ??= 0;
-            settings.AppLanguage ??= 0;
+            settings.AppLanguage ??= "en-US";
 
             return settings;
         }

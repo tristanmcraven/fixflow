@@ -54,7 +54,9 @@
                     BorderBrush="DimGray"
                     VerticalAlignment="Bottom"
                     Margin="0 0 10 13"
-                    CornerRadius="10" />
+                    CornerRadius="10"
+                    Width="400"
+                    HorizontalAlignment="Left"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{StaticResource theme}" />
                 <ComboBox x:Name="theme_ComboBox"

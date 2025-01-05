@@ -42,6 +42,8 @@ namespace fixflow
 
             UpdateSettings();
             UpdateApp();
+            SettingsManager.UpdateLangugage(Settings.AppLanguage);
+            SettingsManager.UpdateAppTheme((AppTheme)Settings.AppTheme);
 
             if (App.Settings.CheckForUpdates == true) CheckForNewVersion();
 

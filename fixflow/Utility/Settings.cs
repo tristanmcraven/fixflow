@@ -17,7 +17,7 @@ namespace fixflow.Utility
         public Dictionary<string, WindowSize> WindowSizes = new();
         public Dictionary<string, WindowLocation> WindowLocations = new();
         public AppTheme? AppTheme { get; set; }
-        public AppLanguage? AppLanguage { get; set; }
+        public string? AppLanguage { get; set; }
     }
 
     public struct WindowSize

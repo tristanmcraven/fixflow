@@ -67,7 +67,7 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
                 
-                <Grid>
+                <Grid Margin="0 20 0 0">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -83,10 +83,11 @@
                              Style="{StaticResource MaterialDesignFilledTextBox}"
                              VerticalContentAlignment="Center"
                              md:HintAssist.Hint="Поиск"
-                             md:HintAssist.FloatingScale="0.90"
-                             Padding="20 10"/>
+                             md:HintAssist.FloatingScale="0.70"
+                             Padding="20 10"
+                             Margin="0 0 10 0"/>
                     
-                    <StackPanel Orientation="Vertical"
+                    <StackPanel Orientation="Horizontal"
                                 Grid.Column="1">
                         <StackPanel.Resources>
                             <Style TargetType="Button"
@@ -97,16 +98,33 @@
                         </StackPanel.Resources>
                         <Button x:Name="search_Button"
                                 Content="ПОИСК"
-                                Click="search_Button_Click" />
+                                Click="search_Button_Click"
+                                Foreground="White"
+                                Margin="0 0 5 0"/>
                         <Button x:Name="advancedSearch_Button"
-                                Content="РАСШИРЕННЫЙ ПОИСК"
-                                Click="advancedSearch_Button_Click" />
+                                Click="advancedSearch_Button_Click"
+                                Padding="7">
+                            <!--<Image Source="/assets/images/double-arrow-down.png"
+                                   />-->
+                            <Grid>
+                                <CheckBox Style="{StaticResource MaterialDesignExpanderToggleButton}"
+                                          Margin="0 -5 0 0"
+                                          IsEnabled="False"
+                                          x:Name="zxc"/>
+                                <CheckBox Style="{StaticResource MaterialDesignExpanderToggleButton}"
+                                          Margin="0"
+                                          IsEnabled="False"
+                                          x:Name="zxc1"
+                                          Foreground="Black"/>
+                            </Grid>
+                        </Button>
                     </StackPanel>
 
                     <Grid x:Name="advancedSearch_Grid"
                           Grid.ColumnSpan="2"
                           Grid.Row="1"
-                          Visibility="Collapsed">
+                          Visibility="Collapsed"
+                          Margin="0 20 0 0">
                         <Grid.Resources>
                             <Style TargetType="ComboBox"
                                    BasedOn="{StaticResource MaterialDesignOutlinedComboBox}">
@@ -116,6 +134,8 @@
                                         Value="10" />
                                 <Setter Property="md:HintAssist.FloatingScale"
                                         Value="0.85" />
+                                <Setter Property="Margin"
+                                        Value="0 0 10 7.5" />
                             </Style>
 
                             <Style TargetType="TextBox"
@@ -126,14 +146,20 @@
                                         Value="10" />
                                 <Setter Property="md:HintAssist.FloatingScale"
                                         Value="0.85" />
+                                <Setter Property="Margin"
+                                        Value="0 0 10 0" />
                             </Style>
 
                             <Style TargetType="DatePicker"
                                    BasedOn="{StaticResource MaterialDesignOutlinedDatePicker}">
                                 <Setter Property="Padding"
                                         Value="10" />
+                                <Setter Property="FontFamily"
+                                        Value="{StaticResource regular}" />
                                 <Setter Property="md:HintAssist.FloatingScale"
                                         Value="0.85" />
+                                <Setter Property="Margin"
+                                        Value="0 0 10 0" />
                             </Style>
                         </Grid.Resources>
 
@@ -150,7 +176,8 @@
                         </Grid.ColumnDefinitions>
 
                         <ComboBox x:Name="brand_ComboBox"
-                                  md:HintAssist.Hint="{StaticResource brand}" />
+                                  md:HintAssist.Hint="{StaticResource brand}"
+                                  SelectionChanged="brand_ComboBox_SelectionChanged"/>
 
                         <ComboBox x:Name="model_ComboBox"
                                   md:HintAssist.Hint="{StaticResource model}"
@@ -212,20 +239,20 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{StaticResource number}" />
-                    <TextBlock Text="{StaticResource type}"
+                    <TextBlock Text="{DynamicResource number}" />
+                    <TextBlock Text="{DynamicResource type}"
                                Grid.Column="1"/>
-                    <TextBlock Text="{StaticResource brand}"
+                    <TextBlock Text="{DynamicResource brand}"
                                Grid.Column="2" />
-                    <TextBlock Text="{StaticResource model}"
+                    <TextBlock Text="{DynamicResource model}"
                                Grid.Column="3" />
-                    <TextBlock Text="{StaticResource client_name}"
+                    <TextBlock Text="{DynamicResource client_name}"
                                Grid.Column="4" />
-                    <TextBlock Text="{StaticResource phone_number}"
+                    <TextBlock Text="{DynamicResource phone_number}"
                                Grid.Column="5" />
-                    <TextBlock Text="{StaticResource acception_date}"
+                    <TextBlock Text="{DynamicResource acception_date}"
                                Grid.Column="6" />
-                    <TextBlock Text="{StaticResource status}"
+                    <TextBlock Text="{DynamicResource status}"
                                Grid.Column="7" />
                     <!--<TextBlock Text="{StaticResource Type}"-->
                 </Grid>
