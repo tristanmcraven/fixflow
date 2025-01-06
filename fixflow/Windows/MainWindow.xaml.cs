@@ -244,8 +244,11 @@ namespace fixflow.Windows
             
         }
 
+        private bool _backupComplete = false;
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (_backupComplete)
+                return;
             e.Cancel = true;
             if (App.OfflineMode)
             {
@@ -259,8 +262,9 @@ namespace fixflow.Windows
             }
 
             SettingsManager.SaveWindowProperties(this);
-
+            _backupComplete = true;
             e.Cancel = false;
+            this.Close();
         }
 
         private void tickets_DataGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
