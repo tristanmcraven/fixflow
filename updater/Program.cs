@@ -47,7 +47,7 @@ class Program
 
         if (!File.Exists(fixflowExe))
         {
-            Console.WriteLine($"{fixflowExe} not found. Assuming lowest version (0.0.0).");
+            Console.WriteLine($"{fixflowExe} not found. Downloading program...");
             return new Version(0, 0, 0);
         }
 
@@ -125,11 +125,18 @@ class Program
         ZipFile.ExtractToDirectory(zipPath, DownloadDirectory, overwriteFiles: true);
 
         Console.WriteLine("Replacing old files...");
-        var files = Directory.GetFiles(DownloadDirectory);
-        foreach (var file in files)
+        try
         {
-            var fileName = Path.GetFileName(file);
-            File.Copy(file, fileName, overwrite: true);
+            var files = Directory.GetFiles(DownloadDirectory);
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file);
+                File.Copy(file, fileName, overwrite: true);
+            }
+        }
+        catch (Exception)
+        {
+
         }
 
         Console.WriteLine("Update complete!");

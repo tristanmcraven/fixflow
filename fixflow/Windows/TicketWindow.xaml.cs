@@ -26,6 +26,7 @@ namespace fixflow.Windows
     /// </summary>
     public partial class TicketWindow : Window
     {
+        private int _number;
         private Guid _ticketId;
         private Ticket _ticket;
         private TicketKit _ticketKit;
@@ -35,10 +36,11 @@ namespace fixflow.Windows
 
         private bool _noteChanged = false;
         
-        public TicketWindow(Guid ticketId)
+        public TicketWindow(Guid ticketId, int number)
         {
             InitializeComponent();
             _ticketId = ticketId;
+            _number = number;
         }
 
         private void addStatus_Button_Click(object sender, RoutedEventArgs e)
@@ -89,8 +91,8 @@ namespace fixflow.Windows
         {
             DataContext = _ticket;
 
-            ticketNumber_TextBlock.Text = _ticket.Guid.ToString();
-            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("dddd", new CultureInfo("ru-RU"))})";
+            ticketNumber_TextBlock.Text = _number.ToString();
+            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("ddd", new CultureInfo("ru-RU"))})";
   
              
             //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
@@ -177,11 +179,11 @@ namespace fixflow.Windows
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SettingsManager.SaveWindowProperties(this);
             if (_noteChanged)
             {
                 await ApiClient.Ticket.Put(_ticket.Guid, ticketNote_TextBox.Text);
             }
+            SettingsManager.SaveWindowProperties(this);
         }
 
         private void editClient_Button_Click(object sender, RoutedEventArgs e)
@@ -234,8 +236,8 @@ namespace fixflow.Windows
             var deviceTypeResult = await ApiClient.Ticket.ChangeDeviceType(_ticket.Guid, (await ApiClient.DeviceType.GetByName(deviceTypes_ComboBox.SelectedItem.ToString())).Guid);
             if (nameResult && phoneResult && deviceBrandResult && deviceModelResult && deviceTypeResult)
             {
-                reject_Button_Click(null, null);
                 Window_Activated(null, null);
+                reject_Button_Click(null, null);
             }
         }
 

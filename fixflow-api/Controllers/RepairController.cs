@@ -28,14 +28,14 @@ namespace fixflow_api.Controllers
             return repair != null ? Ok(repair) : NotFound();
         }
 
-        [HttpGet("name")]
+        [HttpGet("{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
             var repair = await _service.GetByName(name);
             return repair != null ? Ok(repair) : NotFound();
         }
 
-        [HttpPost("name")]
+        [HttpPost("{name}")]
         public async Task<IActionResult> Post(string name)
         {
             var repair = await _service.Post(name);

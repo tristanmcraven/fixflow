@@ -21,13 +21,25 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{StaticResource settings}"
+            <TextBlock Text="{DynamicResource settings}"
                        FontFamily="{StaticResource medium}"
                        FontSize="16"
                        HorizontalAlignment="Center"
                        Margin="0 10"
-                       Foreground="{StaticResource MaterialDesign.Brush.Primary}"
-                       />
+                       Foreground="{StaticResource MaterialDesign.Brush.Primary}">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="10"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality" />
+                </TextBlock.Effect>
+            </TextBlock>
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="10 0 10 3"
+                    CornerRadius="10"/>
+            
             <ListBox x:Name="settings_ListBox"
                      ScrollViewer.CanContentScroll="False"
                      Grid.Row="1"
@@ -41,7 +53,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="/Assets/Images/settings.png"
                                Height="35" />
-                        <TextBlock Text="{StaticResource general}"
+                        <TextBlock Text="{DynamicResource general}"
                                    Grid.Column="1"
                                    Tag="settingName"
                                    VerticalAlignment="Center"
@@ -57,7 +69,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="/Assets/Images/program.png"
                                Height="35"/>
-                        <TextBlock Text="{StaticResource program}"
+                        <TextBlock Text="{DynamicResource program}"
                                    Grid.Column="1"
                                    Tag="settingName"
                                    VerticalAlignment="Center"
@@ -82,7 +94,19 @@
                        VerticalAlignment="Center"
                        Margin="0 10 0 20"
                        FontSize="16"
-                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}"/>
+                       Foreground="{StaticResource MaterialDesign.Brush.Secondary}">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black"
+                                      BlurRadius="10"
+                                      ShadowDepth="0"
+                                      RenderingBias="Quality" />
+                </TextBlock.Effect>
+            </TextBlock>
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 10 13"
+                    CornerRadius="10" />
             <Frame x:Name="Frame" NavigationUIVisibility="Hidden"
                    Grid.Row="1"/>
         </Grid>

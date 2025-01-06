@@ -1,6 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using fixflow.Model;
+using MaterialDesignColors;
+using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
+using Newtonsoft.Json;
+using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
+using System.Windows.Media;
+
 
 namespace fixflow.Utility
 {
@@ -80,6 +90,68 @@ namespace fixflow.Utility
             return (size, location);
         }
 
+        public static void UpdateAppTheme(AppTheme id)
+        {
+            var paletteHelper = new PaletteHelper();
+            IThemeManager theme = paletteHelper.GetThemeManager();
+            if (id == AppTheme.System)
+                id = GetSystemTheme();
+            switch (id)
+            {
+                case AppTheme.Light:
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.YellowSecondary]));
+                    break;
+                case AppTheme.Dark:
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.YellowSecondary]));
+                    break;
+            }
+        }
+
+        public static void UpdateLangugage(string langCode)
+        {
+            var updLangCode = langCode;
+            if (langCode == "system") updLangCode = "en-US";
+
+            var md = Application.Current.Resources.MergedDictionaries;
+
+            //var oldLang = md.FirstOrDefault(d => d.Source != null && d.Source.OriginalString.Contains("StringResources"));
+            //md.Remove(oldLang);
+
+            while (md.Count > 2)
+                md.RemoveAt(2);
+
+            var dict = new ResourceDictionary();
+            switch (langCode)
+            {
+                case "ru-RU":
+                    dict.Source = new Uri($"/Resources/StringResources.xaml", UriKind.Relative);
+                    break;
+                default:
+                    dict.Source = new Uri($"/Resources/StringResources.EN.xaml", UriKind.Relative);
+                    break;
+            }
+            md.Add(dict);
+        }
+
+        private static AppTheme GetSystemTheme()
+        {
+            const string keyPath = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+            const string valueName = "AppsUseLightTheme";
+
+            using (var key = Registry.CurrentUser.OpenSubKey(keyPath))
+            {
+                if (key?.GetValue(valueName) is int value)
+                    return value == 1 ? AppTheme.Light : AppTheme.Dark;
+            }
+
+            return AppTheme.Dark;
+        }
+
+        private static string GetSystemLanguage()
+        {
+            return CultureInfo.CurrentUICulture.Name;
+        }
+
         private static Settings CreateDefaultSettings()
         {
             return new Settings
@@ -89,7 +161,9 @@ namespace fixflow.Utility
                 RememberWindowSize = true,
                 RememberWindowLocation = true,
                 WindowSizes = new Dictionary<string, WindowSize>(),
-                WindowLocations = new Dictionary<string, WindowLocation>()
+                WindowLocations = new Dictionary<string, WindowLocation>(),
+                AppTheme = 0,
+                AppLanguage = "en-US"
             };
         }
 
@@ -103,6 +177,9 @@ namespace fixflow.Utility
 
             settings.WindowSizes ??= new Dictionary<string, WindowSize>();
             settings.WindowLocations ??= new Dictionary<string, WindowLocation>();
+
+            settings.AppTheme ??= 0;
+            settings.AppLanguage ??= "en-US";
 
             return settings;
         }

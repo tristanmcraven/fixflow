@@ -10,4 +10,14 @@ public partial class DeviceType
     public string Name { get; set; } = null!;
 
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+
+    public DeviceType()
+    {
+    }
+
+    public DeviceType(string name)
+    {
+        Guid = Guid.NewGuid();
+        Name = name;
+    }
 }

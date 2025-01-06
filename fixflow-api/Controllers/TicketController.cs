@@ -61,7 +61,15 @@ namespace fixflow_api.Controllers
         public async Task<IActionResult> Post(TicketDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var ticket = await _ticketService.Post(dto.DeviceBrandId, dto.DeviceModelId, dto.DeviceTypeId, dto.ClientFullname, dto.ClientPhoneNumber, dto.Timestamp, dto.Note, dto.Description);
+            var ticket = await _ticketService.Post(dto.DeviceBrandId,
+                                                   dto.DeviceModelId,
+                                                   dto.DeviceTypeId,
+                                                   dto.ClientFullname,
+                                                   dto.ClientPhoneNumber,
+                                                   dto.Timestamp,
+                                                   dto.Note,
+                                                   dto.Description,
+                                                   ticketId: dto.TicketId);
             return ticket != null ? Ok(ticket) : BadRequest(ModelState);
         }
 
@@ -111,6 +119,28 @@ namespace fixflow_api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             return await _ticketService.Delete(id) ? NoContent() : BadRequest();
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string q)
+        {
+            return Ok(await _ticketService.Search(q));
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> Filter(
+            [FromQuery] Guid? deviceBrandGuid,
+            [FromQuery] Guid? deviceModelGuid,
+            [FromQuery] Guid? deviceTypeGuid,
+            [FromQuery] Guid? statusGuid,
+            [FromQuery] string? clientName,
+            [FromQuery] string? clientPhone,
+            [FromQuery] DateTime? startDate,
+            [FromQuery] DateTime? endDate
+            )
+        {
+            var tickets = await _ticketService.Filter(deviceBrandGuid, deviceModelGuid, deviceTypeGuid, statusGuid, clientName, clientPhone, startDate, endDate);
+            return tickets.Any() ? Ok(tickets) : NotFound();
         }
     }
 }

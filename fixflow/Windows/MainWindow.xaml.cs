@@ -1,4 +1,5 @@
 ﻿using fixflow.Model;
+using fixflow.UserControls;
 using fixflow.Utility;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace fixflow.Windows
     public partial class MainWindow : Window
     {
         private bool _let = false;
+        private bool _allowedToClose = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -45,80 +47,105 @@ namespace fixflow.Windows
             if (_let)
             {
                 LoadingOverlay.Show(this);
-                UpdateTickets(await GetFormattedTickets());
+                UpdateTickets(await GetFormattedTickets(await GetAllTickets()));
                 LoadingOverlay.Remove(this);
             }
         }
 
         private void UpdateTickets(List<Ticket> tickets)
         {
-            tickets_DataGrid.ItemsSource = null;
-
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Номер", typeof(uint));
-            dataTable.Columns.Add("Дата принятия", typeof(string));
-            dataTable.Columns.Add("Марка", typeof(string));
-            dataTable.Columns.Add("Модель", typeof(string));
-            dataTable.Columns.Add("Имя клиента", typeof(string));
-            dataTable.Columns.Add("Номер клиента", typeof(string));
-            dataTable.Columns.Add("Guid", typeof(Guid));
+            tickets_StackPanel.Children.Clear();
 
             int numericId = tickets.Count;
 
             foreach (var ticket in tickets)
             {
-                var timestamp = ticket.Timestamp;
-
-                dataTable.Rows.Add(
-                    numericId--, 
-                    $"{timestamp:dd}/{timestamp:MM}/{timestamp:yyyy}",
-                    ticket.DeviceBrand.Name,
-                    ticket.DeviceModel.Name,
-                    ticket.ClientFullname,
-                    $"+7{ticket.ClientPhoneNumber}"
-                    , ticket.Guid
-                );
-            }
-
-            tickets_DataGrid.ItemsSource = dataTable.DefaultView;
-
-            if (tickets_DataGrid.Columns.Count > 0)
-            {
-                var guidColumn = tickets_DataGrid.Columns
-                    .FirstOrDefault(c => c.Header.ToString() == "Guid");
-
-                if (guidColumn != null)
-                {
-                    guidColumn.Visibility = Visibility.Collapsed;
-                }
+                var status = ticket.TicketStatuses.OrderByDescending(x => x.Timestamp).First().Status;
+                tickets_StackPanel.Children.Add(new TicketUserControl(numericId--, ticket, status));
             }
 
             if (tickets.Count > 0)
             {
-                tickets_DataGrid.Visibility = Visibility.Visible;
+                //tickets_DataGrid.Visibility = Visibility.Collapsed;
+                tickets_StackPanel.Visibility = Visibility.Visible;
                 noTickets_Grid.Visibility = Visibility.Collapsed;
             }
-            else if (tickets.Count == 0) 
-            {
-                tickets_DataGrid.Visibility = Visibility.Collapsed;
-                noTickets_Grid.Visibility = Visibility.Visible;
-            }
+            //tickets_DataGrid.ItemsSource = null;
+
+            //DataTable dataTable = new DataTable();
+            //dataTable.Columns.Add("Номер", typeof(uint));
+            //dataTable.Columns.Add("Дата принятия", typeof(string));
+            //dataTable.Columns.Add("Марка", typeof(string));
+            //dataTable.Columns.Add("Модель", typeof(string));
+            //dataTable.Columns.Add("Имя клиента", typeof(string));
+            //dataTable.Columns.Add("Номер клиента", typeof(string));
+            //dataTable.Columns.Add("Guid", typeof(Guid));
+
+            //int numericId = tickets.Count;
+
+            //foreach (var ticket in tickets)
+            //{
+            //    var timestamp = ticket.Timestamp;
+
+            //    dataTable.Rows.Add(
+            //        numericId--, 
+            //        $"{timestamp:dd}/{timestamp:MM}/{timestamp:yyyy}",
+            //        ticket.DeviceBrand.Name,
+            //        ticket.DeviceModel.Name,
+            //        ticket.ClientFullname,
+            //        $"+7{ticket.ClientPhoneNumber}"
+            //        , ticket.Guid
+            //    );
+            //}
+
+            //tickets_DataGrid.ItemsSource = dataTable.DefaultView;
+
+            //if (tickets_DataGrid.Columns.Count > 0)
+            //{
+            //    var guidColumn = tickets_DataGrid.Columns
+            //        .FirstOrDefault(c => c.Header.ToString() == "Guid");
+
+            //    if (guidColumn != null)
+            //    {
+            //        guidColumn.Visibility = Visibility.Collapsed;
+            //    }
+            //}
+
+
+            //else if (tickets.Count == 0) 
+            //{
+            //    tickets_DataGrid.Visibility = Visibility.Collapsed;
+            //    noTickets_Grid.Visibility = Visibility.Visible;
+            //}
         }
 
 
-        private async Task<List<Ticket>> GetFormattedTickets()
+        private async Task<List<Ticket>> GetFormattedTickets(List<Ticket> tickets)
         {
-            var tickets = await ApiClient.Ticket.Get();
             var formattedTickets = new List<Ticket>();
+
+            if (tickets == null)
+                return formattedTickets;
 
             foreach (var ticket in tickets)
             {
                 ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(ticket.DeviceBrandGuid);
                 ticket.DeviceModel = await ApiClient.DeviceModel.GetById(ticket.DeviceModelGuid);
+                ticket.DeviceType = await ApiClient.DeviceType.GetById(ticket.DeviceTypeGuid);
+                ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(ticket.Guid);
+                foreach (var ticketStatus in ticket.TicketStatuses)
+                {
+                    ticketStatus.Status = await ApiClient.Status.GetById(ticketStatus.StatusGuid);
+                }
                 formattedTickets.Add(ticket);
             }
 
             return formattedTickets.OrderByDescending(t => t.Timestamp).ToList();
+        }
+
+        private async Task<List<Ticket>> GetAllTickets()
+        {
+            return await ApiClient.Ticket.Get();
         }
 
         private void tickets_DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -128,7 +155,8 @@ namespace fixflow.Windows
                 if (e.ChangedButton == MouseButton.Left)
                 {
                     Guid ticketId = (Guid)rowView["Guid"];
-                    var tw = new TicketWindow(ticketId)
+                    uint id = (uint)rowView["Номер"];
+                    var tw = new TicketWindow(ticketId, (int)id)
                     {
                         Owner = this
                     };
@@ -171,17 +199,72 @@ namespace fixflow.Windows
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // pizda))))))
+
             LoadingOverlay.Show(this);
             await App.CheckConnection();
             _let = true;
             LoadingOverlay.Remove(this);
+            if (App.OfflineMode)
+            {
+                lower_Grid.Visibility = Visibility.Visible;
+                offlineMode_StackPanel.Visibility = Visibility.Visible;
+                var timestamp = App.Backup.Timestamp;
+                lastSyncTime_TextBlock.Text = $"(последняя синхронизация: {timestamp:dd}.{timestamp:MM}.{timestamp:yyyy} {timestamp:HH}:{timestamp:mm})";
+            }
+            else
+            {
+                var backup = BackupManager.GetExistingBackup();
+                if (backup != null) await ApiClient.Sync.SyncData(BackupManager.GetExistingBackup());
+                if (App.HasInternetConnection && !App.OfflineMode) await BackupManager.CreateBackup();
+            }
             Window_Activated(null, null);
             WindowManager.SetProperties(this);
+
+            brand_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var brand in await ApiClient.DeviceBrand.Get())
+                brand_ComboBox.Items.Add(brand.Name);
+            brand_ComboBox.SelectedIndex = 0;
+
+            model_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var model in await ApiClient.DeviceModel.Get())
+                model_ComboBox.Items.Add(model.Name);
+            model_ComboBox.SelectedIndex = 0;
+
+            type_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var type in await ApiClient.DeviceType.Get())
+                type_ComboBox.Items.Add(type.Name);
+            type_ComboBox.SelectedIndex = 0;
+
+            status_ComboBox.Items.Add("< Не выбрано >");
+            foreach (var status in await ApiClient.Status.Get())
+                status_ComboBox.Items.Add(status.Name);
+            status_ComboBox.SelectedIndex = 0;
+
+
+            
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private bool _backupComplete = false;
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (_backupComplete)
+                return;
+            e.Cancel = true;
+            if (App.OfflineMode)
+            {
+                BackupManager.SaveBackup(App.Backup);
+            }
+            else
+            {
+                Debug.WriteLine("Starting backup");
+                var zxc = await BackupManager.CreateBackup();
+                Debug.WriteLine("Backup Complete");
+            }
+
             SettingsManager.SaveWindowProperties(this);
+            _backupComplete = true;
+            e.Cancel = false;
+            this.Close();
         }
 
         private void tickets_DataGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
@@ -236,5 +319,118 @@ namespace fixflow.Windows
             Window_Activated(null, null);
         }
 
+        private async void search_Button_Click(object sender, RoutedEventArgs e)
+        {
+            tickets_StackPanel.Children.Clear();
+            if (advancedSearch_Grid.Visibility == Visibility.Collapsed && String.IsNullOrWhiteSpace(search_TextBox.Text))
+            {
+                UpdateTickets(await GetFormattedTickets(await GetAllTickets()));
+                return;
+            }
+            if (advancedSearch_Grid.Visibility == Visibility.Collapsed)
+            {
+                UpdateTickets(await GetFormattedTickets(await ApiClient.Ticket.Search(search_TextBox.Text)));
+                return;
+            }
+            if (advancedSearch_Grid.Visibility == Visibility.Visible)
+            {
+                Guid? deviceBrandGuid = null;
+                Guid? deviceModelGuid = null;
+                Guid? deviceTypeGuid = null;
+                Guid? statusGuid = null;
+                string? clientName = clientName_TextBox.Text;
+                string? clientPhone = clientPhone_TextBox.Text;
+                DateTime? startDate = startDate_DatePicker.SelectedDate;
+                DateTime? endDate = endDate_DatePicker.SelectedDate;
+
+                if (brand_ComboBox.SelectedIndex != 0)
+                    deviceBrandGuid = (await ApiClient.DeviceBrand.GetByName(brand_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (model_ComboBox.SelectedIndex != 0)
+                    deviceModelGuid = (await ApiClient.DeviceModel.GetByName(model_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (type_ComboBox.SelectedIndex != 0)
+                    deviceTypeGuid = (await ApiClient.DeviceType.GetByName(type_ComboBox.SelectedItem.ToString())).Guid;
+
+                if (status_ComboBox.SelectedIndex != 0)
+                    statusGuid = (await ApiClient.Status.GetByName(status_ComboBox.SelectedItem.ToString())).Guid;
+
+                UpdateTickets(await GetFormattedTickets(await ApiClient.Ticket.Filter(
+                    deviceBrandGuid,
+                    deviceModelGuid,
+                    deviceTypeGuid,
+                    statusGuid,
+                    clientName,
+                    clientPhone,
+                    startDate,
+                    endDate)));
+                return;
+            }
+        }
+
+        private void advancedSearch_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.OfflineMode)
+            {
+                MessageBox.Show("Недоступно в оффлайн-режиме", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var grid = advancedSearch_Grid;
+            if (grid.Visibility == Visibility.Collapsed) grid.Visibility = Visibility.Visible;
+            else grid.Visibility = Visibility.Collapsed;
+            // ))
+            if (zxc.IsChecked == true && zxc1.IsChecked == true)
+            {
+                zxc.IsChecked = false;
+                zxc1.IsChecked = false;
+            }
+            else
+            {
+                zxc.IsChecked = true;
+                zxc1.IsChecked = true;
+            }
+        }
+
+        private async void brand_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cb = (ComboBox)sender;
+            if (cb.SelectedIndex == 0)
+            {
+                model_ComboBox.SelectedIndex = 0;
+                model_ComboBox.IsEnabled = false;
+            }
+            else
+            {
+                var item = cb.SelectedItem as string;
+                if (item != null)
+                {
+                    model_ComboBox.Items.Clear();
+
+                    var models = await ApiClient.DeviceBrand.GetModelsByName(item);
+                    model_ComboBox.Items.Add("< Не выбрано >");
+                    if (models != null)
+                    {
+                        foreach (var model in models)
+                        {
+                            model_ComboBox.Items.Add(model.Name);
+                        }
+                    }
+                    model_ComboBox.SelectedIndex = 0;
+                    model_ComboBox.IsEnabled = model_ComboBox.Items.Count > 1;
+                }
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var m = this.ActualWidth / 2 - 520;
+            var margin = new Thickness(m, 0, m, 0);
+            main_Grid.Margin = margin;
+        }
+
+        private void quit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

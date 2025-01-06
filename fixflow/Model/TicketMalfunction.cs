@@ -12,4 +12,15 @@ public partial class TicketMalfunction
     public string Name { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
+
+    public TicketMalfunction()
+    {
+    }
+
+    public TicketMalfunction(Guid ticketGuid, string name)
+    {
+        Guid = Guid.NewGuid();
+        TicketGuid = ticketGuid;
+        Name = name;
+    }
 }

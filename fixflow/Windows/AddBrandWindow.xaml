@@ -21,13 +21,13 @@
             <StackPanel Orientation="Vertical"
                     VerticalAlignment="Center">
 
-                <TextBlock Text="{StaticResource enter_brand}"/>
+                <TextBlock Text="{DynamicResource enter_brand}"/>
                 <TextBox x:Name="brand_TextBox"/>
 
             </StackPanel>
 
             <Button x:Name="addBrand_Button"
-                Content="{StaticResource add}"
+                Content="{DynamicResource add}"
                 Click="addBrand_Button_Click"
                 Grid.Row="1"/>
 

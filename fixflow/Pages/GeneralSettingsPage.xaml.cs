@@ -51,6 +51,35 @@ namespace fixflow.Pages
         {
             rememberWindowSize_CheckBox.IsChecked = App.Settings.RememberWindowSize;
             rememberWindowLocation_CheckBox.IsChecked = App.Settings.RememberWindowLocation;
+            theme_ComboBox.SelectedIndex = (int)App.Settings.AppTheme;
+            language_ComboBox.SelectedIndex = App.Settings.AppLanguage switch
+            {
+                "system" => 0,
+                "ru-RU" => 1,
+                "en-US" => 2,
+                _ => 0
+            };
+        }
+
+        private void theme_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = (AppTheme)theme_ComboBox.SelectedIndex;
+            SettingsManager.UpdateSetting("AppTheme", index);
+            SettingsManager.UpdateAppTheme(index);
+        }
+
+        private void language_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = language_ComboBox.SelectedIndex;
+            string langCode = index switch
+            {
+                0 => "system",
+                1 => "ru-RU",
+                2 => "en-US",
+                _ => "en-US"
+            };
+            SettingsManager.UpdateSetting("AppLanguage", langCode);
+            SettingsManager.UpdateLangugage(langCode);
         }
     }
 }

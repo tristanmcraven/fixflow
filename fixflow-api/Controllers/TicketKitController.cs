@@ -20,6 +20,13 @@ namespace fixflow_api.Controllers
             return Ok(await _ticketKitService.Get());
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var ticketKit = await _ticketKitService.GetById(id);
+            return ticketKit != null ? Ok(ticketKit) : NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(TicketKitDto dto)
         {

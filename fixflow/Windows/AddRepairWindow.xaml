@@ -51,13 +51,13 @@
                                    />
                 <TextBox x:Name="price_TextBox"
                          KeyUp="price_TextBox_KeyUp"
-                         md:HintAssist.Hint="{StaticResource price}"
+                         md:HintAssist.Hint="{DynamicResource price}"
                          PreviewTextInput="price_TextBox_PreviewTextInput"
                          MaxLength="6"
                          />
             </StackPanel>
             <Button x:Name="addRepair_Button"
-                    Content="{StaticResource add}"
+                    Content="{DynamicResource add}"
                     Click="addRepair_Button_Click"
                     Grid.Row="1"/>
         </Grid>

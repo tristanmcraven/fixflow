@@ -18,6 +18,11 @@ namespace fixflow_api.Services
             return await _context.TicketRepairs.ToListAsync();
         }
 
+        public async Task<TicketRepair> GetById(Guid id)
+        {
+            return await _context.TicketRepairs.FirstOrDefaultAsync(tr => tr.Guid.Equals(id));
+        }
+
         public async Task<TicketRepair> Post(Guid ticketId, Guid repairId, uint price)
         {
             var ticketRepair = new TicketRepair(ticketId, repairId, price);

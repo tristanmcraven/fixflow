@@ -20,7 +20,18 @@
             <Setter Property="FontFamily"
                     Value="{StaticResource regular}" />
             <Setter Property="Foreground"
-                    Value="{StaticResource MaterialDesign.Brush.Foreground}" />
+                    Value="{DynamicResource MaterialDesign.Brush.Foreground}" />
+            <Setter Property="FontSize"
+                    Value="14" />
+        </Style>
+        <Style TargetType="ComboBox"
+               BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Setter Property="Margin"
+                    Value="10 0 0 5" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource MaterialDesign.Brush.Foreground}" />
+            <Setter Property="FontFamily"
+                    Value="{StaticResource light}" />
         </Style>
     </Page.Resources>
     <Grid>
@@ -30,7 +41,7 @@
                       Checked="rememberWindowSize_CheckBox_Checked"
                       Unchecked="rememberWindowSize_CheckBox_Unchecked">
                 <CheckBox.Content>
-                    <TextBlock Text="{StaticResource remember_window_size}"
+                    <TextBlock Text="{DynamicResource remember_window_size}"
                                Padding="0"
                                Margin="5 0 0 0"
                                FontSize="14"
@@ -42,13 +53,43 @@
                       Checked="rememberWindowLocation_CheckBox_Checked"
                       Unchecked="rememberWindowLocation_CheckBox_Unchecked">
                 <CheckBox.Content>
-                    <TextBlock Text="{StaticResource remember_window_location}"
+                    <TextBlock Text="{DynamicResource remember_window_location}"
                                Padding="0"
                                Margin="5 0 0 0"
                                FontSize="14"
                                VerticalAlignment="Top" />
                 </CheckBox.Content>
             </CheckBox>
+            <TextBlock Text="{DynamicResource design}"
+                       Margin="0 10 0 0"
+                       FontSize="16"/>
+            <Border BorderThickness="0.5"
+                    BorderBrush="DimGray"
+                    VerticalAlignment="Bottom"
+                    Margin="0 0 10 13"
+                    CornerRadius="10"
+                    Width="400"
+                    HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource theme}" />
+                <ComboBox x:Name="theme_ComboBox"
+                          Width="130"
+                          SelectionChanged="theme_ComboBox_SelectionChanged">
+                    <ComboBoxItem Content="{DynamicResource system}" />
+                    <ComboBoxItem Content="{DynamicResource light}" />
+                    <ComboBoxItem Content="{DynamicResource dark}" />
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{DynamicResource language}" />
+                <ComboBox x:Name="language_ComboBox"
+                          Width="130"
+                          SelectionChanged="language_ComboBox_SelectionChanged">
+                    <ComboBoxItem Content="{DynamicResource system}" />
+                    <ComboBoxItem Content="{DynamicResource russian}" />
+                    <ComboBoxItem Content="{DynamicResource english}" />
+                </ComboBox>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using fixflow.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace fixflow.Utility
         public bool? RememberWindowLocation { get; set; }
         public Dictionary<string, WindowSize> WindowSizes = new();
         public Dictionary<string, WindowLocation> WindowLocations = new();
+        public AppTheme? AppTheme { get; set; }
+        public string? AppLanguage { get; set; }
     }
 
     public struct WindowSize

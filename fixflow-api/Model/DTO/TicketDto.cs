@@ -4,6 +4,8 @@ namespace fixflow_api.Model.DTO
 {
     public class TicketDto
     {
+        public Guid? TicketId { get; set; }
+
         [Required]
         public Guid DeviceBrandId { get; set; }
 

@@ -14,6 +14,11 @@ namespace fixflow_api.Services
             return await _context.TicketMalfunctions.ToListAsync();
         }
 
+        public async Task<TicketMalfunction> GetById(Guid id)
+        {
+            return await _context.TicketMalfunctions.FirstOrDefaultAsync(tm => tm.Guid.Equals(id));
+        }
+
         public async Task<TicketMalfunction> Post(Guid ticketId, string Name)
         {
             var ticketMalf = new TicketMalfunction(ticketId, Name);

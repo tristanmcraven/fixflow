@@ -5,20 +5,17 @@
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              Startup="Application_Startup"
              StartupUri="Windows/MainWindow.xaml"
+             Exit="Application_Exit"
             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
             xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf">
     <Application.Resources>
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
-
-                <ResourceDictionary Source="/Resources/StringResources.EN.xaml"/>
-                <ResourceDictionary Source="/Resources/StringResources.xaml"/>
-
                 <md:BundledTheme BaseTheme="Dark"   PrimaryColor="Red" SecondaryColor="Yellow"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-                
 
+                <ResourceDictionary Source="/Resources/StringResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <!--Fonts definition-->
@@ -49,6 +46,7 @@
             
 
             <Color x:Key="blue_update">#105DE3</Color>
+            <SolidColorBrush x:Key="blue_update_scb">#105DE3</SolidColorBrush>
 
             <Style TargetType="Image">
                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
