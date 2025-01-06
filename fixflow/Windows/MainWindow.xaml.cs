@@ -213,7 +213,8 @@ namespace fixflow.Windows
             }
             else
             {
-                await ApiClient.Sync.SyncData(BackupManager.GetExistingBackup());
+                var backup = BackupManager.GetExistingBackup();
+                if (backup != null) await ApiClient.Sync.SyncData(BackupManager.GetExistingBackup());
                 if (App.HasInternetConnection && !App.OfflineMode) await BackupManager.CreateBackup();
             }
             Window_Activated(null, null);

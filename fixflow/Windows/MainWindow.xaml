@@ -16,7 +16,8 @@
         Closing="Window_Closing"
         MouseLeftButtonDown="Window_MouseLeftButtonDown"
         SizeChanged="Window_SizeChanged"
-        MinWidth="1080">
+        MinWidth="1080"
+        MinHeight="586">
     <Grid x:Name="body">
         <Grid>
             <Grid.RowDefinitions>
@@ -28,19 +29,23 @@
             <Menu md:MenuAssist.TopLevelMenuItemHeight="30"
                   Padding="0"
                   FontFamily="{StaticResource light}"
-                  Background="Gray">
+                  Background="Gray"
+                  Foreground="White">
                 <MenuItem Header="{StaticResource program}"
-                          Background="DimGray">
+                          Background="DimGray"
+                          Foreground="White">
                     <MenuItem Header="{StaticResource settings}"
                               x:Name="settings_MenuItem"
                               Click="settings_MenuItem_Click"
                               Margin="0 -14 0 0"
                               Height="30"
-                              Background="Gray"/>
+                              Background="Gray"
+                              Foreground="White"/>
                     <MenuItem Header="Выход"
                               Height="30"
                               x:Name="quit_Button"
-                              Click="quit_Button_Click"/>
+                              Click="quit_Button_Click"
+                              Foreground="White"/>
                 </MenuItem>
             </Menu>
             <Grid Grid.Row="1"
@@ -227,11 +232,20 @@
                             <Setter Property="FontFamily"
                                     Value="{StaticResource medium}" />
                             <Setter Property="FontSize"
-                                    Value="15" />
+                                    Value="16" />
                             <Setter Property="Margin"
                                     Value="0 5" />
                             <Setter Property="HorizontalAlignment"
                                     Value="Center" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Black"
+                                                      Opacity="10"
+                                                      RenderingBias="Quality"
+                                                      ShadowDepth="2"
+                                                      BlurRadius="5"/>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
@@ -244,7 +258,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1.4*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{DynamicResource number}" />
+                    <TextBlock Text="{DynamicResource number}"/>
                     <TextBlock Text="{DynamicResource type}"
                                Grid.Column="1"/>
                     <TextBlock Text="{DynamicResource brand}"
@@ -365,11 +379,7 @@
                                 
                                 Visibility="Visible">
                         <StackPanel.Resources>
-                            <Style TargetType="TextBlock"
-                                   BasedOn="{StaticResource MaterialDesignTextBlock}">
-                                <Setter Property="FontSize"
-                                        Value="15" />
-                            </Style>
+
                         </StackPanel.Resources>
                         <TextBlock Text="{DynamicResource update_available}" />
                         <TextBlock x:Name="newVersion_TextBlock"
@@ -387,9 +397,9 @@
                                 Height="20"
                                 Foreground="White"
                                 BorderBrush="White"
-                                FontSize="10"
+                                FontSize="11"
                                 VerticalAlignment="Center"
-                                Margin="15 0 0 0"
+                                Margin="10 0 0 0"
                                 FontFamily="{StaticResource light}"
                                 VerticalContentAlignment="Center" />
                     </StackPanel>

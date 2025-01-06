@@ -35,6 +35,7 @@ namespace fixflow.UserControls
             this.DataContext = new TicketUserControlViewModel(numericId, ticket, ticketstatus);
             _ticket = ticket; 
             _status = ticketstatus;
+            _numericId = numericId;
             SetTransparentBackground();
         }
 

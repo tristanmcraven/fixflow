@@ -99,10 +99,10 @@ namespace fixflow.Utility
             switch (id)
             {
                 case AppTheme.Light:
-                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.Yellow]));
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Light, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.YellowSecondary]));
                     break;
                 case AppTheme.Dark:
-                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.Yellow]));
+                    paletteHelper.SetTheme(Theme.Create(BaseTheme.Dark, SwatchHelper.Lookup[MaterialDesignColor.Red], SwatchHelper.Lookup[MaterialDesignColor.YellowSecondary]));
                     break;
             }
         }
