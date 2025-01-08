@@ -269,6 +269,13 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+            <!-- Phone number textbox style -->
+            <!--<Style x:Key="phone_TextBox"
+                   TargetType="TextBox"
+                   BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+                <Setter Property=""
+            </Style>-->
 
         </ResourceDictionary>
         

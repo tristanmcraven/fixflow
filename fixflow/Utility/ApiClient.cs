@@ -25,7 +25,10 @@ namespace fixflow.Utility
             if (!response.IsSuccessStatusCode) return default;
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            //await BackupManager.CreateBackup();
             return JsonConvert.DeserializeObject<T>(jsonResponse);
+
         }
 
         private static async Task<bool> SendRequest(string url, HttpMethod httpMethod, object? body = null)
@@ -39,17 +42,9 @@ namespace fixflow.Utility
 
             var response = await httpClient.SendAsync(request);
 
+            //await BackupManager.CreateBackup();
             return response.IsSuccessStatusCode;
         }
-
-        //whatever goes next is total shit
-        //bc the client is a brainless degenerate
-        //who first asks for something
-        //then changes his mind (asks for offline mode)
-        //and i dont have time to do it the HUMAN way
-        //iw2d iw2kms frfr
-
-        //pls dont look >.<
 
         public static class DeviceBrand
         {
