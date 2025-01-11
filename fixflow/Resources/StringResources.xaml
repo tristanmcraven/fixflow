@@ -71,7 +71,7 @@
     <s:String x:Key="design">Оформление</s:String>
     <s:String x:Key="theme">Тема</s:String>
     <s:String x:Key="system">Система</s:String>
-    <s:String x:Key="light">Светлая</s:String>
+    <s:String x:Key="light1">Светлая</s:String>
     <s:String x:Key="dark">Тёмная</s:String>
     <s:String x:Key="language">Язык</s:String>
     <s:String x:Key="russian">Русский</s:String>

@@ -4,6 +4,11 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Windows.Perception.Spatial.Preview;
+using System.Net;
+using System.Windows;
+using fixflow.Windows;
+using System.Media;
+using System.IO;
 
 namespace fixflow.Utility
 {
@@ -14,42 +19,84 @@ namespace fixflow.Utility
 
         private static async Task<T?> SendRequest<T>(string url, HttpMethod httpMethod, object? body = null)
         {
-            using var request = new HttpRequestMessage(httpMethod, apiPath + url);
-            if (body != null)
+            try
             {
-                var jsonContent = JsonConvert.SerializeObject(body);
-                request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                using var request = new HttpRequestMessage(httpMethod, apiPath + url);
+                if (body != null)
+                {
+                    var jsonContent = JsonConvert.SerializeObject(body);
+                    request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                }
+                var response = await httpClient.SendAsync(request);
+
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    OnConnectionLost();
+                    return default;
+                }
+
+                if (!response.IsSuccessStatusCode) return default;
+
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<T>(jsonResponse);
             }
-            var response = await httpClient.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode) return default;
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(jsonResponse);
+            catch (Exception)
+            {
+                OnConnectionLost();
+                return default;
+            }
         }
 
         private static async Task<bool> SendRequest(string url, HttpMethod httpMethod, object? body = null)
         {
-            using var request = new HttpRequestMessage(httpMethod, apiPath + url);
-            if (body != null)
+            try
             {
-                var jsonContent = JsonConvert.SerializeObject(body);
-                request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                using var request = new HttpRequestMessage(httpMethod, apiPath + url);
+                if (body != null)
+                {
+                    var jsonContent = JsonConvert.SerializeObject(body);
+                    request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                }
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    OnConnectionLost();
+                    return default;
+                }
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                OnConnectionLost();
+                return default;
             }
 
-            var response = await httpClient.SendAsync(request);
-
-            return response.IsSuccessStatusCode;
         }
 
-        //whatever goes next is total shit
-        //bc the client is a brainless degenerate
-        //who first asks for something
-        //then changes his mind (asks for offline mode)
-        //and i dont have time to do it the HUMAN way
-        //iw2d iw2kms frfr
-
-        //pls dont look >.<
+        private static async void OnConnectionLost()
+        {
+            string soundFilePath = @"C:\Windows\Media\Windows Notify System Generic.wav";
+            if (File.Exists(soundFilePath))
+            {
+                using (SoundPlayer player = new SoundPlayer(soundFilePath))
+                {
+                    player.Play();
+                }
+            }
+            App.OfflineMode = true;
+            App.Backup = BackupManager.GetExistingBackup();
+            foreach (var win in Application.Current.Windows)
+            {
+                var window = (Window)win;
+                if (window is not MainWindow)
+                    window.Close();
+            }
+            await WindowManager.Get<MainWindow>().UpdateAll();
+        }
 
         public static class DeviceBrand
         {

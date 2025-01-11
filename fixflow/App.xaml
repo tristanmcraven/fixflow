@@ -269,6 +269,22 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            
+             <!--Phone number textbox style--> 
+            <Style x:Key="phone_TextBox"
+                   TargetType="TextBox"
+                   BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+                <Setter Property="md:TextFieldAssist.PrefixText"
+                        Value="+7" />
+                <Setter Property="MaxLength"
+                        Value="10" />
+                <Setter Property="md:HintAssist.Hint"
+                        Value="{DynamicResource phone_number}" />
+                <EventSetter Event="PreviewTextInput"
+                             Handler="PhoneTextBox_PreviewTextInput" />
+                <EventSetter Event="PreviewKeyDown"
+                             Handler="PhoneTextBox_PreviewKeyDown" />
+            </Style>
 
         </ResourceDictionary>
         

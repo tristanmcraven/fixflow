@@ -71,7 +71,7 @@
     <s:String x:Key="design">Design</s:String>
     <s:String x:Key="theme">Theme</s:String>
     <s:String x:Key="system">System</s:String>
-    <s:String x:Key="light">Light</s:String>
+    <s:String x:Key="light1">Light</s:String>
     <s:String x:Key="dark">Dark</s:String>
     <s:String x:Key="language">Language</s:String>
     <s:String x:Key="russian">Russian</s:String>
