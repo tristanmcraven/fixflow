@@ -2,7 +2,9 @@
 using fixflow.Utility;
 using fixflow.ViewModel;
 using fixflow.Windows;
+using System.Data;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -77,6 +79,14 @@ namespace fixflow.UserControls
             {
                 Owner = WindowManager.Get<MainWindow>()
             }.ShowDialog();
+        }
+
+        private void UserControl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var mw = WindowManager.Get<MainWindow>();
+            mw.SelectedTicket = _ticket;
+            mw.contextMenu_Popup.IsOpen = false;
+            mw.contextMenu_Popup.IsOpen = true;
         }
     }
 }

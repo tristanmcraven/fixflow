@@ -28,6 +28,7 @@ namespace fixflow.Windows
     {
         private bool _let = false;
         private bool _allowedToClose = false;
+        public Ticket? SelectedTicket = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +44,11 @@ namespace fixflow.Windows
         }
 
         private async void Window_Activated(object sender, EventArgs e)
+        {
+            UpdateTickets();
+        }
+
+        public async void UpdateTickets()
         {
             if (_let)
             {
@@ -198,6 +204,11 @@ namespace fixflow.Windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            await UpdateAll();
+        }
+
+        public async Task UpdateAll()
+        {
             // pizda))))))
 
             LoadingOverlay.Show(this);
@@ -217,7 +228,7 @@ namespace fixflow.Windows
                 if (backup != null) await ApiClient.Sync.SyncData(BackupManager.GetExistingBackup());
                 if (App.HasInternetConnection && !App.OfflineMode) await BackupManager.CreateBackup();
             }
-            Window_Activated(null, null);
+            UpdateTickets();
             WindowManager.SetProperties(this);
 
             brand_ComboBox.Items.Add("< Не выбрано >");
@@ -239,9 +250,6 @@ namespace fixflow.Windows
             foreach (var status in await ApiClient.Status.Get())
                 status_ComboBox.Items.Add(status.Name);
             status_ComboBox.SelectedIndex = 0;
-
-
-            
         }
 
         private bool _backupComplete = false;
@@ -281,42 +289,52 @@ namespace fixflow.Windows
         private async void deleteTickets_ListBoxItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             contextMenu_Popup.IsOpen = false;
-            var selectedItems = tickets_DataGrid.SelectedItems;
-            if (selectedItems.Count <= 0)
-            {
-                return;
-            }
+            //var selectedItems = tickets_DataGrid.SelectedItems;
+            //if (selectedItems.Count <= 0)
+            //{
+            //    return;
+            //}
 
-            var selectedGuids = selectedItems
-                .Cast<DataRowView>()
-                .Select(row => (Guid)row["Guid"])
-                .ToList();
+            //var selectedGuids = selectedItems
+            //    .Cast<DataRowView>()
+            //    .Select(row => (Guid)row["Guid"])
+            //    .ToList();
 
-            if (selectedItems.Count == 1)
+            //if (selectedItems.Count == 1)
+            //{
+            //    if (MessageBox.Show("Вы уверены, что хотите удалить выбранный тикет?",
+            //                        "Подтверждение",
+            //                        MessageBoxButton.YesNo,
+            //                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            //    {
+            //        await ApiClient.Ticket.Delete(selectedGuids.First());
+            //    }
+            //}
+            //else if (selectedItems.Count > 1)
+            //{
+            //    if (MessageBox.Show("Вы уверены, что хотите удалить выбранные тикеты?",
+            //                        "Подтверждение",
+            //                        MessageBoxButton.YesNo,
+            //                        MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            //    {
+            //        foreach (var guid in selectedGuids)
+            //        {
+            //            await ApiClient.Ticket.Delete(guid);
+            //        }
+            //    }
+            //}
+            if (SelectedTicket != null)
             {
                 if (MessageBox.Show("Вы уверены, что хотите удалить выбранный тикет?",
                                     "Подтверждение",
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    await ApiClient.Ticket.Delete(selectedGuids.First());
-                }
-            }
-            else if (selectedItems.Count > 1)
-            {
-                if (MessageBox.Show("Вы уверены, что хотите удалить выбранные тикеты?",
-                                    "Подтверждение",
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    foreach (var guid in selectedGuids)
-                    {
-                        await ApiClient.Ticket.Delete(guid);
-                    }
+                    await ApiClient.Ticket.Delete(SelectedTicket.Guid);
                 }
             }
             contextMenu_Popup.IsOpen = false;
-            Window_Activated(null, null);
+            UpdateTickets();
         }
 
         private async void search_Button_Click(object sender, RoutedEventArgs e)

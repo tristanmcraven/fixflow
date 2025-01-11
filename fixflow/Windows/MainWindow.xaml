@@ -206,7 +206,12 @@
                                  Grid.Row="1"/>
 
                         <TextBox x:Name="clientPhone_TextBox"
-                                 md:HintAssist.Hint="{DynamicResource phone_number}"
+                                 Style="{StaticResource phone_TextBox}"
+                                 Padding="10"
+                                 FontFamily="{StaticResource regular}"
+                                 md:HintAssist.FloatingScale="0.85"
+                                 Margin="0 0 10 0"
+                                 md:TextFieldAssist.CharacterCounterVisibility="Collapsed"
                                  Grid.Row="1"
                                  Grid.Column="1" />
 

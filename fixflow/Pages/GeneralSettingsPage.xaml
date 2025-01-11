@@ -76,7 +76,7 @@
                           Width="130"
                           SelectionChanged="theme_ComboBox_SelectionChanged">
                     <ComboBoxItem Content="{DynamicResource system}" />
-                    <ComboBoxItem Content="{DynamicResource light}" />
+                    <ComboBoxItem Content="{DynamicResource light1}" />
                     <ComboBoxItem Content="{DynamicResource dark}" />
                 </ComboBox>
             </StackPanel>

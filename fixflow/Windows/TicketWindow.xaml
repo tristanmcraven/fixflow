@@ -12,6 +12,7 @@
         Activated="Window_Activated"
         Closing="Window_Closing"
         MinHeight="805"
+        MinWidth="1190"
         Style="{StaticResource MaterialDesignWindow}">
 
     <Window.Resources>
@@ -103,8 +104,8 @@
                                      Padding="10 7.5"
                                      Margin="0 10 0 0"
                                      MaxLength="10"
-                                     md:TextFieldAssist.PrefixText="+7"
-                                     md:HintAssist.FloatingScale="0.85"/>
+                                     md:HintAssist.FloatingScale="0.85"
+                                     Style="{StaticResource phone_TextBox}"/>
                         </StackPanel>
 
                         <GroupBox Grid.Row="1">

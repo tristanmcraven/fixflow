@@ -74,91 +74,99 @@ namespace fixflow.Windows
         private async Task GetTicketData()
         {
             _ticket = await ApiClient.Ticket.GetById(_ticketId);
-            _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid);
-            _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelGuid);
-            _ticket.DeviceType = await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid);
-            _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Guid);
-            _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Guid);
-            _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Guid);
-            _ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(_ticket.Guid);
-            foreach (var repair in _ticket.TicketRepairs)
+            if (_ticket != null)
             {
-                repair.Repair = await ApiClient.Repair.GetById(repair.RepairGuid);
+                _ticket.DeviceBrand = await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid);
+                _ticket.DeviceModel = await ApiClient.DeviceModel.GetById(_ticket.DeviceModelGuid);
+                _ticket.DeviceType = await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid);
+                _ticket.TicketKits = await ApiClient.Ticket.GetKits(_ticket.Guid);
+                _ticket.TicketRepairs = await ApiClient.Ticket.GetRepairs(_ticket.Guid);
+                _ticket.TicketMalfunctions = await ApiClient.Ticket.GetMalfunctions(_ticket.Guid);
+                _ticket.TicketStatuses = await ApiClient.Ticket.GetStatuses(_ticket.Guid);
+                foreach (var repair in _ticket.TicketRepairs)
+                {
+                    repair.Repair = await ApiClient.Repair.GetById(repair.RepairGuid);
+                }
             }
+
         }
 
         private async Task UpdateTicketData()
         {
             DataContext = _ticket;
 
-            ticketNumber_TextBlock.Text = _number.ToString();
-            ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("ddd", new CultureInfo("ru-RU"))})";
-  
-             
-            //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
-            //clientPhone_TextBlock.Text = "Телефон: " + _ticket.ClientPhoneNumber;
-
-
-            malfunctions_ListBox.Items.Clear();
-            foreach (var item in _ticket.TicketMalfunctions)
+            if (_ticket != null)
             {
-                malfunctions_ListBox.Items.Add(new MalfunctionUserControl(item, _ticket, false));
-            }
+                ticketNumber_TextBlock.Text = _number.ToString();
+                ticketCreationDate_TextBlock.Text = $"   ({_ticket.Timestamp.Day} {_ticket.Timestamp.ToString("MMM", new CultureInfo("ru-RU"))} {_ticket.Timestamp.Year}, {_ticket.Timestamp.ToString("ddd", new CultureInfo("ru-RU"))})";
 
-            parts_ListBox.Items.Clear();
-            foreach (var item in _ticket.TicketKits)
-            {
-                parts_ListBox.Items.Add(new KitUserControl(item, _ticket, false));
-            }
 
-            statuses_DataGrid.ItemsSource = null;
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Дата проставления", typeof(string));
-            dataTable.Columns.Add("Статус", typeof(string));
-            foreach (var item in _ticket.TicketStatuses)
-            {
-                var timestamp = item.Timestamp;
-                dataTable.Rows.Add($"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")} {timestamp.ToString("HH")}:{timestamp.ToString("mm")}", (await ApiClient.Status.GetById(item.StatusGuid)).Name);
-            }
-            statuses_DataGrid.ItemsSource = dataTable.DefaultView;
+                //clientName_TextBlock.Text = "ФИО: " + _ticket.ClientFullname;
+                //clientPhone_TextBlock.Text = "Телефон: " + _ticket.ClientPhoneNumber;
 
-            repairs_DataGrid.ItemsSource = null;
-            DataTable rDataTable = new DataTable();
-            rDataTable.Columns.Add("Вид ремонта", typeof(string));
-            rDataTable.Columns.Add("Цена", typeof(int));
-            foreach (var item in _ticket.TicketRepairs)
-            {
-                rDataTable.Rows.Add(item.Repair.Name, item.Price);
-            }
-            repairs_DataGrid.ItemsSource = rDataTable.DefaultView;
 
-            if (_ticket.TicketRepairs.Count > 0)
-            {
-                int totalRepairsPrice = 0;
+                malfunctions_ListBox.Items.Clear();
+                foreach (var item in _ticket.TicketMalfunctions)
+                {
+                    malfunctions_ListBox.Items.Add(new MalfunctionUserControl(item, _ticket, false));
+                }
+
+                parts_ListBox.Items.Clear();
+                foreach (var item in _ticket.TicketKits)
+                {
+                    parts_ListBox.Items.Add(new KitUserControl(item, _ticket, false));
+                }
+
+                statuses_DataGrid.ItemsSource = null;
+                DataTable dataTable = new DataTable();
+                dataTable.Columns.Add("Дата проставления", typeof(string));
+                dataTable.Columns.Add("Статус", typeof(string));
+                foreach (var item in _ticket.TicketStatuses)
+                {
+                    var timestamp = item.Timestamp;
+                    dataTable.Rows.Add($"{timestamp.ToString("dd")}/{timestamp.ToString("MM")}/{timestamp.ToString("yyyy")} {timestamp.ToString("HH")}:{timestamp.ToString("mm")}", (await ApiClient.Status.GetById(item.StatusGuid)).Name);
+                }
+                statuses_DataGrid.ItemsSource = dataTable.DefaultView;
+
+                repairs_DataGrid.ItemsSource = null;
+                DataTable rDataTable = new DataTable();
+                rDataTable.Columns.Add("Вид ремонта", typeof(string));
+                rDataTable.Columns.Add("Цена", typeof(int));
                 foreach (var item in _ticket.TicketRepairs)
                 {
-                    totalRepairsPrice += (int)item.Price;
+                    rDataTable.Rows.Add(item.Repair.Name, item.Price);
                 }
-                totalRepairsPrice_TextBlock.Text = "Сумма: " + totalRepairsPrice.ToString();
+                repairs_DataGrid.ItemsSource = rDataTable.DefaultView;
+
+                if (_ticket.TicketRepairs.Count > 0)
+                {
+                    int totalRepairsPrice = 0;
+                    foreach (var item in _ticket.TicketRepairs)
+                    {
+                        totalRepairsPrice += (int)item.Price;
+                    }
+                    totalRepairsPrice_TextBlock.Text = "Сумма: " + totalRepairsPrice.ToString();
+                }
+
+                ticketNote_TextBox.Text = _ticket.Note;
+
+                var brands = await ApiClient.DeviceBrand.Get();
+                brands_ComboBox.Items.Clear();
+                foreach (var brand in brands)
+                {
+                    brands_ComboBox.Items.Add(brand.Name);
+                }
+                brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid)).Name;
+
+                var types = await ApiClient.DeviceType.Get();
+                deviceTypes_ComboBox.Items.Clear();
+                foreach (var type in types)
+                {
+                    deviceTypes_ComboBox.Items.Add(type.Name);
+                }
+                deviceTypes_ComboBox.SelectedItem = (await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid)).Name;
             }
 
-            ticketNote_TextBox.Text = _ticket.Note;
-
-            var brands = await ApiClient.DeviceBrand.Get();
-            brands_ComboBox.Items.Clear();
-            foreach (var brand in brands)
-            {
-                brands_ComboBox.Items.Add(brand.Name);
-            }
-            brands_ComboBox.SelectedItem = (await ApiClient.DeviceBrand.GetById(_ticket.DeviceBrandGuid)).Name;
-
-            var types = await ApiClient.DeviceType.Get();
-            deviceTypes_ComboBox.Items.Clear();
-            foreach (var type in types)
-            {
-                deviceTypes_ComboBox.Items.Add(type.Name);
-            }
-            deviceTypes_ComboBox.SelectedItem = (await ApiClient.DeviceType.GetById(_ticket.DeviceTypeGuid)).Name;
             //var models = await ApiClient.DeviceModel.Get();
             //models_ComboBox.Items.Clear();
             //foreach (var model in await ApiClient.DeviceBrand.GetModelsByName(_ticket.DeviceBrand.Name))

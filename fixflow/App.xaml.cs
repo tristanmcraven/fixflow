@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace fixflow
 {
@@ -123,6 +124,11 @@ namespace fixflow
                     try
                     {
                         var db = await new HttpClient().GetAsync("http://localhost:5108/api/devicebrand");
+                        if (db.StatusCode == HttpStatusCode.InternalServerError)
+                        {
+                            App.OfflineMode = true;
+                            BackupManager.SetBackup();
+                        }
                     }
                     catch
                     {
@@ -181,6 +187,20 @@ namespace fixflow
         private void Application_Exit(object sender, ExitEventArgs e)
         {
 
+        }
+
+        private void PhoneTextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if ((String.IsNullOrWhiteSpace(((TextBox)sender).Text) && e.Text.Equals("8")) || !Helper.IsNumeric(e.Text) || String.IsNullOrWhiteSpace(e.Text))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void PhoneTextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Space)
+                e.Handled = true;
         }
     }
 
