@@ -95,7 +95,8 @@
                              md:HintAssist.Hint="{DynamicResource search}"
                              md:HintAssist.FloatingScale="0.70"
                              Padding="20 10"
-                             Margin="0 0 10 0"/>
+                             Margin="0 0 10 0"
+                             KeyDown="search_TextBox_KeyDown"/>
                     
                     <StackPanel Orientation="Horizontal"
                                 Grid.Column="1">
@@ -238,6 +239,8 @@
                                     Value="{StaticResource medium}" />
                             <Setter Property="FontSize"
                                     Value="16" />
+                            <!--<Setter Property="Foreground"
+                                    Value="White" />-->
                             <Setter Property="Margin"
                                     Value="0 5" />
                             <Setter Property="HorizontalAlignment"

@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <Version>1.6.0</Version>
-	  <FileVersion>1.6.0</FileVersion>
-	  <AssemblyVersion>1.6.0</AssemblyVersion>
-	  <InformationalVersion>1.6.0</InformationalVersion>
+	  <Version>1.7.0</Version>
+	  <FileVersion>1.7.0</FileVersion>
+	  <AssemblyVersion>1.7.0</AssemblyVersion>
+	  <InformationalVersion>1.7.0</InformationalVersion>
 	  <Authors>tristanmcraven</Authors>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>

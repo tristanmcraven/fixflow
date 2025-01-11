@@ -45,7 +45,9 @@ namespace fixflow.Windows
 
         private async void Window_Activated(object sender, EventArgs e)
         {
-            UpdateTickets();
+            LoadingOverlay.Show(this);
+            search_Button_Click(null, null);
+            LoadingOverlay.Remove(this);
         }
 
         public async void UpdateTickets()
@@ -449,6 +451,12 @@ namespace fixflow.Windows
         private void quit_Button_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void search_TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                search_Button_Click(null, null);
         }
     }
 }
