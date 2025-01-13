@@ -22,13 +22,17 @@
     <None Remove="Assets\Fonts\YandexSansText-Regular.ttf" />
     <None Remove="Assets\Fonts\YandexSansText-Thin.ttf" />
     <None Remove="Assets\Images\check.png" />
+    <None Remove="Assets\Images\close.png" />
     <None Remove="Assets\Images\cross.png" />
     <None Remove="Assets\Images\double-arrow-down.png" />
     <None Remove="Assets\Images\edit.png" />
     <None Remove="Assets\Images\empty.png" />
+    <None Remove="Assets\Images\maximize.png" />
+    <None Remove="Assets\Images\minimize.png" />
     <None Remove="Assets\Images\plus-bold.png" />
     <None Remove="Assets\Images\plus.png" />
     <None Remove="Assets\Images\program.png" />
+    <None Remove="Assets\Images\restore.png" />
     <None Remove="Assets\Images\settings.png" />
     <None Remove="Assets\loading-white.gif" />
     <None Remove="Assets\loading.gif" />
@@ -60,6 +64,9 @@
     <Resource Include="Assets\Images\check.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\cross.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -72,6 +79,12 @@
     <Resource Include="Assets\Images\empty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\Images\maximize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\minimize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\plus-bold.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -79,6 +92,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\program.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\restore.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\settings.png">
