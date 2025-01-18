@@ -202,6 +202,46 @@ namespace fixflow
             if (e.Key == System.Windows.Input.Key.Space)
                 e.Handled = true;
         }
+
+        private void TitleBarGrid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var g = sender as Grid;
+            var window = Window.GetWindow(g);
+            window.DragMove();
+        }
+
+        private void minimize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Button;
+            var window = Window.GetWindow(b);
+            window.WindowState = WindowState.Minimized;
+        }
+
+        private void restore_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Button;
+            var window = Window.GetWindow(b);
+            window.WindowState = WindowState.Normal;
+        }
+
+        private void maximize_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Button;
+            var window = Window.GetWindow(b);
+            var workArea = SystemParameters.WorkArea;
+
+            window.Left = workArea.Left;
+            window.Top = workArea.Top;
+            window.Width = workArea.Width;
+            window.Height = workArea.Height;
+        }
+
+        private void close_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Button;
+            var window = Window.GetWindow(b);
+            window.Close();
+        }
     }
 
 }
